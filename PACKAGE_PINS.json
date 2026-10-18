@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "1d66882e2be82dd49080bbe3e3d67b775b1948b7089e193c634add8b2db4f851"
+      "sha256": "3aee1b0e1d32c919e43e3f2778403832d77ede461a9a650e4a793bdead75c9f5"
     },
     {
       "file": "docs/0.1.1/capabilities.md",
@@ -49,11 +49,11 @@
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "fa02384bb502f3fbd800f4cf044ff9244f5a7d9e774c7c4ddde6fb5341bc59fa"
+      "sha256": "3e6757ca96e334a1739bea1e208204361e37c0e6ef8012a357717b03d66b859f"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "9c70a5e0ec55d13ce20d2343cbbdb3b3772f366538108c60452cc1115a1609e8"
+      "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
     },
     {
       "file": "examples/c_allocation_owner.cr",

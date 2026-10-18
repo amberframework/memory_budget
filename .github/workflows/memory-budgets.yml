@@ -1,4 +1,4 @@
-name: Memory budget package
+name: Portable source and installation fixtures
 on:
   pull_request:
   push:
@@ -6,29 +6,36 @@ on:
 permissions:
   contents: read
 jobs:
-  protocol-and-adapters:
-    runs-on: [self-hosted, macOS, ARM64, atlas-memory-budget-v1]
-    timeout-minutes: 20
+  portable-fixtures:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
-      - name: Exercise portable installation entrypoints and rejection controls
-        run: ruby test/portable_toolchain_test.rb
-      - name: Exercise policy, coverage, real counters, and sufficient/tight cases
+      - name: Exercise SDK entrypoints with pinned executable fixtures
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p performance/results
-          /usr/bin/ruby scripts/budget.rb spec -Dfiber_allocation_tally -Dwithout_mt 2>&1 | tee performance/results/specs.txt
-          /usr/bin/ruby scripts/budget.rb build src/cli.cr -o performance/results/memory-budget
-          shasum -a 256 PACKAGE_PINS.json performance/results/memory-budget > performance/results/artifact-pins.txt
-        env:
-          CRYSTAL_WORKERS: "1"
-          CRYSTAL_CACHE_DIR: ${{ runner.temp }}/memory-budget-package-${{ github.run_id }}-${{ github.run_attempt }}
+          mkdir -p "$RUNNER_TEMP/memory-budget-portable"
+          docker run --rm --init --platform linux/amd64 --network none \
+            --cpus 1 --memory 1g --pids-limit 128 --read-only \
+            --tmpfs /tmp:rw,nosuid,nodev,size=384m \
+            -v "$PWD:/workspace:ro" \
+            -v "$RUNNER_TEMP/memory-budget-portable:/results:rw" -w /workspace \
+            ruby:3.4.6-slim-bookworm@sha256:2720b44a26870fc2db86a3c7f4f6aaa7eaee00b730e6d8de141663ef61559efb \
+            sh -ec '
+              ruby --version > /results/ruby-version.txt
+              ruby -rrbconfig -rdigest -e "puts Digest::SHA256.file(RbConfig.ruby).hexdigest" > /results/ruby-sha256.txt
+              ruby -Itest -e "Dir[\"test/*_test.rb\"].sort.each { |file| require File.expand_path(file) }" > /results/portable-fixtures.stdout 2> /results/portable-fixtures.stderr
+              cat /results/portable-fixtures.stdout
+              ruby -e "text=File.read(ARGV.fetch(0)); abort \"Incomplete portable fixture suite\" unless text.match?(/^107 runs, [0-9]+ assertions, 0 failures, 0 errors, 0 skips$/)" /results/portable-fixtures.stdout
+              ruby scripts/install_bundle.rb "/tmp/ordinary consumer" > /results/bundle-install.stdout
+              ruby -rjson -rdigest -e "root=ARGV.fetch(0); p=JSON.parse(File.read(File.join(root,\"PACKAGE_PINS.json\"))); p.fetch(\"files\").each{|r| abort \"Installed bundle drift\" unless Digest::SHA256.file(File.join(root,r.fetch(\"file\"))).hexdigest==r.fetch(\"sha256\")}; puts JSON.pretty_generate({scope: \"Hash-verified bundle and executable Ruby fixtures; actual Crystal compiler jobs remain zero\", files:p.fetch(\"files\").size, package_version:p.fetch(\"package_version\")})" "/tmp/ordinary consumer/performance/vendor/memory_budget" > /results/installed-bundle.json
+            '
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         if: always()
         with:
-          name: memory-budget-package-${{ github.sha }}
-          path: performance/results/
+          name: portable-fixtures-${{ github.sha }}
+          path: ${{ runner.temp }}/memory-budget-portable/
           if-no-files-found: error

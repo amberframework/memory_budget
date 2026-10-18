@@ -8,9 +8,9 @@
     "package_version": "0.1.0",
     "source_commit": "1a1f89e981b820ff5b375da9b9365be85180190b"
   },
-  "source_repository": null,
+  "source_repository": "https://github.com/amberframework/memory_budget",
   "proposed_repository": "https://github.com/amberframework/memory_budget",
-  "repository_state": "pending_owner_and_public_readback",
+  "repository_state": "owner_verified_public_source_readback_pending",
   "website_prefix": "docs/v2/guides/memory-budgets",
   "public_prefix": "public/memory-budget-docs/0.1.1",
   "skill_directory": "skills/crystal-memory-budgets",

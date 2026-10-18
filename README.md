@@ -2,7 +2,9 @@
 
 Memory Budget gives Crystal specs and CI one typed enforcement contract. Crystal owns allocation counters; this shard owns limits, measurement adapters, validation, and verdicts. Amber connects those measurements to routes, jobs, models, and native journeys.
 
-This is the implementation candidate for the memory-budget-experiment. Publication and supported-platform receipts are tracked separately from local implementation.
+This is the unreleased 0.1.1 source candidate for the memory-budget-experiment. Publication and supported-platform receipts are tracked separately from source implementation. The intended public repository is `amberframework/memory_budget`; public source/readback and installation receipts establish that distribution boundary separately.
+
+Hosted CI is configured for executable Ruby fixtures, hash-verified bundle installation, and the documentation/skill corpus. Those checks start zero actual Crystal compiler jobs. The separate native-measurement workflow is manual and requires an operator-configured, resource-admitted runner with a reviewed schema-3 profile. Its native installation, same-binary tutorial and device qualification retain separate acceptance receipts.
 
 ## Documentation and agent skill
 
@@ -13,7 +15,7 @@ The [agent skill](skills/crystal-memory-budgets/SKILL.md) uses the same versione
 corpus. Both are included in the hash-verified consumer bundle. The
 [corpus manifest](docs/corpus-manifest.json) binds their source bytes; the
 projection verifier checks Amber's pages and downloadable skill against them.
-Public repository ownership, normal public installation, and independent device
+Public source readback, normal public installation, and independent device
 qualification have their own acceptance receipts.
 
 ## Run the examples

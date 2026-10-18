@@ -1,0 +1,63 @@
+name: Native memory measurements (manual qualified runner)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-measurements:
+    runs-on: [self-hosted, macOS, ARM64, atlas-memory-budget-v1]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Require the runner's reviewed schema 3 profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p performance/results
+          ruby -r./scripts/toolchain_profile -e 'abort "A pinned runner profile lock/SHA is required" unless ENV["MEMORY_BUDGET_TOOLCHAIN_LOCK"] && ENV["MEMORY_BUDGET_TOOLCHAIN_PROFILE_SHA256"]; i=MemoryBudget::ToolchainProfile.resolve(Dir.pwd); abort "A qualified schema-3 runner profile is required" unless i.profile.fetch("schema_version")==3; puts JSON.pretty_generate(i.to_h)' > performance/results/toolchain.json
+      - name: Exercise policy, coverage and actual counters
+        shell: bash
+        run: |
+          set -euo pipefail
+          ruby scripts/budget.rb spec -Dfiber_allocation_tally --error-on-warnings > performance/results/default-specs.txt 2>&1
+          cat performance/results/default-specs.txt
+          ruby scripts/budget.rb spec -Dfiber_allocation_tally -Dwithout_mt --error-on-warnings > performance/results/without-mt-specs.txt 2>&1
+          cat performance/results/without-mt-specs.txt
+          ruby -e 'ARGV.each{|path| abort "Incomplete native SDK suite" unless File.read(path).match?(/^39 examples, 0 failures, 0 errors, 0 pending$/)}' performance/results/default-specs.txt performance/results/without-mt-specs.txt
+          ruby scripts/budget.rb build src/cli.cr --error-on-warnings -o performance/results/memory-budget
+          shasum -a 256 PACKAGE_PINS.json performance/results/memory-budget > performance/results/artifact-pins.txt
+        env:
+          CRYSTAL_WORKERS: "1"
+          CRYSTAL_CACHE_DIR: ${{ runner.temp }}/memory-budget-native-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Exercise the installed tutorial through one identified binary
+        shell: bash
+        run: |
+          set -euo pipefail
+          consumer="$RUNNER_TEMP/memory-budget-consumer-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          test ! -e "$consumer"
+          ruby scripts/install_bundle.rb "$consumer" > performance/results/installed-bundle.txt
+          bundle="$consumer/performance/vendor/memory_budget"
+          ruby -rjson -rdigest -e 'root=ARGV.fetch(0); p=JSON.parse(File.read(File.join(root,"PACKAGE_PINS.json"))); p.fetch("files").each{|r| abort "Installed bundle drift" unless Digest::SHA256.file(File.join(root,r.fetch("file"))).hexdigest==r.fetch("sha256")}; puts JSON.pretty_generate({files:p.fetch("files").size, package_version:p.fetch("package_version")})' "$bundle" > performance/results/installed-bundle-pins.json
+          ruby "$bundle/scripts/budget.rb" build "$bundle/docs/0.1.1/examples/fiber_budget_spec.cr" -Dfiber_allocation_tally --error-on-warnings -o performance/results/installed-tutorial > performance/results/tutorial-build.txt 2>&1
+          shasum -a 256 performance/results/installed-tutorial > performance/results/tutorial-before.sha256
+          # Restore the reviewed native environment at each Ruby process boundary.
+          ruby -r"$bundle/scripts/toolchain_profile" -e 'begin; i=MemoryBudget::ToolchainProfile.resolve(ARGV.fetch(0)); system(i.environment.merge("MEMORY_BUDGET_INJECT_REGRESSION"=>"0"),[ARGV.fetch(1),ARGV.fetch(1)]); code=$?.exitstatus; i.environment; rescue StandardError => error; warn error.message; exit 2; end; exit(code || 2)' "$bundle" "$PWD/performance/results/installed-tutorial" > performance/results/tutorial-normal.txt 2>&1
+          set +e
+          ruby -r"$bundle/scripts/toolchain_profile" -e 'begin; i=MemoryBudget::ToolchainProfile.resolve(ARGV.fetch(0)); system(i.environment.merge("MEMORY_BUDGET_INJECT_REGRESSION"=>"1"),[ARGV.fetch(1),ARGV.fetch(1)]); code=$?.exitstatus; i.environment; rescue StandardError => error; warn error.message; exit 2; end; exit(code || 2)' "$bundle" "$PWD/performance/results/installed-tutorial" > performance/results/tutorial-regression.txt 2>&1
+          regression_status=$?
+          set -e
+          test "$regression_status" -eq 1
+          shasum -a 256 performance/results/installed-tutorial > performance/results/tutorial-after.sha256
+          cmp performance/results/tutorial-before.sha256 performance/results/tutorial-after.sha256
+          ruby -e 'normal=File.read(ARGV.fetch(0)); regression=File.read(ARGV.fetch(1)); abort "Tutorial normal coverage differs" unless normal.match?(/^1 examples, 0 failures, 0 errors, 0 pending$/); abort "Tutorial regression coverage differs" unless regression.match?(/^1 examples, 1 failures, 0 errors, 0 pending$/) && regression.include?("construct_record: exceeded: crystal_allocation_calls: 2 > 1")' performance/results/tutorial-normal.txt performance/results/tutorial-regression.txt
+        env:
+          CRYSTAL_WORKERS: "1"
+          CRYSTAL_CACHE_DIR: ${{ runner.temp }}/memory-budget-native-${{ github.run_id }}-${{ github.run_attempt }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: native-measurements-${{ github.sha }}
+          path: performance/results/
+          if-no-files-found: error
