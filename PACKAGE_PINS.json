@@ -13,7 +13,35 @@
     },
     {
       "file": "README.md",
-      "sha256": "0f4c72222b561563dbce508aa35f90e8aa2087a744f0ddfb3706e884a691efda"
+      "sha256": "2117568d48e38fd441aedc56b6624c213f69cb9c64662ad9f71121343e69e5ce"
+    },
+    {
+      "file": "docs/0.1.1/capabilities.md",
+      "sha256": "44a5d840c5e00d60672f7c92804490ace7deaefb5d61c8ded68b59aa33dc3870"
+    },
+    {
+      "file": "docs/0.1.1/ci.md",
+      "sha256": "18d4038907d92a09e088d66826e8548cccdcfa5bf6e6f44079d1bf39101594b7"
+    },
+    {
+      "file": "docs/0.1.1/examples/fiber_budget_spec.cr",
+      "sha256": "378c83d3ab60f877d70810b8a8816cc65c9f64eee04bdab263f1c1852fc4dfb9"
+    },
+    {
+      "file": "docs/0.1.1/fiber-budget.md",
+      "sha256": "614f1d6bdb5b17d7fc793e350e9f55978672731bc32e44e1f6003acd50d11129"
+    },
+    {
+      "file": "docs/0.1.1/index.md",
+      "sha256": "3ae6ee2f763904b20df2ac42c9326474817d660d10a88481672ee920a78e7fd2"
+    },
+    {
+      "file": "docs/corpus-manifest.json",
+      "sha256": "e096501a189c8fe5e4c94fa240d11dff9ca241e77db80d1b63b93015cfdc50c8"
+    },
+    {
+      "file": "docs/corpus.json",
+      "sha256": "f3fa495fa59be0ccc2e1e84bb56d0a43a17719741bfd34f6576bfaeea6c0d403"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -68,6 +96,14 @@
       "sha256": "94c7c5c2403f2ff0c1ea17de503f596e05e65781ce4cbf60de378b59ceb57365"
     },
     {
+      "file": "scripts/docs/manage_corpus.py",
+      "sha256": "c385ac69d0858e57e6f69b5154ee0b6eb49fa5cd2413f1344b43c8b420cde907"
+    },
+    {
+      "file": "scripts/docs/test_corpus.py",
+      "sha256": "30451aefd56d89d81511eb94437eef84ced14ee03be8018b6ce93de97a502e1c"
+    },
+    {
       "file": "scripts/install_bundle.rb",
       "sha256": "3f2536d054d4e7e68455cd34a84cbe0cac4c0a9a9ee4de4a4a07d6b92213e9a4"
     },
@@ -82,6 +118,14 @@
     {
       "file": "scripts/toolchain_profile.rb",
       "sha256": "afd9cbed8fe4c82209661addcd21ec8e9c92d65384a4f6e3fe3bf338bd2c234b"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/SKILL.md",
+      "sha256": "b52d672363e940a48106fa62bcac1f9208afe8d157327d11e852e79c194a9288"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/agents/openai.yaml",
+      "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
     },
     {
       "file": "spec/fixtures/c/SOURCE_PINS.json",

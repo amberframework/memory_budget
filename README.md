@@ -4,6 +4,17 @@ Memory Budget gives Crystal specs and CI one typed enforcement contract. Crystal
 
 This is the implementation candidate for the memory-budget-experiment. Publication and supported-platform receipts are tracked separately from local implementation.
 
+## Documentation and agent skill
+
+Read the [0.1.1 guide](docs/0.1.1/index.md), [working spec](docs/0.1.1/fiber-budget.md),
+[capability table](docs/0.1.1/capabilities.md), and [CI guide](docs/0.1.1/ci.md).
+The [agent skill](skills/crystal-memory-budgets/SKILL.md) uses the same versioned
+corpus. Both are included in the hash-verified consumer bundle. The
+[corpus manifest](docs/corpus-manifest.json) binds their source bytes; the
+projection verifier checks Amber's pages and downloadable skill against them.
+Public repository ownership, normal public installation, and independent device
+qualification have their own acceptance receipts.
+
 ## Run the examples
 
 The checked-in toolchain profiles identify approved compiler binaries and standard-library trees by SHA-256. `scripts/budget.rb` resolves the installed `crystal-alpha` wrapper, verifies its backend and stdlib, verifies the four runtime overlay files, and runs the compiler with the counter-enabled stdlib. Every file in the prepared stdlib is checked. A different compiler needs a reviewed profile.
