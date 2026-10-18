@@ -123,10 +123,47 @@ class PortableToolchainTest < Minitest::Test
     output, errors, status = bootstrap("build", "input with spaces.cr", "-Dfiber_allocation_tally")
     assert status.success?, errors
     data = JSON.parse(output)
-    assert_equal ["build", "input with spaces.cr", "-Dfiber_allocation_tally"], data.fetch("arguments")
+    assert_equal ["build", "input with spaces.cr", "-Dfiber_allocation_tally", "--threads", "1"], data.fetch("arguments")
     assert_equal "1", data.fetch("workers")
     assert_equal "1", data.fetch("allocation")
     assert File.file?(File.join(@environment.fetch("CRYSTAL_CACHE_DIR"), "budget-stdlib", "fiber", "allocation_tally.cr"))
+  end
+
+  def test_default_compiler_thread_is_explicit_in_the_spec_command
+    output, errors, status = bootstrap
+    assert status.success?, errors
+    assert_equal ["spec", "-Dfiber_allocation_tally", "--threads", "1"], JSON.parse(output).fetch("arguments")
+  end
+
+  def test_default_compiler_thread_applies_to_each_compiling_command
+    %w[build spec run eval].each do |command|
+      output, errors, status = bootstrap(command, "fixture with spaces.cr")
+      assert status.success?, errors
+      assert_equal [command, "fixture with spaces.cr", "--threads", "1"], JSON.parse(output).fetch("arguments")
+    end
+  end
+
+  def test_runtime_compiler_thread_arguments_stay_after_the_separator
+    output, errors, status = bootstrap("run", "fixture.cr", "--", "--threads", "8")
+    assert status.success?, errors
+    assert_equal ["run", "fixture.cr", "--threads", "1", "--", "--threads", "8"], JSON.parse(output).fetch("arguments")
+  end
+
+  def test_explicit_compiler_thread_profiles_keep_the_callers_arguments
+    [["--threads", "1"], ["--threads", "2"], ["--threads=3"]].each do |option|
+      arguments = ["spec", "spec/fixture_spec.cr"] + option + ["--", "--verbose"]
+      output, errors, status = bootstrap(*arguments)
+      assert status.success?, errors
+      assert_equal arguments, JSON.parse(output).fetch("arguments")
+    end
+  end
+
+  def test_noncompiling_commands_keep_their_original_arguments
+    [["--version"], ["tool", "format", "fixture.cr"]].each do |arguments|
+      output, errors, status = bootstrap(*arguments)
+      assert status.success?, errors
+      assert_equal arguments, JSON.parse(output).fetch("arguments")
+    end
   end
 
   def test_full_identity_selects_right_ruby_among_shared_backends
@@ -197,6 +234,10 @@ class PortableToolchainTest < Minitest::Test
     result, failures, executed = Open3.capture3(environment, RbConfig.ruby, bootstrap_path, "--version", chdir: destination)
     assert executed.success?, failures
     assert JSON.parse(result).fetch("fixture_compiled")
+    compiled, compile_errors, compile_status = Open3.capture3(environment, RbConfig.ruby, bootstrap_path,
+                                                           "build", "consumer input.cr", chdir: destination)
+    assert compile_status.success?, compile_errors
+    assert_equal ["build", "consumer input.cr", "--threads", "1"], JSON.parse(compiled).fetch("arguments")
     installer_path = File.join(File.dirname(bootstrap_path), "install_frozen_dependencies.rb")
     assert File.file?(installer_path)
   end

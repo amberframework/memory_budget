@@ -46,6 +46,14 @@ actual_map_of_stdlib_hashes = list_of_prepared_paths.each_with_object({}) do |pa
 end
 abort "Prepared stdlib source mismatch" unless actual_map_of_stdlib_hashes == expected_map_of_stdlib_hashes
 environment = {"CRYSTAL_PATH" => "lib:#{prepared_stdlib}", "CRYSTAL_WORKERS" => "1", "MEMORY_BUDGET_REQUIRE_ALLOCATION" => "1"}
-arguments = ARGV.empty? ? ["spec", "-Dfiber_allocation_tally"] : ARGV
+arguments = ARGV.empty? ? ["spec", "-Dfiber_allocation_tally"] : ARGV.dup
+# CRYSTAL_WORKERS configures the runtime, while --threads controls compiler
+# code generation. Keep a caller's explicit profile and program arguments.
+if %w[build spec run eval].include?(arguments.first)
+  separator = arguments.index("--") || arguments.length
+  compiler_arguments = arguments.take(separator)
+  has_explicit_thread_count = compiler_arguments.any? { |argument| argument == "--threads" || argument.start_with?("--threads=") }
+  arguments.insert(separator, "--threads", "1") unless has_explicit_thread_count
+end
 system(environment, compiler_path, *arguments, chdir: project_root)
 exit($?.exitstatus || 2)

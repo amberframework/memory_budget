@@ -19,6 +19,12 @@ qualification have their own acceptance receipts.
 
 The checked-in toolchain profiles identify approved compiler binaries and standard-library trees by SHA-256. `scripts/budget.rb` resolves the installed `crystal-alpha` wrapper, verifies its backend and stdlib, verifies the four runtime overlay files, and runs the compiler with the counter-enabled stdlib. Every file in the prepared stdlib is checked. A different compiler needs a reviewed profile.
 
+The runner defaults `build`, `spec`, `run`, and `eval` to one compiler code-generation
+thread with an explicit `--threads 1`. Arguments after `--` stay with the compiled
+program. A caller's explicit `--threads` option is preserved; measurements with a
+different worker count require their own recorded profile and qualification.
+`CRYSTAL_WORKERS=1` separately configures the compiled Crystal runtime.
+
 The 0.1.1 bootstrap selects a profile by the complete compiler, standard-library,
 and actual Ruby executable identity. A declared compiler-wrapper or Ruby-launcher
 hash participates in admission. Multiple profiles may share a compiler backend;

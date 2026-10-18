@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "2117568d48e38fd441aedc56b6624c213f69cb9c64662ad9f71121343e69e5ce"
+      "sha256": "05802d76308ef009954b2cef256a0d86310030c968d3e987f5b924fead98e86f"
     },
     {
       "file": "docs/0.1.1/capabilities.md",
@@ -113,7 +113,7 @@
     },
     {
       "file": "scripts/run_specs.rb",
-      "sha256": "bf27218cfaf5823d1aa87226e67f1a5749718474d5c67ebfd8cf08574ef8ae3f"
+      "sha256": "e62c55a2353f0a2f7d432ae615f34981a23719ce53d9b83a193aa10843804c5d"
     },
     {
       "file": "scripts/toolchain_profile.rb",
