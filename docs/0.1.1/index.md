@@ -1,5 +1,7 @@
 # Memory budgets
 
+For a fresh installed toolchain, [prepare and review a profile](prepare-toolchain.md) before running the SDK entrypoints.
+
 MemoryBudget gives Crystal specs and CI one typed contract for limits, measurements, capabilities and verdicts. Crystal owns allocation counters. This package owns policy and verification. Your application owns the operation, useful behavior and memory allowance.
 
 This is the **0.1.1 local documentation candidate**, based on the 0.1.0 API source. Public release, ordinary-device installation and installed-agent qualification remain separate acceptance gates. The source manifest records document/example hashes; the website projection records the actual source checkout commit and its clean/dirty state.

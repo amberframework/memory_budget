@@ -2,6 +2,8 @@
 
 Toolchain profile **schema 3** adds the actual Git provider to the existing compiler, Ruby and native-library admission. The ordinary frozen installer and the CI source-identity command require schema 3. Compiler profiles 1 and 2 retain their documented compiler/native scope. Older SDKs refuse schema 3 instead of silently ignoring the new required capability.
 
+Use the [toolchain profile-preparation path](prepare-toolchain.md) to retain the actual installed compiler/Ruby/Minecart and manifest identities in a reviewable draft.
+
 This is an unreleased source candidate. The native Mini's installed Git backend, version, 196 helper entries and three external helper targets have separate actual readback evidence. The complete schema-3 SDK installation/spec workflow, public network fetching, a clean account and public installation on another device still need their own acceptance.
 
 ## Prepare a reviewed candidate

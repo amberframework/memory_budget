@@ -56,6 +56,13 @@
       "title": "Admit Git for frozen installation",
       "description": "Pin the native Git backend, helper family and private delegate across ordinary SDK entrypoints",
       "order": 101
+    },
+    {
+      "file": "docs/0.1.1/prepare-toolchain.md",
+      "slug": "prepare-toolchain",
+      "title": "Prepare an installed toolchain profile",
+      "description": "Observe pinned installed files and retain source receipts in an explicitly unadmitted draft",
+      "order": 102
     }
   ],
   "list_of_examples": [
@@ -76,6 +83,7 @@
     "scripts/install_frozen_dependencies.rb",
     "scripts/git_provider.rb",
     "scripts/prepare_git_manifest.rb",
-    "scripts/source_commit.rb"
+    "scripts/source_commit.rb",
+    "scripts/prepare_toolchain_profile.rb"
   ]
 }

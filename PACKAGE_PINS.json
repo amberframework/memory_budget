@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "da26ea77f295fca6f0ff34f557eb6240a61721ee9e6f48e84316fc35f59751e5"
+      "sha256": "1d66882e2be82dd49080bbe3e3d67b775b1948b7089e193c634add8b2db4f851"
     },
     {
       "file": "docs/0.1.1/capabilities.md",
@@ -33,23 +33,27 @@
     },
     {
       "file": "docs/0.1.1/git-provider.md",
-      "sha256": "2a11b58efad24174781eef4e08de1c48c8077c12b68618eb99850fa9a0f9f699"
+      "sha256": "f0c9b83560931b148752ce852762d3ff0557f6edc17938239b23f801f4b1c061"
     },
     {
       "file": "docs/0.1.1/index.md",
-      "sha256": "f033a9efd0f04336a39b2bb3d6de4a6b8369671711dd511c1fc05fdf45eb0400"
+      "sha256": "1fb98c47a70bac5d4175fec1139af7e2880a84eeaeccb17b793c8952d4ec7cad"
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
       "sha256": "08bd63ba9edc6a58e4dda2144c63c78cb47eb45d1d7194f9760b2ae6badf1059"
     },
     {
+      "file": "docs/0.1.1/prepare-toolchain.md",
+      "sha256": "e215df0954559d7d96b7e5c490bff8485b15344b8162fc195f30ce1d3584861c"
+    },
+    {
       "file": "docs/corpus-manifest.json",
-      "sha256": "d5878ccc3169ede5f3282e9950f9c203c9ca373cee0212b31a74b7c08544dd4b"
+      "sha256": "e5eaf804a8a53a80f44510b2caa505f31f68772d196a6197383714cabd6edf55"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "217921425d0b2fdbbb6406f75e2a1bd151f811d1b8b264655fa176e8cad56aaa"
+      "sha256": "9c70a5e0ec55d13ce20d2343cbbdb3b3772f366538108c60452cc1115a1609e8"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -134,6 +138,10 @@
     {
       "file": "scripts/prepare_native_manifest.rb",
       "sha256": "ba95bafccb4efc8a86ce1f2b5688dc74a0660187cad8aaceef3489174d040f18"
+    },
+    {
+      "file": "scripts/prepare_toolchain_profile.rb",
+      "sha256": "6f53f9cd90cc1a2442df2b06a88dc773eb56c6fdb0302c9c9523b2a7d54ea851"
     },
     {
       "file": "scripts/run_specs.rb",

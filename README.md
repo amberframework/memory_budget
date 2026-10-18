@@ -18,7 +18,7 @@ qualification have their own acceptance receipts.
 
 ## Run the examples
 
-The checked-in toolchain profiles identify approved compiler binaries and standard-library trees by SHA-256. `scripts/budget.rb` resolves the installed `crystal-alpha` wrapper, verifies its backend and stdlib, verifies the four runtime overlay files, and runs the compiler with the counter-enabled stdlib. Every file in the prepared stdlib is checked. A different compiler needs a reviewed profile.
+The checked-in toolchain profiles identify approved compiler binaries and standard-library trees by SHA-256. `scripts/budget.rb` resolves the installed `crystal-alpha` wrapper, verifies its backend and stdlib, verifies the four runtime overlay files, and runs the compiler with the counter-enabled stdlib. Every file in the prepared stdlib is checked. For a fresh installation, use the [profile-preparation CLI](docs/0.1.1/prepare-toolchain.md) to observe local bytes, retain the installation/source receipts and prepare an explicitly unadmitted draft for review.
 
 The runner defaults `build`, `spec`, `run`, and `eval` to one compiler code-generation
 thread with an explicit `--threads 1`. Arguments after `--` stay with the compiled
