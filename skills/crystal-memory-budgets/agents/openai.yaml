@@ -1,0 +1,4 @@
+interface:
+  display_name: "Crystal Memory Budgets"
+  short_description: "Add and validate Crystal memory expectations"
+  default_prompt: "Use $crystal-memory-budgets to add one behavior-checked memory expectation and prove that a regression fails."

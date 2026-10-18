@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "package_name": "memory_budget",
+  "package_version": "0.1.1",
+  "distribution_state": "local_candidate",
+  "counter_protocol": 1,
+  "source_binding": "Resolve the actual checkout commit/clean state when building a release or projection; this tracked manifest hashes canonical source bytes.",
+  "source_repository": null,
+  "proposed_repository": "https://github.com/amberframework/memory_budget",
+  "repository_state": "pending_owner_and_public_readback",
+  "api_basis": {
+    "package_version": "0.1.0",
+    "source_commit": "1a1f89e981b820ff5b375da9b9365be85180190b"
+  },
+  "list_of_files": [
+    {
+      "file": "docs/0.1.1/capabilities.md",
+      "sha256": "44a5d840c5e00d60672f7c92804490ace7deaefb5d61c8ded68b59aa33dc3870"
+    },
+    {
+      "file": "docs/0.1.1/ci.md",
+      "sha256": "18d4038907d92a09e088d66826e8548cccdcfa5bf6e6f44079d1bf39101594b7"
+    },
+    {
+      "file": "docs/0.1.1/examples/fiber_budget_spec.cr",
+      "sha256": "378c83d3ab60f877d70810b8a8816cc65c9f64eee04bdab263f1c1852fc4dfb9"
+    },
+    {
+      "file": "docs/0.1.1/fiber-budget.md",
+      "sha256": "614f1d6bdb5b17d7fc793e350e9f55978672731bc32e44e1f6003acd50d11129"
+    },
+    {
+      "file": "docs/0.1.1/index.md",
+      "sha256": "3ae6ee2f763904b20df2ac42c9326474817d660d10a88481672ee920a78e7fd2"
+    },
+    {
+      "file": "docs/corpus.json",
+      "sha256": "f3fa495fa59be0ccc2e1e84bb56d0a43a17719741bfd34f6576bfaeea6c0d403"
+    },
+    {
+      "file": "examples/support/memory_budget_sample_record.cr",
+      "sha256": "683f164b14ad9cd483f34d17283368dc533c21889811d640d6634de2ec4adda9"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/SKILL.md",
+      "sha256": "b52d672363e940a48106fa62bcac1f9208afe8d157327d11e852e79c194a9288"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/agents/openai.yaml",
+      "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+    }
+  ],
+  "list_of_api_sources": [
+    {
+      "file": "src/memory_budget/spec_expectations.cr",
+      "sha256": "f4299350c1a4a1fe1bc4fc32c65f90b3522f3a3e21f15f748bc59f4331034545"
+    },
+    {
+      "file": "src/memory_budget/scenario_memory_policy.cr",
+      "sha256": "cbc81c2309141e9965b1093e6cb7c6c137d347ade6f9576d699917a97bcaf066"
+    },
+    {
+      "file": "src/memory_budget/memory_metric_limit.cr",
+      "sha256": "df8becb27d0e90a33a201909f2fddc13ece53b1d99215699f5a667627c716789"
+    },
+    {
+      "file": "src/memory_budget/allocation_memory_snapshot.cr",
+      "sha256": "f9448ee68d82989796301d47c7d5f374c9005276e8c13b521bcd4339891d03f0"
+    }
+  ]
+}
