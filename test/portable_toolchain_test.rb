@@ -358,6 +358,10 @@ class PortableToolchainTest < Minitest::Test
     project, guard = prepare_dependency_project
     yield project if block_given?
     environment = @environment.merge("RUBYOPT" => "-r#{Shellwords.escape(guard)}").merge(extra)
+    ruby_directory = File.join(@temporary, "fixture Ruby with spaces")
+    FileUtils.mkdir_p(ruby_directory)
+    FileUtils.ln_s(File.realpath(RbConfig.ruby), File.join(ruby_directory, "ruby"), force: true)
+    environment["PATH"] = ruby_directory + File::PATH_SEPARATOR + environment.fetch("PATH")
     output, errors, status = Open3.capture3(environment, "/bin/bash", "-c", dependency_step, chdir: project)
     [output, errors, status, project]
   end
