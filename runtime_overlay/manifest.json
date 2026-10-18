@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "base_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "counter_protocol": 1,
+  "files": [
+    {
+      "file": "fiber.cr",
+      "sha256": "2f1eefd6cac6065ec2e15bd8d7a02e1e19ceda91faf6282220c209efe5e68093"
+    },
+    {
+      "file": "fiber/allocation_tally.cr",
+      "sha256": "ad6015c9f8e9adc2ffe5ee46a31ef63be16a8cfcfaad7264597f39ecb77855b1"
+    },
+    {
+      "file": "gc/boehm.cr",
+      "sha256": "342b192533eb2e3b5fd82d8ab7a74f35512fb12d69f8b49d2fc7de1fa2d9474b"
+    },
+    {
+      "file": "crystal/system/thread.cr",
+      "sha256": "7f5126246b4d2eae8e8128ad64077bde8f6504325f7f0d2e804686c227eb8e47"
+    }
+  ]
+}

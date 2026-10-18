@@ -1,0 +1,32 @@
+name: Memory budgets
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: memory-budgets-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  memory-budgets:
+    name: memory-budgets / darwin-arm64-v1
+    runs-on: [self-hosted, macOS, ARM64, atlas-memory-budget-v1]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Enforce budgets and prove regression detection
+        run: /usr/bin/ruby performance/run_memory_budgets.rb --self-test
+        env:
+          CRYSTAL_WORKERS: "1"
+          CRYSTAL_CACHE_DIR: ${{ runner.temp }}/memory-budgets-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Preserve measurements and failures
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: memory-budgets-${{ github.sha }}
+          path: performance/results/
+          include-hidden-files: true
+          if-no-files-found: error

@@ -1,0 +1,11 @@
+name: memory_budget
+version: 0.1.0
+description: Typed allocation, process, library, and compiler memory budgets for Crystal specs and CI.
+authors:
+  - Seth Tucker
+crystal: ">= 1.21.0, < 2.0.0"
+license: MIT
+repository: https://github.com/amberframework/memory_budget
+targets:
+  memory-budget:
+    main: src/cli.cr

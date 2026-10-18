@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "profile": "darwin-arm64-crystal-alpha-1.21.0-9c1e8ec-llvm21",
+  "compiler_sha256": "7809e9cd9174a651818bcba5e6206f038089716d72746f5e425a2c1829943dfe",
+  "wrapper_sha256": "9d290608fb7b4e36d8e468d526a45d46bb7a7744ea30cce38408232c3df48ba3",
+  "stdlib_sha256": "50b8637aaa7914a5c5d88ef482f9884030dd4d1c67c6b1c09590587cbba5254e",
+  "compiler_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "counter_protocol": 1,
+  "ruby_sha256": "b23faefc09375bbc24248218271e30d25590168e1a1f977bdfc528ce547b2c81",
+  "ruby_version": "ruby 2.6.10p210 (2022-04-12 revision 67958) [universal.arm64e-darwin25]",
+  "ruby_launcher_sha256": "9d6ff3e289c7d908e3c785e0bedd6692d1d6a3377965c88c04d847104b7c892c"
+}

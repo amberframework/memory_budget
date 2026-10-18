@@ -1,0 +1,73 @@
+# symbolized from corefoundation_string_released_1_run1.dump.tsv with validate_malloc_atlas_release.dwarf (atos -i -fullPath; address - 1)
+thread_id	chain_length	frames	caller	malloc_calls	calloc_calls	realloc_calls	aligned_calls	free_calls	null_free_calls	typed_calls	zone_calls	requested_bytes	allocated_blocks	allocated_bytes	freed_blocks	freed_bytes	failed_calls	nested_events	unsized_frees	owned_freed_blocks	owned_freed_bytes	frame_chain_index
+143939738	0	-	libobjc.A.dylib!+0xb7e8	0	0	2	0	0	0	2	0	512	2	512	0	0	0	0	0	2	512	-
+143939738	0	-	libobjc.A.dylib!+0x56ac	0	172	0	0	0	0	172	0	5504	172	5504	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x2ef24	0	12	0	0	0	0	12	0	576	12	576	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x61e0	6	0	0	0	0	0	6	0	536	6	560	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xbaf0	0	0	0	0	2	0	0	0	0	0	0	2	512	0	0	0	0	0	-
+143939738	0	-	libsystem_c.dylib!+0x1584	1	0	0	0	0	0	1	0	133	1	160	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x3c86c	0	0	0	35	0	0	35	0	2240	35	2240	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xbd48	0	0	1	0	0	0	1	0	256	1	256	0	0	0	0	0	1	256	-
+143939738	0	-	libobjc.A.dylib!+0xb8d8	0	0	0	0	1	0	0	0	0	0	0	1	256	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x115b8	0	1	0	0	0	0	1	0	72	1	80	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xad28	1	0	0	0	0	0	1	0	24	1	32	0	0	0	0	0	1	32	-
+143939738	0	-	libobjc.A.dylib!+0x24b6c	1	0	0	0	0	0	1	0	256	1	256	0	0	0	0	0	1	256	-
+143939738	0	-	libobjc.A.dylib!+0xad48	1	0	0	0	0	0	1	0	16	1	16	0	0	0	0	0	1	16	-
+143939738	0	-	libobjc.A.dylib!+0xb1d0	0	0	0	0	1	0	0	0	0	0	0	1	256	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xb220	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xb228	0	0	0	0	1	0	0	0	0	0	0	1	32	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xb244	0	0	0	0	1	0	0	0	0	0	0	1	16	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x6c27c	19	0	0	0	0	0	19	0	2071	19	2256	0	0	0	0	0	4	464	-
+143939738	0	-	libswiftCore.dylib!+0xbcb0	0	0	0	0	4	0	0	0	0	0	0	4	464	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x4da0	0	1	0	0	0	0	1	0	1128	1	1280	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xdf64	0	3	0	0	0	0	3	0	304	3	320	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x234a4	0	16	0	0	0	0	16	16	512	16	512	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x77dc	0	4	0	0	0	0	4	0	128	4	128	0	0	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x8bc44	4	0	0	0	0	0	4	0	96	4	96	0	0	0	0	0	2	32	-
+143939738	0	-	libswiftCore.dylib!+0x5a04	8	0	0	0	0	0	8	0	384	8	384	0	0	0	0	0	8	384	-
+143939738	0	-	libswiftCore.dylib!+0x9c94	1	0	0	0	0	0	1	0	16	1	16	0	0	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x890e4	0	0	0	0	8	0	0	0	0	0	0	8	384	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x8bc88	2	0	0	0	0	0	2	0	32	2	32	0	0	0	0	0	2	32	-
+143939738	0	-	libswiftCore.dylib!+0x8bad8	0	0	0	0	2	0	0	0	0	0	0	2	32	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x8bae0	0	0	0	0	2	0	0	0	0	0	0	2	32	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x88104	26	0	0	0	0	0	26	0	2304	26	2304	0	0	0	0	0	23	1744	-
+143939738	0	-	libswiftCore.dylib!+0x88148	23	0	0	0	0	0	23	0	368	23	368	0	0	0	0	0	23	368	-
+143939738	0	-	libswiftCore.dylib!+0x87ae8	0	0	0	0	24	0	0	0	0	0	0	24	1776	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x87af0	0	0	0	0	24	0	0	0	0	0	0	24	384	0	0	0	0	0	-
+143939738	0	-	libswiftCore.dylib!+0x883bc	0	4	0	0	0	0	4	0	160	4	160	0	0	0	0	0	1	32	-
+143939738	0	-	libswiftCore.dylib!+0x88528	1	0	0	0	0	0	1	0	16	1	16	0	0	0	0	0	1	16	-
+143939738	0	-	libobjc.A.dylib!+0x14958	21	0	0	0	0	0	21	0	1512	21	1680	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0xbf68	0	0	0	1	0	0	1	0	4096	1	4096	0	0	0	0	0	0	0	-
+143939738	0	-	Network!+0x44f188	0	1	0	0	0	0	1	0	8	1	16	0	0	0	0	0	0	0	-
+143939738	0	-	Network!+0x44f1b0	0	1	0	0	0	0	1	0	4096	1	4096	0	0	0	0	0	0	0	-
+143939738	0	-	Network!+0x74b3ec	0	1	0	0	0	0	1	0	8	1	16	0	0	0	0	0	0	0	-
+143939738	0	-	Network!+0x74ba28	0	1	0	0	0	0	1	0	4096	1	4096	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x3910	14	0	0	0	0	0	14	14	1664	14	1760	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x5408	1	0	0	0	0	0	1	0	256	1	256	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x656c	0	2	0	0	0	0	2	2	896	2	1024	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x6610	0	2	0	0	0	0	2	2	896	2	1024	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x25d0	1	0	0	0	0	0	1	0	784	1	896	0	0	0	0	0	0	0	-
+143939738	0	-	ColorSync!+0x1158	1	0	0	0	0	0	1	0	448	1	448	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x3790	0	28	0	0	0	0	28	28	1712	28	1712	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x7010	0	1	0	0	0	0	1	0	512	1	512	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x702c	1	0	0	0	0	0	1	0	512	1	512	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x1eec0	0	3	0	0	0	0	3	0	144	3	144	0	0	0	0	0	3	144	-
+143939738	0	-	libobjc.A.dylib!+0x234f0	0	5	0	0	0	0	5	5	640	5	640	0	0	0	0	0	0	0	-
+143939738	0	-	libobjc.A.dylib!+0x235e0	1	0	0	0	0	0	1	0	1024	1	1024	0	0	0	0	0	0	0	-
+143939738	0	-	CoreFoundation!+0x1f704	0	5	0	0	0	0	5	0	912	5	944	0	0	0	0	0	2	336	-
+143939738	0	-	CoreFoundation!+0x1f7c4	0	0	0	0	5	0	0	0	0	0	0	5	480	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x7ad0	0	1	0	0	0	0	1	0	120	1	128	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x2adc	2	0	0	0	0	0	2	0	192	2	192	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x246284	0	2	0	0	0	0	2	0	240	2	256	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x246318	0	2	0	0	0	0	2	0	288	2	320	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x24639c	2	0	0	0	0	0	2	0	64	2	64	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x2463f0	2	0	0	0	0	0	2	0	184	2	192	0	0	0	0	0	2	192	-
+143939738	0	-	CoreGraphics!+0x246510	0	0	0	0	2	0	0	0	0	0	0	2	192	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x2990	0	1	0	0	0	0	1	0	120	1	128	0	0	0	0	0	0	0	-
+143939738	0	-	CoreGraphics!+0x9844	1	0	0	0	0	0	1	0	16	1	16	0	0	0	0	0	0	0	-
+143939738	2	stdlib/gc/boehm.cr:247 | stdlib/crystal/main.cr:38 | stdlib/crystal/system/unix/main.cr:9	libsystem_c.dylib!+0x4824	0	0	0	0	0	22528	0	0	0	0	0	0	0	0	0	0	0	0	0,0,1
+143939738	3	stdlib/crystal/system/unix/pthread.cr:65 | stdlib/crystal/once.cr:124 | stdlib/process/executable_path.cr:21 | stdlib/exception/call_stack.cr:11 | stdlib/exception/call_stack.cr:11 | stdlib/crystal/main.cr:129 | stdlib/crystal/main.cr:115 | stdlib/crystal/system/unix/main.cr:9	libdyld.dylib!+0x1df84	0	1	0	0	0	0	1	0	24	1	32	0	0	0	0	0	0	0	0,1,1,1,1,1,1,2
+143939763	1	stdlib/crystal/system/unix/pthread.cr:65	libdyld.dylib!+0x1df84	0	1	0	0	0	0	1	0	24	1	32	0	0	0	0	0	0	0	0
+143939738	2	stdlib/crystal/system/unix/signal.cr:238 | stdlib/exception/call_stack/libunwind.cr:32 | stdlib/kernel.cr:606 | stdlib/crystal/main.cr:129 | stdlib/crystal/main.cr:115 | stdlib/crystal/system/unix/main.cr:9	stdlib/crystal/system/unix/signal.cr:238	1	0	0	0	0	0	0	0	131072	1	131072	0	0	0	0	0	0	0	0,0,0,0,0,1
+143939738	5	src/validate_malloc_atlas/cases.cr:98 | src/validate_malloc_atlas/measure_the_case_windows.cr:31 | src/validate_malloc_atlas.cr:70 | src/validate_malloc_atlas.cr:112 | stdlib/crystal/main.cr:129 | stdlib/crystal/main.cr:115 | stdlib/crystal/system/unix/main.cr:9	CoreFoundation!+0x3790	0	21	0	0	0	0	21	21	1680	21	1680	0	0	0	0	0	21	1680	0,1,2,3,3,3,4
+143939738	4	src/validate_malloc_atlas/measure_the_case_windows.cr:31 | src/validate_malloc_atlas.cr:70 | src/validate_malloc_atlas.cr:112 | stdlib/crystal/main.cr:129 | stdlib/crystal/main.cr:115 | stdlib/crystal/system/unix/main.cr:9	CoreFoundation!+0x151268	0	0	0	0	21	0	0	21	0	0	0	21	1680	0	0	0	0	0	0,1,2,2,2,3
