@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 require "fileutils"
 require "timeout"
+require "uri"
 require_relative "toolchain_profile"
 
 module MemoryBudget
@@ -43,7 +44,7 @@ module MemoryBudget
       require_condition(File.file?(path) && !File.symlink?(path) && File.size(path) <= 1024 * 1024, "Inspection paths must be an ordinary file within 1 MiB")
       bytes = File.binread(path)
       paths = JSON.parse(bytes)
-      keys(paths, %w[profile compiler_entrypoint stdlib_root ruby_launcher minecart_path compiler_source_commit compiler_version minecart_version native_manifest git_manifest provenance_files], "inspection paths")
+      keys(paths, %w[profile compiler_entrypoint stdlib_root ruby_launcher minecart_path compiler_source_commit compiler_version compiler_provenance minecart_version native_manifest git_manifest provenance_files], "inspection paths")
       pin = lambda do |file|
         physical = File.realpath(file)
         require_condition(File.file?(physical), "Inspection requires ordinary file bytes: #{file}")
@@ -57,7 +58,8 @@ module MemoryBudget
       config = {"schema_version" => 1, "profile" => paths.fetch("profile"),
         "compiler" => {"entrypoint" => pin.call(entrypoint), "backend" => pin.call(backend),
           "stdlib_root" => stdlib, "stdlib_sha256" => ToolchainProfile.stdlib_sha256(stdlib),
-          "source_commit" => paths.fetch("compiler_source_commit"), "version" => paths.fetch("compiler_version")},
+          "source_commit" => paths.fetch("compiler_source_commit"), "version" => paths.fetch("compiler_version"),
+          "provenance" => pin.call(paths.fetch("compiler_provenance"))},
         "ruby" => {"backend" => pin.call(RbConfig.ruby), "launcher" => pin.call(paths.fetch("ruby_launcher")), "version" => RUBY_DESCRIPTION},
         "minecart" => {"executable" => pin.call(paths.fetch("minecart_path")), "version" => paths.fetch("minecart_version")},
         "native_manifest" => pin.call(paths.fetch("native_manifest")), "git_manifest" => pin.call(paths.fetch("git_manifest")),
@@ -70,12 +72,12 @@ module MemoryBudget
       keys(config, %w[schema_version profile compiler ruby minecart native_manifest git_manifest provenance], "toolchain preparation")
       require_condition(config["schema_version"] == 1 && config["profile"].is_a?(String) && !config["profile"].strip.empty?, "Preparation requires schema 1 and a profile identity")
       compiler = config.fetch("compiler")
-      keys(compiler, %w[entrypoint backend stdlib_root stdlib_sha256 source_commit version], "compiler preparation")
+      keys(compiler, %w[entrypoint backend stdlib_root stdlib_sha256 source_commit version provenance], "compiler preparation")
       entrypoint = pinned_file(compiler.fetch("entrypoint"), "Compiler entrypoint")
       backend = pinned_file(compiler.fetch("backend"), "Compiler backend")
       require_condition(ToolchainProfile.compiler_backend(entrypoint) == backend, "Compiler wrapper selects a different backend")
       require_condition(compiler["source_commit"].is_a?(String) && compiler["source_commit"].match?(/\A[0-9a-f]{40}\z/), "Compiler source commit must be exact")
-      require_condition(compiler["version"].is_a?(String) && compiler["version"].include?("[#{compiler.fetch('source_commit')}]"), "Expected compiler version must identify its exact source commit")
+      require_condition(compiler["version"].is_a?(String) && !compiler["version"].strip.empty?, "Expected full compiler version is required")
       stdlib = File.realpath(compiler.fetch("stdlib_root"))
       require_condition(File.file?(File.join(stdlib, "prelude.cr")), "Standard library prelude is missing")
       require_condition(compiler["stdlib_sha256"].is_a?(String) && compiler["stdlib_sha256"].match?(/\A[0-9a-f]{64}\z/) &&
@@ -98,11 +100,26 @@ module MemoryBudget
       provenance_paths = provenance.map { |row| pinned_data(row, "Provenance receipt") }
       require_condition(provenance_paths.uniq == provenance_paths && provenance_paths.sum { |path| File.size(path) } <= 32 * 1024 * 1024,
         "Provenance paths must be unique and fit the aggregate input cap")
-      require_condition(([native_path, git_path] + provenance_paths).sum { |path| File.size(path) } <= 64 * 1024 * 1024,
+      compiler_provenance = pinned_data(compiler.fetch("provenance"), "Compiler source provenance")
+      attribution = JSON.parse(File.read(compiler_provenance))
+      keys(attribution, %w[schema_version status compiler_source_commit compiler_backend_sha256 stdlib_sha256 source_url source_archive_sha256 installation_receipt_sha256], "compiler source attribution")
+      require_condition(attribution["schema_version"] == 1 && attribution["status"] == "REVIEWED_SOURCE_ATTRIBUTION", "Compiler source attribution requires explicit reviewed status")
+      require_condition(attribution["compiler_source_commit"] == compiler.fetch("source_commit") &&
+        attribution["compiler_backend_sha256"] == compiler.fetch("backend").fetch("sha256") &&
+        attribution["stdlib_sha256"] == compiler.fetch("stdlib_sha256"), "Compiler source attribution source/backend/stdlib differs")
+      url = URI.parse(attribution.fetch("source_url"))
+      require_condition(url.scheme == "https" && url.host && !url.userinfo &&
+        attribution["source_archive_sha256"].is_a?(String) && attribution["source_archive_sha256"].match?(/\A[0-9a-f]{64}\z/),
+        "Compiler source attribution requires an HTTPS source URL and archive SHA-256")
+      receipt_hashes = attribution["installation_receipt_sha256"]
+      retained_hashes = provenance.map { |row| row.fetch("sha256") }
+      require_condition(receipt_hashes.is_a?(Array) && !receipt_hashes.empty? && receipt_hashes.uniq == receipt_hashes &&
+        receipt_hashes.all? { |pin| retained_hashes.include?(pin) }, "Compiler source attribution installation receipts are not retained")
+      require_condition(([native_path, git_path, compiler_provenance] + provenance_paths).sum { |path| File.size(path) } <= 64 * 1024 * 1024,
         "All retained manifest/provenance inputs must fit the 64 MiB aggregate cap")
       {"entrypoint" => entrypoint, "backend" => backend, "stdlib_root" => stdlib,
         "ruby_backend" => ruby_backend, "ruby_launcher" => launcher, "minecart" => installer,
-        "native_manifest" => native_path, "git_manifest" => git_path, "provenance" => provenance_paths,
+        "native_manifest" => native_path, "git_manifest" => git_path, "compiler_provenance" => compiler_provenance, "provenance" => provenance_paths,
         "environment" => native.environment.merge(git.environment)}
     end
 
@@ -202,7 +219,7 @@ module MemoryBudget
       created = [File.stat(destination).dev, File.stat(destination).ino]
       File.binwrite(File.join(destination, "INPUT_CONFIGURATION.json"), config_bytes)
       retained = []
-      ([selected.fetch("native_manifest"), selected.fetch("git_manifest")] + selected.fetch("provenance")).each_with_index do |path, index|
+      ([selected.fetch("native_manifest"), selected.fetch("git_manifest"), selected.fetch("compiler_provenance")] + selected.fetch("provenance")).each_with_index do |path, index|
         name = "input-#{index}.bytes"
         FileUtils.cp(path, File.join(destination, name))
         retained << {"source_path" => path, "file" => name, "sha256" => Digest::SHA256.file(path).hexdigest}
@@ -232,6 +249,7 @@ module MemoryBudget
       compiler = config.fetch("compiler")
       profile = {"schema_version" => 3, "profile" => config.fetch("profile"), "counter_protocol" => 1,
         "compiler_sha256" => compiler.fetch("backend").fetch("sha256"), "compiler_commit" => compiler.fetch("source_commit"),
+        "compiler_provenance_sha256" => compiler.fetch("provenance").fetch("sha256"),
         "stdlib_sha256" => compiler.fetch("stdlib_sha256"), "ruby_sha256" => config.fetch("ruby").fetch("backend").fetch("sha256"),
         "ruby_version" => RUBY_DESCRIPTION, "ruby_launcher_sha256" => config.fetch("ruby").fetch("launcher").fetch("sha256"),
         "minecart_sha256" => config.fetch("minecart").fetch("executable").fetch("sha256"), "minecart_version" => config.fetch("minecart").fetch("version"),
@@ -271,7 +289,7 @@ if __FILE__ == $PROGRAM_NAME
     end
   rescue MemoryBudget::ToolchainCandidate::PreparationError, MemoryBudget::ToolchainProfile::AdmissionError,
          MemoryBudget::NativeEnvironment::AdmissionError, MemoryBudget::GitProvider::AdmissionError,
-         JSON::ParserError, KeyError, TypeError, ArgumentError, Errno::ENOENT, Errno::EACCES, Timeout::Error => error
+         JSON::ParserError, KeyError, TypeError, ArgumentError, Errno::ENOENT, Errno::EACCES, Timeout::Error, URI::InvalidURIError => error
     abort "Toolchain candidate preparation failed: #{error.message}"
   end
 end

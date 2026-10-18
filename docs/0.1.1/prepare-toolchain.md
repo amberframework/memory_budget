@@ -8,9 +8,28 @@ Install Crystal Alpha and Minecart through their supported, checksum-verified re
 
 A formula's source/archive hash identifies its input. A locally built compiler has its own executable hash. Review both identities; copying another machine's compiler profile does not establish either one. Ruby also needs its actual interpreter and launcher identities. Prepare the separately reviewed [native manifest](native-toolchain.md) and [Git provider manifest](git-provider.md) for this account and platform.
 
+Keep the full compiler source commit separate from its version text. Real Alpha builds may print a short bracketed commit, and the public Homebrew Linux build prints no commit in `--version`. Exact version output remains a metadata check; source attribution comes from the reviewed recipe/source/install evidence.
+
+Create a reviewed compiler-provenance JSON file with this shape. The source URL may name the release archive used by the recipe; its complete archive SHA-256 and retained recipe/tag-resolution evidence bind it to the full source commit. The backend and standard-library hashes identify this installed build. Each installation receipt hash must refer to a file retained in `provenance_files` below.
+
+```json
+{
+  "schema_version": 1,
+  "status": "REVIEWED_SOURCE_ATTRIBUTION",
+  "compiler_source_commit": "REPLACE_WITH_THE_REVIEWED_40_CHARACTER_SOURCE_COMMIT",
+  "compiler_backend_sha256": "REPLACE_WITH_THIS_INSTALLED_BACKEND_SHA256",
+  "stdlib_sha256": "REPLACE_WITH_THIS_STANDARD_LIBRARY_TREE_SHA256",
+  "source_url": "https://example.org/the-reviewed-release-source.tar.gz",
+  "source_archive_sha256": "REPLACE_WITH_THE_VERIFIED_SOURCE_ARCHIVE_SHA256",
+  "installation_receipt_sha256": ["REPLACE_WITH_A_RETAINED_RECIPE_OR_INSTALL_RECEIPT_SHA256"]
+}
+```
+
+The preparer verifies and retains that record's exact bytes, cross-checks its full source commit and installed hashes, and verifies that the named receipt hashes are retained. Reviewing the record requires reviewing the underlying source/build/installation evidence. The preparer performs metadata only; it does not download a source archive or infer its identity from a version string. The resulting profile includes `compiler_provenance_sha256` for auditing that retained preparation record; ordinary runtime admission enforces the selected profile and executable/stdlib identities.
+
 ## Observe local bytes
 
-Create `input-paths.json` outside `shard.yml`. The expected version strings come from the reviewed release/build receipts. The compiler version includes its full source commit and its complete LLVM/target lines.
+Create `input-paths.json` outside `shard.yml`. The expected version strings come from the reviewed release/build receipts and preserve the complete LLVM/target lines exactly as printed, including a short commit or absent commit when that is the actual output.
 
 ```json
 {
@@ -21,6 +40,7 @@ Create `input-paths.json` outside `shard.yml`. The expected version strings come
   "minecart_path": "/absolute/installed/bin/minecart",
   "compiler_source_commit": "REPLACE_WITH_THE_REVIEWED_40_CHARACTER_SOURCE_COMMIT",
   "compiler_version": "REPLACE_WITH_THE_EXPECTED_FULL_MULTILINE_VERSION_OUTPUT",
+  "compiler_provenance": "/absolute/reviewed/compiler-provenance.json",
   "minecart_version": "REPLACE_WITH_THE_EXPECTED_FULL_VERSION_OUTPUT",
   "native_manifest": "/absolute/reviewed/native-components.json",
   "git_manifest": "/absolute/reviewed/git-provider.json",
@@ -57,7 +77,7 @@ Each child has a 15-second deadline and a 1 MiB output cap; the CLI allows 75 se
 
 ## Review and extract the proposed profile
 
-`new-profile-review/DRAFT_PROFILE.json` includes the proposed schema-3 profile, observed physical paths, exact configuration hash, retained receipt bytes, raw command hashes and terminal ownership. Its `UNADMITTED` envelope is deliberately rejected by the ordinary bootstrap.
+`new-profile-review/DRAFT_PROFILE.json` includes the proposed schema-3 profile, observed physical paths, exact configuration hash, retained compiler-provenance and receipt bytes, raw command hashes and terminal ownership. Its `UNADMITTED` envelope is deliberately rejected by the ordinary bootstrap.
 
 Review the retained input bytes, four raw metadata outputs, compiler source/build provenance and native/Git closure. After that review, extract the inner profile into a new file and retain the printed SHA-256:
 

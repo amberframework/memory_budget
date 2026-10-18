@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "compiler_source_commit": "9c1e8ec64f6be6343e90d3979bc9536c4b050292",
+  "scope": "Captured actual metadata strings replayed by executable fixtures; replay does not execute these real compilers",
+  "cases": [
+    {
+      "name": "mini_short_commit",
+      "stdout": "Crystal 1.21.0 [9c1e8ec64] (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: aarch64-apple-darwin25.5.0\n",
+      "origin": "Private Mini approved native metadata",
+      "source_receipt_sha256": "5d08fe9c33345db9f74e36c586a601b643ca70bbe7b673c22053c5e9c02d6459"
+    },
+    {
+      "name": "public_homebrew_linux_no_commit",
+      "stdout": "Crystal 1.21.0 (2026-07-20)\n\nLLVM: 21.1.8\nDefault target: x86_64-unknown-linux-gnu\n",
+      "origin": "Public Alpha formula Ubuntu CI at2b8354d9b5627276bb7d79a4f248fea2a450f7c1/job117727256126",
+      "source_receipt_sha256": "d06b0c68d2039e7c9c434dec3ebf1728ff5266aefc15871ddfbfa2d2b4884a5c"
+    }
+  ]
+}

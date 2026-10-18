@@ -45,11 +45,11 @@
     },
     {
       "file": "docs/0.1.1/prepare-toolchain.md",
-      "sha256": "e215df0954559d7d96b7e5c490bff8485b15344b8162fc195f30ce1d3584861c"
+      "sha256": "cdf175d9538fcd39165da44fd78fea4511eb76b665ddc162f426820bbccf170b"
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "e5eaf804a8a53a80f44510b2caa505f31f68772d196a6197383714cabd6edf55"
+      "sha256": "fa02384bb502f3fbd800f4cf044ff9244f5a7d9e774c7c4ddde6fb5341bc59fa"
     },
     {
       "file": "docs/corpus.json",
@@ -141,7 +141,7 @@
     },
     {
       "file": "scripts/prepare_toolchain_profile.rb",
-      "sha256": "6f53f9cd90cc1a2442df2b06a88dc773eb56c6fdb0302c9c9523b2a7d54ea851"
+      "sha256": "96bb4cae065f7db2f1b8fa33c5d2228ebd20bba986002bd5fccc421c6732dc48"
     },
     {
       "file": "scripts/run_specs.rb",

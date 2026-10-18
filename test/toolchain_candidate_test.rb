@@ -33,10 +33,13 @@ class ToolchainCandidateTest < Minitest::Test
     RUBY_FIXTURE
     @provenance = File.join(@root, "installation-receipt.json")
     File.write(@provenance, JSON.generate({"provider" => "Executable fixture", "source_commit" => @commit}))
+    @compiler_provenance = File.join(@root, "reviewed-compiler-provenance.json")
+    refresh_compiler_provenance
     pin = ->(path) { {"path" => path, "sha256" => Digest::SHA256.file(path).hexdigest} }
     @config = {"schema_version" => 1, "profile" => "new-installed-toolchain-fixture",
       "compiler" => {"entrypoint" => pin.call(@wrapper), "backend" => pin.call(@backend),
-        "stdlib_root" => @stdlib, "stdlib_sha256" => @fixture.stdlib_hash, "source_commit" => @commit, "version" => @version},
+        "stdlib_root" => @stdlib, "stdlib_sha256" => @fixture.stdlib_hash, "source_commit" => @commit, "version" => @version,
+        "provenance" => pin.call(@compiler_provenance)},
       "ruby" => {"backend" => pin.call(RbConfig.ruby), "launcher" => pin.call(RbConfig.ruby), "version" => RUBY_DESCRIPTION},
       "minecart" => {"executable" => pin.call(@minecart), "version" => "Minecart fixture-1"},
       "native_manifest" => pin.call(@environment.fetch("MEMORY_BUDGET_NATIVE_COMPONENT_LOCK")),
@@ -52,6 +55,18 @@ class ToolchainCandidateTest < Minitest::Test
 
   def write_config
     File.write(@config_path, JSON.pretty_generate(@config) + "\n")
+  end
+
+  def refresh_compiler_provenance(commit = @commit)
+    attribution = {"schema_version" => 1, "status" => "REVIEWED_SOURCE_ATTRIBUTION", "compiler_source_commit" => commit,
+      "compiler_backend_sha256" => Digest::SHA256.file(@backend).hexdigest, "stdlib_sha256" => @fixture.stdlib_hash,
+      "source_url" => "https://example.invalid/executable-fixture/archive/#{commit}.tar.gz", "source_archive_sha256" => "e" * 64,
+      "installation_receipt_sha256" => [Digest::SHA256.file(@provenance).hexdigest]}
+    File.write(@compiler_provenance, JSON.pretty_generate(attribution) + "\n")
+    if @config
+      @config.fetch("compiler")["source_commit"] = commit
+      @config.fetch("compiler")["provenance"] = {"path" => @compiler_provenance, "sha256" => Digest::SHA256.file(@compiler_provenance).hexdigest}
+    end
   end
 
   def prepare(destination = @destination)
@@ -94,6 +109,7 @@ class ToolchainCandidateTest < Minitest::Test
     paths = {"profile" => @config.fetch("profile"), "compiler_entrypoint" => @wrapper, "stdlib_root" => @stdlib,
       "ruby_launcher" => RbConfig.ruby, "minecart_path" => @minecart, "compiler_source_commit" => @commit,
       "compiler_version" => @version, "minecart_version" => "Minecart fixture-1",
+      "compiler_provenance" => @compiler_provenance,
       "native_manifest" => @environment.fetch("MEMORY_BUDGET_NATIVE_COMPONENT_LOCK"),
       "git_manifest" => @environment.fetch("MEMORY_BUDGET_GIT_PROVIDER_LOCK"), "provenance_files" => [@provenance]}
     path = File.join(@root, "paths.json")
@@ -174,6 +190,50 @@ class ToolchainCandidateTest < Minitest::Test
     assert_prepared(File.join(@root, "restored candidate"))
   end
 
+  def test_actual_short_and_absent_commit_version_formats_keep_independent_source_attribution
+    captured = JSON.parse(File.read(File.join(ROOT, "test", "fixtures", "toolchain_versions.json")))
+    captured.fetch("cases").each do |example|
+      refresh_compiler_provenance(captured.fetch("compiler_source_commit"))
+      @config.fetch("compiler")["version"] = example.fetch("stdout")
+      @environment["FIXTURE_COMPILER_VERSION"] = example.fetch("stdout")
+      write_config
+      draft = assert_prepared(File.join(@root, example.fetch("name")))
+      assert_equal captured.fetch("compiler_source_commit"), draft.fetch("proposed_profile").fetch("compiler_commit")
+      assert_equal Digest::SHA256.file(@compiler_provenance).hexdigest, draft.fetch("proposed_profile").fetch("compiler_provenance_sha256")
+      @environment["FIXTURE_COMPILER_VERSION"] = example.fetch("stdout") + "Changed version bytes\n"
+      output, errors, status = prepare(File.join(@root, example.fetch("name") + "-damaged"))
+      refute status.success?, output + errors
+      assert_includes errors, "Metadata version differs: compiler-version"
+      @environment["FIXTURE_COMPILER_VERSION"] = example.fetch("stdout")
+      assert_prepared(File.join(@root, example.fetch("name") + "-restored"))
+    end
+  end
+
+  def test_reviewed_source_attribution_changes_refuse_at_the_intended_guard_then_restore
+    original = File.binread(@compiler_provenance)
+    original_pin = @config.fetch("compiler").fetch("provenance").fetch("sha256")
+    changes = {"status" => ["UNREVIEWED", "requires explicit reviewed status"],
+      "compiler_source_commit" => ["d" * 40, "source/backend/stdlib differs"],
+      "compiler_backend_sha256" => ["0" * 64, "source/backend/stdlib differs"],
+      "source_archive_sha256" => ["bad hash", "HTTPS source URL and archive SHA-256"],
+      "installation_receipt_sha256" => [["0" * 64], "installation receipts are not retained"]}
+    changes.each do |field, (value, refusal)|
+      attribution = JSON.parse(original)
+      attribution[field] = value
+      File.write(@compiler_provenance, JSON.pretty_generate(attribution) + "\n")
+      @config.fetch("compiler").fetch("provenance")["sha256"] = Digest::SHA256.file(@compiler_provenance).hexdigest
+      write_config
+      output, errors, status = prepare
+      refute status.success?, output + errors
+      assert_includes errors, refusal
+      refute File.exist?(@log)
+      File.binwrite(@compiler_provenance, original)
+      @config.fetch("compiler").fetch("provenance")["sha256"] = original_pin
+      write_config
+    end
+    assert_prepared
+  end
+
   def test_existing_destination_is_preserved
     Dir.mkdir(@destination)
     marker = File.join(@destination, "INPUT_CONFIGURATION.json")
@@ -186,7 +246,7 @@ class ToolchainCandidateTest < Minitest::Test
   end
 
   def test_wrapper_and_native_manifest_changes_refuse_before_metadata_then_restore
-    [@wrapper, @environment.fetch("MEMORY_BUDGET_NATIVE_COMPONENT_LOCK"), @environment.fetch("MEMORY_BUDGET_GIT_PROVIDER_LOCK")].each do |path|
+    [@wrapper, @compiler_provenance, @environment.fetch("MEMORY_BUDGET_NATIVE_COMPONENT_LOCK"), @environment.fetch("MEMORY_BUDGET_GIT_PROVIDER_LOCK")].each do |path|
       bytes = File.binread(path)
       File.write(path, "changed bytes")
       output, errors, status = prepare
