@@ -350,6 +350,27 @@ class PortableToolchainTest < Minitest::Test
     refute File.exist?(File.join(project, "fixture-install.json"))
   end
 
+  def test_default_minecart_identity_admits_the_complete_measured_version
+    measured_version = "Minecart 2025.11.25.8 (2026-10-06)"
+    default_profile = JSON.parse(File.read(File.join(ROOT, "toolchain.darwin-arm64.json")))
+    @profile["minecart_version"] = default_profile.fetch("minecart_version")
+    write_profile("normal", @profile)
+    output, errors, status, project = dependencies("FIXTURE_TOOL_VERSION" => measured_version)
+    assert status.success?, output + errors
+    receipt = JSON.parse(File.read(File.join(project, "performance", "results", "dependency-toolchain.json")))
+    assert_equal measured_version, receipt.fetch("minecart_version")
+    assert File.file?(File.join(project, "fixture-install.json"))
+  end
+
+  def test_changed_minecart_build_date_rejects_before_install
+    @profile["minecart_version"] = "Minecart 2025.11.25.8 (2026-10-06)"
+    write_profile("normal", @profile)
+    output, errors, status, project = dependencies("FIXTURE_TOOL_VERSION" => "Minecart 2025.11.25.8 (2026-10-07)")
+    refute status.success?, output + errors
+    assert_includes output + errors, "Minecart version mismatch"
+    refute File.exist?(File.join(project, "fixture-install.json"))
+  end
+
   def test_frozen_install_failure_is_reported
     output, errors, status, project = dependencies("FIXTURE_INSTALL_EXIT" => "7")
     refute status.success?, output + errors

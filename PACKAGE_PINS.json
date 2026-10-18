@@ -233,7 +233,7 @@
     },
     {
       "file": "toolchain.darwin-arm64.json",
-      "sha256": "d01aa4d92271f3c37cc93fb4c586a6e4839cbaf57701cc30dab5600cf81d478a"
+      "sha256": "c93be62cedcbbbfd143c887cbc1071486584e921d2fb5eaeef2c54f7d9e72dca"
     }
   ]
 }
