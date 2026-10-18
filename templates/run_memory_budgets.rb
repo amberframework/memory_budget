@@ -66,8 +66,14 @@ results_root = File.join(project_root, "performance", "results")
 FileUtils.mkdir_p(results_root)
 source_commit, _error, source_status = Open3.capture3("git", "rev-parse", "HEAD")
 abort "Cannot identify source commit" unless source_status.success?
-profile_path = File.join(bundle_root, "toolchain.darwin-arm64.json")
-profile = JSON.parse(File.read(profile_path))
+require File.join(bundle_root, "scripts", "toolchain_profile")
+begin
+  admitted_toolchain = MemoryBudget::ToolchainProfile.resolve(bundle_root)
+rescue MemoryBudget::ToolchainProfile::AdmissionError => error
+  abort error.message
+end
+profile_path = admitted_toolchain.profile_path
+profile = admitted_toolchain.profile
 compiler_profile_sha256 = Digest::SHA256.file(profile_path).hexdigest
 bootstrap = [RbConfig.ruby, File.join(bundle_root, "scripts", "budget.rb")]
 list_of_spec_files = ["spec/performance/memory_budget_spec.cr"]
@@ -75,7 +81,7 @@ entry_path = File.join(results_root, "memory_budget_spec_entry.cr")
 File.write(entry_path, list_of_spec_files.map { |path| "require #{("../../" + path).to_json}\n" }.join)
 spec_binary = File.join(results_root, "memory-budget-spec")
 checker_binary = File.join(results_root, "memory-budget-check")
-environment = {"MEMORY_BUDGET_PROJECT_ROOT" => project_root, "CRYSTAL_WORKERS" => "1", "MEMORY_BUDGET_TOOLCHAIN_LOCK" => profile_path}
+environment = admitted_toolchain.environment.merge("MEMORY_BUDGET_PROJECT_ROOT" => project_root, "CRYSTAL_WORKERS" => "1")
 list_of_builds = []
 [["spec-build", entry_path, spec_binary], ["checker-build", File.join(bundle_root, "src", "cli.cr"), checker_binary]].each do |label, source, binary|
   FileUtils.rm_f(binary)

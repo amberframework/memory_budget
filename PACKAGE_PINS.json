@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "package_name": "memory_budget",
-  "package_version": "0.1.0",
+  "package_version": "0.1.1",
   "files": [
     {
       "file": "LICENSE",
@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "c1a5e7a411276299aedecbc2441f1d2967a32f3b7c353cb0320b4a198b80d20e"
+      "sha256": "0f4c72222b561563dbce508aa35f90e8aa2087a744f0ddfb3706e884a691efda"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -65,15 +65,23 @@
     },
     {
       "file": "scripts/budget.rb",
-      "sha256": "2287d426df0a9c3a495baf7150d52d585490c05b31bd5091ea6c95b225cba67a"
+      "sha256": "94c7c5c2403f2ff0c1ea17de503f596e05e65781ce4cbf60de378b59ceb57365"
     },
     {
       "file": "scripts/install_bundle.rb",
       "sha256": "3f2536d054d4e7e68455cd34a84cbe0cac4c0a9a9ee4de4a4a07d6b92213e9a4"
     },
     {
+      "file": "scripts/install_frozen_dependencies.rb",
+      "sha256": "ecbaf6bb043a6aeffac10a940cc2e69ac979f7788a4800495dcafe68ed4f06ba"
+    },
+    {
       "file": "scripts/run_specs.rb",
       "sha256": "bf27218cfaf5823d1aa87226e67f1a5749718474d5c67ebfd8cf08574ef8ae3f"
+    },
+    {
+      "file": "scripts/toolchain_profile.rb",
+      "sha256": "afd9cbed8fe4c82209661addcd21ec8e9c92d65384a4f6e3fe3bf338bd2c234b"
     },
     {
       "file": "spec/fixtures/c/SOURCE_PINS.json",
@@ -101,7 +109,7 @@
     },
     {
       "file": "src/memory_budget.cr",
-      "sha256": "76fe1673410c54fdf6fd37068a715ffba87be09140da099339ddfc6b5dc39ecf"
+      "sha256": "b07e2727c76775a2da7f7c1ab7a072c9f3820cbe63e3d9b4b1cc460639dc3c92"
     },
     {
       "file": "src/memory_budget/allocation_memory_snapshot.cr",
@@ -173,15 +181,15 @@
     },
     {
       "file": "templates/memory-budgets.yml",
-      "sha256": "87174f477689587281fe68777490f7367f339449deda8edf466904012df4117f"
+      "sha256": "190e410f7f3661928d38be82d4ac8bfce24ffed00917d128dc71c3762db6590e"
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "41c3b4088bbcd6726671806dc2186302b8cc045cf342f95c4dccbbad0028c4c6"
+      "sha256": "7e3f171afcc6f6e9c033bed2bde400c58c1b660179e9b50a68782eb3461ddc25"
     },
     {
       "file": "toolchain.darwin-arm64.json",
-      "sha256": "2b525b0afbcfbb5693bcb35bebc1cf8ad4a1ccad805ac6713cc0e1dea3a521d2"
+      "sha256": "d01aa4d92271f3c37cc93fb4c586a6e4839cbaf57701cc30dab5600cf81d478a"
     }
   ]
 }

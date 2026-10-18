@@ -1,5 +1,5 @@
 name: memory_budget
-version: 0.1.0
+version: 0.1.1
 description: Typed allocation, process, library, and compiler memory budgets for Crystal specs and CI.
 authors:
   - Seth Tucker

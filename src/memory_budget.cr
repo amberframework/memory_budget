@@ -9,5 +9,5 @@ require "./memory_budget/scenario_memory_contract"
 require "./memory_budget/verify_scenario_memory_budget"
 
 module MemoryBudget
-  VERSION = "0.1.0"
+  VERSION = "0.1.1"
 end

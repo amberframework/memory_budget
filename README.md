@@ -8,6 +8,39 @@ This is the implementation candidate for the memory-budget-experiment. Publicati
 
 The checked-in toolchain profiles identify approved compiler binaries and standard-library trees by SHA-256. `scripts/budget.rb` resolves the installed `crystal-alpha` wrapper, verifies its backend and stdlib, verifies the four runtime overlay files, and runs the compiler with the counter-enabled stdlib. Every file in the prepared stdlib is checked. A different compiler needs a reviewed profile.
 
+The 0.1.1 bootstrap selects a profile by the complete compiler, standard-library,
+and actual Ruby executable identity. A declared compiler-wrapper or Ruby-launcher
+hash participates in admission. Multiple profiles may share a compiler backend;
+the matching Ruby and stdlib select the supported combination. More than one
+complete match requires explicit selection. An explicit profile remains an exact
+choice, and a mismatch produces a named refusal.
+
+```sh
+ruby scripts/toolchain_profile.rb --json
+MEMORY_BUDGET_TOOLCHAIN_LOCK=/reviewed/toolchain.json ruby scripts/budget.rb --version
+```
+
+The first command prints the admitted paths, hashes, profile, and counter protocol
+without compiling. Discovery finds `crystal-alpha` through `PATH`, or uses the
+explicit `MEMORY_BUDGET_COMPILER` path. Static wrappers use an absolute `exec`
+backend followed by `"$@"`; quoted and shell-escaped spaces are supported. The
+bootstrap reads this wrapper as data and invokes its pinned backend directly.
+An installation with a changed wrapper needs its reviewed wrapper hash. A
+direct-backend profile can omit `wrapper_sha256`; a profile that declares that
+hash requires the matching entrypoint. `MEMORY_BUDGET_STDLIB` names an explicit
+installed standard-library root when automatic discovery is unsuitable.
+
+Each profile requires schema1, a nonblank `profile`, counter protocol1, and
+`compiler_sha256`, `stdlib_sha256`, and `ruby_sha256`. Optional
+`ruby_launcher_sha256` is enforced when present. A script compiler entrypoint
+requires its own `wrapper_sha256`; a direct native backend uses its exact
+`compiler_sha256` and can omit the wrapper field.
+The Ruby launcher is located through `PATH` or
+`MEMORY_BUDGET_RUBY_LAUNCHER`; the actual running Ruby is always independently
+checked through `RbConfig.ruby`. `MEMORY_BUDGET_TOOLCHAIN_PROFILE_SHA256` binds an
+explicit profile's bytes during a consumer run. Profiles are reviewed tool
+configuration, separate from app settings and package metadata.
+
 ```sh
 ruby scripts/budget.rb
 ruby scripts/budget.rb run examples/fiber_and_items.cr -Dfiber_allocation_tally
@@ -96,6 +129,40 @@ verified Minecart executable before running specs. Commit the generated app's
 lock after its initial strict install. The isolated Crystal stdlib gate requires
 its checkout sources and compiler profile; compiler-shard dependencies belong to
 the compiler's separate build workflow.
+
+The dependency step uses the same admitted compiler profile and resolves
+`minecart` through `PATH`, with an optional explicit `MEMORY_BUDGET_MINECART`
+path. That profile supplies exact `minecart_sha256` and `minecart_version`
+values. The tool hash is verified before its version or install command runs.
+The installer retains frozen checksum coverage, one worker, and unchanged
+manifest/lock checks. It records the resolved toolchain and dependency identities
+in `performance/results/dependency-toolchain.json`. The consumer wrapper also
+selects the admitted profile rather than fixing its filename to Darwin.
+
+```sh
+ruby performance/vendor/memory_budget/scripts/install_frozen_dependencies.rb
+ruby performance/run_memory_budgets.rb --self-test
+```
+
+The workflow still declares its controlled Darwin ARM64 runner and calibrated
+workload. Portable path discovery supplies reviewed prefixes, including spaces;
+it establishes no additional OS, public installation, or second-device support.
+The checked-in profile admits the recorded Darwin Alpha/Ruby/Minecart bytes.
+Each Linux or other Ruby/compiler combination needs an exact reviewed profile,
+its own workload calibration, and executed installation/consumer receipts.
+The separate public Homebrew/archive and actual-device qualification remains a
+release acceptance stage.
+
+Ruby entrypoint and neighboring contract controls run with the built-in test
+library:
+
+```sh
+ruby test/portable_toolchain_test.rb
+```
+
+They exercise the actual bootstrap and workflow dependency step with identified
+fixture executables. These controls verify path and refusal behavior; actual
+Crystal counter specs and installed consumers supply compiler/runtime evidence.
 
 The spec/CI wrapper compiles one named spec executable and runs that same file
 for its normal and injected-regression controls. It then sends raw measurements

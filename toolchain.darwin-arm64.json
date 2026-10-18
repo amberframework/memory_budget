@@ -8,5 +8,7 @@
   "counter_protocol": 1,
   "ruby_sha256": "b23faefc09375bbc24248218271e30d25590168e1a1f977bdfc528ce547b2c81",
   "ruby_version": "ruby 2.6.10p210 (2022-04-12 revision 67958) [universal.arm64e-darwin25]",
-  "ruby_launcher_sha256": "9d6ff3e289c7d908e3c785e0bedd6692d1d6a3377965c88c04d847104b7c892c"
+  "ruby_launcher_sha256": "9d6ff3e289c7d908e3c785e0bedd6692d1d6a3377965c88c04d847104b7c892c",
+  "minecart_sha256": "b5e7aed47dc33ab9350f2f9323da56886e7a333171f1da829fc8d8aee9583059",
+  "minecart_version": "Minecart 2025.11.25.8"
 }
