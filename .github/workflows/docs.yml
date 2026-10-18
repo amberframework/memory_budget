@@ -1,0 +1,17 @@
+name: Memory documentation corpus
+on:
+  pull_request:
+  push:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Verify canonical hashes and rejection controls
+        run: |
+          docker run --rm --network none --cpus 1 --memory 512m --pids-limit 128 \
+            -v "$PWD:/workspace:ro" -w /workspace -e DOCS_COMMIT="$GITHUB_SHA" \
+            python:3.12.10-slim@sha256:fd95fa221297a88e1cf49c55ec1828edd7c5a428187e67b5d1805692d11588db \
+            sh -c 'python scripts/docs/manage_corpus.py verify && python scripts/docs/test_corpus.py --source-commit "$DOCS_COMMIT" --report /tmp/docs-results.json'
