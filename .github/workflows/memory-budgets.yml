@@ -1,0 +1,31 @@
+name: Memory budget package
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  protocol-and-adapters:
+    runs-on: [self-hosted, macOS, ARM64, atlas-memory-budget-v1]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Exercise policy, coverage, real counters, and sufficient/tight cases
+        shell: bash
+        run: |
+          mkdir -p performance/results
+          /usr/bin/ruby scripts/budget.rb spec -Dfiber_allocation_tally -Dwithout_mt | tee performance/results/specs.txt
+          /usr/bin/ruby scripts/budget.rb build src/cli.cr -o performance/results/memory-budget
+          shasum -a 256 PACKAGE_PINS.json performance/results/memory-budget > performance/results/artifact-pins.txt
+        env:
+          CRYSTAL_WORKERS: "1"
+          CRYSTAL_CACHE_DIR: ${{ runner.temp }}/memory-budget-package-${{ github.run_id }}-${{ github.run_attempt }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: always()
+        with:
+          name: memory-budget-package-${{ github.sha }}
+          path: performance/results/
+          if-no-files-found: error
