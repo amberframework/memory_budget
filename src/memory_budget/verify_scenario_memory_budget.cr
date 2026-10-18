@@ -45,7 +45,9 @@ module MemoryBudget
             capability.measurement_scope == measurement.measurement_scope &&
             capability.backend_revision == measurement.backend_revision &&
             capability.platform_profile == measurement.platform_profile &&
-            !capability.backend_name.empty?
+            !capability.backend_name.strip.empty? &&
+            !capability.backend_revision.strip.empty? &&
+            !capability.platform_profile.strip.empty?
         end
         @list_of_violations << "#{measurement.metric_name}: required capability unavailable or ambiguous" unless list_of_matches.size == 1
       end

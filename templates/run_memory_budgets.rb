@@ -30,7 +30,7 @@ abort "A nonempty unique scenario roster is required" unless required_scenarios.
 abort "Policy roster differs" unless contract.fetch("list_of_policies").map { |policy| policy.fetch("scenario_name") }.sort == required_scenarios.sort
 
 def source_tree_sha256
-  paths = Dir.glob("{src,spec,config,performance}/**/*") + Dir.glob("lib/*/**/*") + %w[shard.yml shard.lock .crystal-flags .amber.yml]
+  paths = Dir.glob("{src,spec,config,performance,examples,bench}/**/*") + Dir.glob("lib/*/**/*") + %w[shard.yml shard.lock .crystal-flags .amber.yml]
   Digest::SHA256.hexdigest(paths.uniq.select { |path| File.file?(path) && !path.start_with?("performance/results/") }.sort.map { |path| "#{Digest::SHA256.file(path).hexdigest}  #{path}\n" }.join)
 end
 

@@ -133,7 +133,7 @@
     },
     {
       "file": "src/memory_budget/process_memory_snapshot.cr",
-      "sha256": "3f47224b637aa051b56034dd0e0d4959dd1ed26bb807fc9993b56db5fe26b1c8"
+      "sha256": "88abbdaf71cf1ed9e0b830366e0803b9b4726e9b83f8cba8a80e0b7377749e10"
     },
     {
       "file": "src/memory_budget/read_c_allocation_evidence.cr",
@@ -169,7 +169,7 @@
     },
     {
       "file": "src/memory_budget/verify_scenario_memory_budget.cr",
-      "sha256": "7d723284a4887e39768252f7dc8d6b595c72c1cb19e7418f05165af1366da7e8"
+      "sha256": "436c87edf5812f27786e1eb95698b11cf8f3156b4ad57689c3c38ad647bd4bea"
     },
     {
       "file": "templates/memory-budgets.yml",
@@ -177,7 +177,7 @@
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "b7059f02278b9b79cb0b19dd4dd9e05a1063d4983b44e62844b311e9b8acb618"
+      "sha256": "41c3b4088bbcd6726671806dc2186302b8cc045cf342f95c4dccbbad0028c4c6"
     },
     {
       "file": "toolchain.darwin-arm64.json",

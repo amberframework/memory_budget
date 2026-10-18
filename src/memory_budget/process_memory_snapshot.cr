@@ -71,11 +71,11 @@ module MemoryBudget
     def self.platform_profile : String
       {% if flag?(:darwin) && flag?(:aarch64) %}
         "darwin-arm64"
-      {% elsif flag?(:darwin) %}
+      {% elsif flag?(:darwin) && flag?(:x86_64) %}
         "darwin-x86_64"
       {% elsif flag?(:linux) && flag?(:aarch64) %}
         "linux-arm64"
-      {% elsif flag?(:linux) %}
+      {% elsif flag?(:linux) && flag?(:x86_64) %}
         "linux-x86_64"
       {% else %}
         "unsupported"

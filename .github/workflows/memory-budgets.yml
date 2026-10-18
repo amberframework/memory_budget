@@ -16,8 +16,9 @@ jobs:
       - name: Exercise policy, coverage, real counters, and sufficient/tight cases
         shell: bash
         run: |
+          set -euo pipefail
           mkdir -p performance/results
-          /usr/bin/ruby scripts/budget.rb spec -Dfiber_allocation_tally -Dwithout_mt | tee performance/results/specs.txt
+          /usr/bin/ruby scripts/budget.rb spec -Dfiber_allocation_tally -Dwithout_mt 2>&1 | tee performance/results/specs.txt
           /usr/bin/ruby scripts/budget.rb build src/cli.cr -o performance/results/memory-budget
           shasum -a 256 PACKAGE_PINS.json performance/results/memory-budget > performance/results/artifact-pins.txt
         env:
