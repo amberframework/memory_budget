@@ -43,6 +43,13 @@ class NativeEnvironmentTest < PortableToolchainTest
         end
       end
       module Kernel
+        alias_method :atlas_native_original_spawn, :spawn
+        def spawn(*arguments, **options)
+          if arguments.first.is_a?(Hash)
+            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "spawn", "environment" => arguments.first}) }
+          end
+          atlas_native_original_spawn(*arguments, **options)
+        end
         alias_method :atlas_native_original_system, :system
         def system(*arguments, **options)
           if arguments.first.is_a?(Hash)
@@ -90,6 +97,29 @@ class NativeEnvironmentTest < PortableToolchainTest
     assert_native_environment(captures.first.fetch("environment"))
     assert_nil captures.first.fetch("environment").fetch("DYLD_PRINT_LIBRARIES")
     assert_includes JSON.parse(output).fetch("arguments"), "--threads"
+  end
+
+  def test_held_native_identity_keeps_an_immutable_manifest
+    identity = MemoryBudget::NativeEnvironment.admit(hash(@native_lock), @native_lock)
+    assert_raises(FrozenError) { identity.manifest.fetch("environment").fetch("DYLD_LIBRARY_PATH") << "/foreign" }
+    assert_native_environment(identity.environment)
+  end
+
+  def test_held_native_identity_rechecks_file_bytes_before_reuse
+    identity = MemoryBudget::NativeEnvironment.admit(hash(@native_lock), @native_lock)
+    File.open(@library, "a") { |file| file.puts "changed after admission" }
+    error = assert_raises(MemoryBudget::NativeEnvironment::AdmissionError) { identity.environment }
+    assert_includes error.message, "Native directory roster differs"
+  end
+
+  def test_held_native_identity_rechecks_manifest_and_restores
+    identity = MemoryBudget::NativeEnvironment.admit(hash(@native_lock), @native_lock)
+    bytes = File.binread(@native_lock)
+    File.write(@native_lock, bytes + " ")
+    error = assert_raises(MemoryBudget::NativeEnvironment::AdmissionError) { identity.environment }
+    assert_includes error.message, "Native manifest SHA-256 mismatch"
+    File.binwrite(@native_lock, bytes)
+    assert_native_environment(identity.environment)
   end
 
   def test_original_wrapper_admission_survives_internal_backend_transition
@@ -320,5 +350,55 @@ class NativeEnvironmentTest < PortableToolchainTest
     report = JSON.parse(File.read(File.join(project, "performance/results/memory-budget-report.json")))
     assert_equal true, report.fetch("passed")
     assert_equal @native_profile.fetch("native_component_manifest_sha256"), report.fetch("native_component_manifest_sha256")
+  end
+
+  def native_dependencies
+    dependencies("RUBYOPT" => @environment.fetch("RUBYOPT"))
+  end
+
+  def mutate_native_minecart_fixture(phase, target)
+    source = File.read(@minecart)
+    operation = "File.open(#{target.inspect}, 'a') { |file| file.puts '# fixture mutation' }; "
+    if phase == :version
+      source = source.sub('puts ENV.fetch("FIXTURE_TOOL_VERSION", "Minecart fixture-1")', operation + 'puts ENV.fetch("FIXTURE_TOOL_VERSION", "Minecart fixture-1")')
+    else
+      source = source.sub('exit ENV.fetch("FIXTURE_INSTALL_EXIT", "0").to_i', operation + 'exit ENV.fetch("FIXTURE_INSTALL_EXIT", "0").to_i')
+    end
+    write_executable(@minecart, source)
+    @native_profile["minecart_sha256"] = hash(@minecart)
+    write_native_manifest
+  end
+
+  def test_native_installer_restores_version_and_frozen_install_environments
+    output, errors, status, project = native_dependencies
+    assert status.success?, output + errors
+    captures = File.readlines(@environment.fetch("NATIVE_CAPTURE_LOG")).map { |line| JSON.parse(line) }
+    assert_equal 2, captures.size
+    captures.each { |row| assert_native_environment(row.fetch("environment")) }
+    assert_equal ["install", "--frozen", "--skip-ai-docs", "--jobs=1"], JSON.parse(File.read(File.join(project, "fixture-install.json"))).fetch("arguments")
+  end
+
+  def test_native_installer_rejects_library_change_after_version
+    mutate_native_minecart_fixture(:version, @library)
+    output, errors, status, project = native_dependencies
+    refute status.success?, output + errors
+    assert_includes output + errors, "Native directory roster differs"
+    refute File.exist?(File.join(project, "fixture-install.json"))
+  end
+
+  def test_native_installer_rejects_tool_change_after_version
+    mutate_native_minecart_fixture(:version, @minecart)
+    output, errors, status, project = native_dependencies
+    refute status.success?, output + errors
+    assert_includes output + errors, "Minecart SHA-256 mismatch after version readback"
+    refute File.exist?(File.join(project, "fixture-install.json"))
+  end
+
+  def test_native_installer_rejects_library_change_after_install
+    mutate_native_minecart_fixture(:install, @library)
+    output, errors, status, project = native_dependencies
+    refute status.success?, output + errors
+    assert_includes output + errors, "Native directory roster differs"
+    assert File.exist?(File.join(project, "fixture-install.json"))
   end
 end

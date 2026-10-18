@@ -16,10 +16,13 @@ module MemoryBudget
       attr_reader :path, :sha256, :manifest
 
       def initialize(path, sha256, manifest)
-        @path, @sha256, @manifest = path, sha256, manifest
+        @path, @sha256, @manifest = path.freeze, sha256.freeze, NativeEnvironment.deep_freeze(manifest)
       end
 
       def environment
+        NativeEnvironment.require_condition(Digest::SHA256.file(path).hexdigest == sha256, "Native manifest SHA-256 mismatch")
+        NativeEnvironment.validate_manifest(manifest)
+        NativeEnvironment.require_condition(Digest::SHA256.file(path).hexdigest == sha256, "Native manifest changed during admission")
         manifest.fetch("environment").each_with_object({
           "MEMORY_BUDGET_NATIVE_COMPONENT_LOCK" => path,
           "DYLD_PRINT_LIBRARIES" => manifest.fetch("loader_trace") ? "1" : nil
@@ -36,6 +39,12 @@ module MemoryBudget
     def object_keys(value, required, description)
       require_condition(value.is_a?(Hash) && value.keys.sort == required.sort,
         "Invalid #{description} fields; expected #{required.join(', ')}")
+    end
+
+    def deep_freeze(value)
+      value.each { |key, entry| deep_freeze(key); deep_freeze(entry) } if value.is_a?(Hash)
+      value.each { |entry| deep_freeze(entry) } if value.is_a?(Array)
+      value.freeze
     end
 
     def platform

@@ -65,6 +65,7 @@
     "scripts/toolchain_profile.rb",
     "scripts/budget.rb",
     "scripts/run_specs.rb",
-    "templates/run_memory_budgets.rb"
+    "templates/run_memory_budgets.rb",
+    "scripts/install_frozen_dependencies.rb"
   ]
 }

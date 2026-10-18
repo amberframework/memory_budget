@@ -37,15 +37,15 @@
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "73d1d5baa2c9c4e1c0f7ff03e0d78bf270258c5de6a2eb0fb8cb3e99c7ad9daa"
+      "sha256": "0cc471cb7bf90e24ae0a4c8b3248f6e7f1afcbea4122c518dce2187ba3849ec2"
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "6239030a6f6912ecc84c28aa8298c9e06315632aa31fa238b767ebf53ac3d792"
+      "sha256": "cca3b2cdc500bc9e6a652de592fe032f87667bd0e66973324dba8faf3cb0211b"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "e8bd5b9594cfcb1d52b08e99e62e78a6ec764a13ca8767a26f64db76d9a9eea3"
+      "sha256": "2751c2fba9d2d372d638628450ad877f73d76df2194478ee193ec5805e5ba491"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -113,11 +113,11 @@
     },
     {
       "file": "scripts/install_frozen_dependencies.rb",
-      "sha256": "ecbaf6bb043a6aeffac10a940cc2e69ac979f7788a4800495dcafe68ed4f06ba"
+      "sha256": "12f937e1601847367a60e8ad796011451daa6ded506b27fc6360b92d485fc368"
     },
     {
       "file": "scripts/native_environment.rb",
-      "sha256": "43a9bde26fc3fc854a54abc74f8d0aeacd03c89e0286cda1cd29111f2b39e113"
+      "sha256": "9368fed0c93473b95bdbbbcba708e2c1ad54a5a2f1c37a24a0d6af4f0599d851"
     },
     {
       "file": "scripts/prepare_native_manifest.rb",
