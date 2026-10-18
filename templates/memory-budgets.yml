@@ -41,7 +41,7 @@ jobs:
           exit "$dependency_status"
       - name: Record accepted source identity
         id: source
-        run: printf 'source_commit=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        run: printf 'source_commit=%s\n' "$(ruby performance/vendor/memory_budget/scripts/source_commit.rb)" >> "$GITHUB_OUTPUT"
       - name: Enforce budgets and prove regression detection
         run: ruby performance/run_memory_budgets.rb --self-test
         env:

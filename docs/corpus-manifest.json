@@ -19,7 +19,7 @@
     },
     {
       "file": "docs/0.1.1/ci.md",
-      "sha256": "18d4038907d92a09e088d66826e8548cccdcfa5bf6e6f44079d1bf39101594b7"
+      "sha256": "5fa916db56e98ce36d3ba7c5f1e136f05bbedb25f01e386e14a76a9e21d874ba"
     },
     {
       "file": "docs/0.1.1/examples/fiber_budget_spec.cr",
@@ -30,16 +30,20 @@
       "sha256": "614f1d6bdb5b17d7fc793e350e9f55978672731bc32e44e1f6003acd50d11129"
     },
     {
+      "file": "docs/0.1.1/git-provider.md",
+      "sha256": "2a11b58efad24174781eef4e08de1c48c8077c12b68618eb99850fa9a0f9f699"
+    },
+    {
       "file": "docs/0.1.1/index.md",
-      "sha256": "a74e5cb38662ed065866d7c3687cf0e93b263f86b7e1a184d8edfeb00fb2e717"
+      "sha256": "f033a9efd0f04336a39b2bb3d6de4a6b8369671711dd511c1fc05fdf45eb0400"
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "0cc471cb7bf90e24ae0a4c8b3248f6e7f1afcbea4122c518dce2187ba3849ec2"
+      "sha256": "08bd63ba9edc6a58e4dda2144c63c78cb47eb45d1d7194f9760b2ae6badf1059"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "2751c2fba9d2d372d638628450ad877f73d76df2194478ee193ec5805e5ba491"
+      "sha256": "217921425d0b2fdbbb6406f75e2a1bd151f811d1b8b264655fa176e8cad56aaa"
     },
     {
       "file": "examples/support/memory_budget_sample_record.cr",
@@ -81,7 +85,7 @@
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "586c965e6150854c4e35cfbc03053a05921d0f968f43e6f8f6d443da542e0d36"
+      "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
     },
     {
       "file": "scripts/budget.rb",
@@ -93,11 +97,23 @@
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "22655f693fd7d4312263a90b13626e0ad794bf915a669c4c793f05765e3d48cb"
+      "sha256": "31351dbe8be863e002af9d3e63cf9efcf9945dd4abe14fef9347192c82fb850d"
     },
     {
       "file": "scripts/install_frozen_dependencies.rb",
-      "sha256": "12f937e1601847367a60e8ad796011451daa6ded506b27fc6360b92d485fc368"
+      "sha256": "7e97b15a0be9fa15ce4868c073c61ec0549f7551249e3b9f9f943b26bfd2cf13"
+    },
+    {
+      "file": "scripts/git_provider.rb",
+      "sha256": "4c813fb3bd5a72ef96b25aada6ae4866d3aec225d78e7b0f39ad9c2aee8ae4f2"
+    },
+    {
+      "file": "scripts/prepare_git_manifest.rb",
+      "sha256": "fb863b952b2a5e1fe52f55b318be3a172c0b4f16b49f29471d2d8408a43e1a43"
+    },
+    {
+      "file": "scripts/source_commit.rb",
+      "sha256": "33c65cc4bcd4bd8a5c91fa7c0e6ad9468d9b4b5b05d8b62492531b16d31ae509"
     }
   ]
 }

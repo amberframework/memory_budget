@@ -29,3 +29,7 @@ Admit each runner's backend, standard library, host profile and measuring adapte
 ## Documentation integrity
 
 The SDK owns `docs/corpus.json` and `docs/corpus-manifest.json`. `scripts/docs/manage_corpus.py` verifies the exact nonempty corpus roster and source hashes, writes deterministic Amber projections, and checks their parity. The website holds a source pin and complete public corpus projection; its standalone `scripts/memory_budget_docs.py` checks the bytes in its own checkout. Missing, modified, stale-version or unexpected projection files fail before publication.
+
+## Dependency and source tool admission
+
+The ordinary dependency installer and CI source-identity command require the [schema-3 Git provider](git-provider.md) alongside the compiler/Ruby/native identities. Configure the three explicit lock paths in the admitted runner environment. The workflow records HEAD through `scripts/source_commit.rb`; the app runner also admits its toolchain before asking Git for HEAD. The default legacy compiler profile remains a narrower compiler profile until its full runner admission is prepared.

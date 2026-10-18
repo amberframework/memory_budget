@@ -21,3 +21,5 @@ The dedicated memory command enables the admitted allocation protocol. Ordinary 
 The repository skill is `skills/crystal-memory-budgets/SKILL.md`. It teaches the operation/owner/window decision and exact evidence boundaries. It links the matching corpus rather than independently redefining the API. Skill installation/discovery and useful independent agent tasks are qualification steps; the presence of a skill folder alone establishes source packaging.
 
 For applications with native dependencies, use the [native toolchain guide](native-toolchain.md) to admit exact library files and qualify ordinary Ruby entrypoints.
+
+For frozen dependency installation and CI source identity, use the [Git provider guide](git-provider.md). The full workflow requires toolchain profile schema 3; compiler-only legacy profiles retain their narrower scope.

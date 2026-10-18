@@ -49,6 +49,13 @@
       "title": "Admit native libraries",
       "description": "Pin native files and restore approved library paths across Ruby entrypoints",
       "order": 100
+    },
+    {
+      "file": "docs/0.1.1/git-provider.md",
+      "slug": "git-provider",
+      "title": "Admit Git for frozen installation",
+      "description": "Pin the native Git backend, helper family and private delegate across ordinary SDK entrypoints",
+      "order": 101
     }
   ],
   "list_of_examples": [
@@ -66,6 +73,9 @@
     "scripts/budget.rb",
     "scripts/run_specs.rb",
     "templates/run_memory_budgets.rb",
-    "scripts/install_frozen_dependencies.rb"
+    "scripts/install_frozen_dependencies.rb",
+    "scripts/git_provider.rb",
+    "scripts/prepare_git_manifest.rb",
+    "scripts/source_commit.rb"
   ]
 }

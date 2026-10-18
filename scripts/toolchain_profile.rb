@@ -5,6 +5,7 @@ require "open3"
 require "rbconfig"
 require "shellwords"
 require_relative "native_environment"
+require_relative "git_provider"
 
 module MemoryBudget
   # Resolves ordinary installation paths, then admits their exact identities.
@@ -31,7 +32,19 @@ module MemoryBudget
         {"MEMORY_BUDGET_COMPILER" => entrypoint_path, "MEMORY_BUDGET_TOOLCHAIN_LOCK" => profile_path,
          "MEMORY_BUDGET_TOOLCHAIN_PROFILE_SHA256" => @profile_sha256,
          "MEMORY_BUDGET_COMPILER_ENTRYPOINT" => entrypoint_path,
-         "MEMORY_BUDGET_STDLIB" => stdlib_root}.merge(ToolchainProfile.native_environment(profile))
+         "MEMORY_BUDGET_STDLIB" => stdlib_root}.merge(ToolchainProfile.native_environment(profile)).merge(ToolchainProfile.git_environment(profile))
+      end
+
+      def source_commit(require_git_provider: false)
+        if require_git_provider && profile["schema_version"] != 3
+          raise AdmissionError, "Source identity requires toolchain profile schema 3 with an admitted Git provider"
+        end
+        output, errors, status = Open3.capture3(environment, "git", "rev-parse", "HEAD")
+        environment
+        unless status.success? && output.strip.match?(/\A[0-9a-f]{40}\z/)
+          raise AdmissionError, "Cannot identify source commit: #{errors.strip}"
+        end
+        output.strip
       end
 
       def to_h
@@ -47,9 +60,13 @@ module MemoryBudget
           launcher = ToolchainProfile.executable(ENV["MEMORY_BUDGET_RUBY_LAUNCHER"], "ruby", "Ruby launcher")
           result.merge!("ruby_launcher_path" => launcher, "ruby_launcher_sha256" => Digest::SHA256.file(launcher).hexdigest)
         end
-        if profile["schema_version"] == 2
+        if [2, 3].include?(profile["schema_version"])
           result["native_component_manifest_sha256"] = profile.fetch("native_component_manifest_sha256")
           result["native_environment"] = ToolchainProfile.native_environment(profile)
+        end
+        if profile["schema_version"] == 3
+          result["git_provider_manifest_sha256"] = profile.fetch("git_provider_manifest_sha256")
+          result["git_environment"] = ToolchainProfile.git_environment(profile)
         end
         result
       end
@@ -90,15 +107,20 @@ module MemoryBudget
 
     def read_profile(path)
       profile = JSON.parse(File.read(path))
-      raise AdmissionError, "Invalid toolchain profile #{path}" unless profile.is_a?(Hash) && [1, 2].include?(profile["schema_version"])
+      raise AdmissionError, "Invalid toolchain profile #{path}" unless profile.is_a?(Hash) && [1, 2, 3].include?(profile["schema_version"])
       raise AdmissionError, "Toolchain profile requires a nonblank profile identity: #{path}" unless profile["profile"].is_a?(String) && !profile["profile"].strip.empty?
       raise AdmissionError, "Unsupported toolchain counter protocol: #{path}" unless profile["counter_protocol"] == 1
       %w[compiler_sha256 stdlib_sha256 ruby_sha256].each { |key| verify_hash_field(profile, key, path) }
       %w[wrapper_sha256 ruby_launcher_sha256 minecart_sha256].each { |key| verify_hash_field(profile, key, path) if profile.key?(key) }
-      if profile["schema_version"] == 2
+      if [2, 3].include?(profile["schema_version"])
         verify_hash_field(profile, "native_component_manifest_sha256", path)
       elsif profile.key?("native_component_manifest_sha256")
         raise AdmissionError, "Native components require toolchain profile schema 2: #{path}"
+      end
+      if profile["schema_version"] == 3
+        verify_hash_field(profile, "git_provider_manifest_sha256", path)
+      elsif profile.key?("git_provider_manifest_sha256")
+        raise AdmissionError, "Git provider requires toolchain profile schema 3: #{path}"
       end
       profile
     end
@@ -118,13 +140,27 @@ module MemoryBudget
 
     def native_environment(profile)
       lock = ENV["MEMORY_BUDGET_NATIVE_COMPONENT_LOCK"]
-      if profile["schema_version"] == 2
+      if [2, 3].include?(profile["schema_version"])
         NativeEnvironment.admit(profile.fetch("native_component_manifest_sha256"), lock).environment
       else
         raise AdmissionError, "Native component lock requires toolchain profile schema 2" if lock
         {}
       end
     rescue NativeEnvironment::AdmissionError => error
+      raise AdmissionError, error.message
+    end
+
+    def git_environment(profile, verify_version: false)
+      lock = ENV["MEMORY_BUDGET_GIT_PROVIDER_LOCK"]
+      if profile["schema_version"] == 3
+        identity = GitProvider.admit(profile.fetch("git_provider_manifest_sha256"), lock)
+        identity.verify_version(native_environment(profile)) if verify_version
+        identity.environment
+      else
+        raise AdmissionError, "Git provider lock requires toolchain profile schema 3" if lock
+        {}
+      end
+    rescue GitProvider::AdmissionError => error
       raise AdmissionError, error.message
     end
 
@@ -152,7 +188,7 @@ module MemoryBudget
       unless ENV["MEMORY_BUDGET_COMPILER_SHA256"] == profile.fetch("compiler_sha256") && ENV["MEMORY_BUDGET_STDLIB_SHA256"] == profile.fetch("stdlib_sha256")
         raise AdmissionError, "Selected compiler/stdlib profile differs"
       end
-      native_environment(profile)
+      native_environment(profile).merge(git_environment(profile))
     rescue Errno::ENOENT, Errno::EACCES, JSON::ParserError => error
       raise AdmissionError, "Selected toolchain admission failed: #{error.message}"
     end
@@ -211,6 +247,7 @@ module MemoryBudget
       end
       path, profile, profile_sha256 = matches.first
       native_environment(profile)
+      git_environment(profile, verify_version: true)
       Identity.new(path, profile, compiler, entrypoint, stdlib_root, profile_sha256)
     rescue Errno::ENOENT, Errno::EACCES, JSON::ParserError => error
       raise AdmissionError, "Toolchain admission failed: #{error.message}"

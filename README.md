@@ -55,7 +55,14 @@ directory rosters and restores their approved search paths after each Ruby
 boundary. The [native guide](docs/0.1.1/native-toolchain.md) covers preparation
 and actual loaded-image/ordinary-entrypoint qualification.
 
-Both profile schemas require a nonblank `profile`, counter protocol 1, and
+Schema 3 adds `git_provider_manifest_sha256` and an explicit
+`MEMORY_BUDGET_GIT_PROVIDER_LOCK`. The frozen dependency installer and CI source
+identity command require this Git capability. A private account-owned delegate
+selects the pinned backend and complete helper/alias target roster. The
+[Git provider guide](docs/0.1.1/git-provider.md) covers candidate preparation,
+legacy scope, isolated configuration and ordinary-entrypoint acceptance.
+
+All three profile schemas require a nonblank `profile`, counter protocol 1, and
 `compiler_sha256`, `stdlib_sha256`, and `ruby_sha256`. Optional
 `ruby_launcher_sha256` is enforced when present. A script compiler entrypoint
 requires its own `wrapper_sha256`; a direct native backend uses its exact

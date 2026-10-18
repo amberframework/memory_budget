@@ -8,6 +8,7 @@ begin
   package_root = File.expand_path("..", __dir__)
   identity = MemoryBudget::ToolchainProfile.resolve(package_root)
   profile = identity.profile
+  abort "Frozen dependency installation requires toolchain profile schema 3 with an admitted Git provider" unless profile["schema_version"] == 3
   MemoryBudget::ToolchainProfile.verify_hash_field(profile, "minecart_sha256", identity.profile_path)
   version = profile["minecart_version"]
   abort "Toolchain profile requires a nonblank minecart_version" unless version.is_a?(String) && !version.strip.empty?

@@ -66,17 +66,16 @@ end
 source_sha256 = source_tree_sha256
 results_root = File.join(project_root, "performance", "results")
 FileUtils.mkdir_p(results_root)
-source_commit, _error, source_status = Open3.capture3("git", "rev-parse", "HEAD")
-abort "Cannot identify source commit" unless source_status.success?
 require File.join(bundle_root, "scripts", "toolchain_profile")
 begin
   admitted_toolchain = MemoryBudget::ToolchainProfile.resolve(bundle_root)
 rescue MemoryBudget::ToolchainProfile::AdmissionError => error
   abort error.message
 end
+source_commit = admitted_toolchain.source_commit
 profile_path = admitted_toolchain.profile_path
 profile = admitted_toolchain.profile
-compiler_profile_sha256 = Digest::SHA256.file(profile_path).hexdigest
+compiler_profile_sha256 = admitted_toolchain.to_h.fetch("profile_sha256")
 bootstrap = [RbConfig.ruby, File.join(bundle_root, "scripts", "budget.rb")]
 list_of_spec_files = ["spec/performance/memory_budget_spec.cr"]
 entry_path = File.join(results_root, "memory_budget_spec_entry.cr")
@@ -158,6 +157,7 @@ report = {"schema_version" => 2, "source_commit" => source_commit.strip, "source
           "compiler_profile_sha256" => compiler_profile_sha256, "instrumentation_mode" => "fiber_allocation_tally/protocol-1",
           "toolchain_schema_version" => profile.fetch("schema_version"),
           "native_component_manifest_sha256" => profile["native_component_manifest_sha256"],
+          "git_provider_manifest_sha256" => profile["git_provider_manifest_sha256"],
           "list_of_builds" => list_of_builds, "list_of_runs" => list_of_runs, "list_of_errors" => list_of_errors, "passed" => !!has_passed}
 File.write(File.join(results_root, "memory-budget-report.json"), JSON.pretty_generate(report) + "\n")
 exit(has_passed ? 0 : 2)

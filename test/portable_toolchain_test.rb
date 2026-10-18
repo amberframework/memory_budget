@@ -8,8 +8,10 @@ require "open3"
 require "rbconfig"
 require "yaml"
 require "shellwords"
+require_relative "git_provider_fixture"
 
 class PortableToolchainTest < Minitest::Test
+  include GitProviderFixture
   ROOT = File.expand_path("..", __dir__)
 
   def setup
@@ -62,7 +64,7 @@ class PortableToolchainTest < Minitest::Test
       "MEMORY_BUDGET_COMPILER" => @wrapper, "CRYSTAL_CACHE_DIR" => File.join(@temporary, "private cache"),
       "MEMORY_BUDGET_TOOLCHAIN_LOCK" => nil, "MEMORY_BUDGET_STDLIB" => nil,
       "MEMORY_BUDGET_TOOLCHAIN_PROFILE_SHA256" => nil,
-      "MEMORY_BUDGET_RUBY_LAUNCHER" => nil, "MEMORY_BUDGET_MINECART" => nil,
+      "MEMORY_BUDGET_RUBY_LAUNCHER" => nil, "MEMORY_BUDGET_GIT_PROVIDER_LOCK" => nil, "MEMORY_BUDGET_MINECART" => nil,
       "RUBYOPT" => nil, "FIXTURE_TOOL_VERSION" => nil, "FIXTURE_MUTATE_LOCK" => nil, "FIXTURE_INSTALL_EXIT" => nil
     }
     write_profile("normal", @profile)
@@ -352,6 +354,7 @@ class PortableToolchainTest < Minitest::Test
   end
 
   def dependencies(extra = {})
+    prepare_dependency_git_profile unless @preserve_legacy_installer_profile
     project, guard = prepare_dependency_project
     yield project if block_given?
     environment = @environment.merge("RUBYOPT" => "-r#{Shellwords.escape(guard)}").merge(extra)

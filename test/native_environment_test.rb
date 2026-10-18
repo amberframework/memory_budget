@@ -46,14 +46,14 @@ class NativeEnvironmentTest < PortableToolchainTest
         alias_method :atlas_native_original_spawn, :spawn
         def spawn(*arguments, **options)
           if arguments.first.is_a?(Hash)
-            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "spawn", "environment" => arguments.first}) }
+            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "spawn", "environment" => arguments.first, "arguments" => arguments.drop(1)}) }
           end
           atlas_native_original_spawn(*arguments, **options)
         end
         alias_method :atlas_native_original_system, :system
         def system(*arguments, **options)
           if arguments.first.is_a?(Hash)
-            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "system", "environment" => arguments.first}) }
+            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "system", "environment" => arguments.first, "arguments" => arguments.drop(1)}) }
           end
           result = atlas_native_original_system(*arguments, **options)
           if ENV["NATIVE_MUTATE_AFTER_CHILD"] && $PROGRAM_NAME.end_with?("/run_specs.rb")
@@ -66,7 +66,7 @@ class NativeEnvironmentTest < PortableToolchainTest
         alias_method :atlas_native_original_spawn, :spawn
         def spawn(*arguments, **options)
           if arguments.first.is_a?(Hash)
-            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "spawn", "environment" => arguments.first}) }
+            File.open(ENV.fetch("NATIVE_CAPTURE_LOG"), "a") { |file| file.puts JSON.generate({"kind" => "spawn", "environment" => arguments.first, "arguments" => arguments.drop(1)}) }
           end
           atlas_native_original_spawn(*arguments, **options)
         end
@@ -344,7 +344,7 @@ class NativeEnvironmentTest < PortableToolchainTest
     output, errors, status = Open3.capture3(environment, RbConfig.ruby, runner, "--self-test", chdir: project)
     assert status.success?, output + errors
     captures = File.readlines(@environment.fetch("NATIVE_CAPTURE_LOG")).map { |line| JSON.parse(line) }
-    assert_equal 5, captures.count { |row| row.fetch("kind") == "spawn" }
+    assert_equal 6, captures.count { |row| row.fetch("kind") == "spawn" }
     assert_equal 2, captures.count { |row| row.fetch("kind") == "system" }
     captures.each { |row| assert_native_environment(row.fetch("environment")) }
     report = JSON.parse(File.read(File.join(project, "performance/results/memory-budget-report.json")))
@@ -373,7 +373,7 @@ class NativeEnvironmentTest < PortableToolchainTest
     output, errors, status, project = native_dependencies
     assert status.success?, output + errors
     captures = File.readlines(@environment.fetch("NATIVE_CAPTURE_LOG")).map { |line| JSON.parse(line) }
-    assert_equal 2, captures.size
+    assert_equal 2, captures.count { |row| Array(row.fetch("arguments").first).first == File.realpath(@minecart) }, captures.inspect
     captures.each { |row| assert_native_environment(row.fetch("environment")) }
     assert_equal ["install", "--frozen", "--skip-ai-docs", "--jobs=1"], JSON.parse(File.read(File.join(project, "fixture-install.json"))).fetch("arguments")
   end
