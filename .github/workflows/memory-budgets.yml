@@ -20,7 +20,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/memory-budget-portable"
           docker run --rm --init --platform linux/amd64 --network none \
             --cpus 1 --memory 1g --pids-limit 128 --read-only \
-            --tmpfs /tmp:rw,nosuid,nodev,size=384m \
+            --tmpfs /tmp:rw,exec,nosuid,nodev,size=384m \
             -v "$PWD:/workspace:ro" \
             -v "$RUNNER_TEMP/memory-budget-portable:/results:rw" -w /workspace \
             ruby:3.4.6-slim-bookworm@sha256:2720b44a26870fc2db86a3c7f4f6aaa7eaee00b730e6d8de141663ef61559efb \
