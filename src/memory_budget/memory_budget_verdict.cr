@@ -7,10 +7,12 @@ module MemoryBudget
     getter verdict_status : String
     getter list_of_measurements : Array(ObservedMemoryMeasurement)
     getter list_of_violations : Array(String)
+    getter list_of_capabilities : Array(AvailableMemoryCapability)
 
     def initialize(@scenario_name : String, @verdict_status : String,
                    @list_of_measurements : Array(ObservedMemoryMeasurement) = [] of ObservedMemoryMeasurement,
-                   @list_of_violations : Array(String) = [] of String)
+                   @list_of_violations : Array(String) = [] of String,
+                   @list_of_capabilities : Array(AvailableMemoryCapability) = [] of AvailableMemoryCapability)
     end
 
     # Returns true only for a valid, supported, enforced pass.

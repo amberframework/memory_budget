@@ -1,13 +1,6 @@
 require "./spec_helper"
+require "./support/memory_budget_example_holder"
 require "../src/memory_budget/spec_expectations"
-
-# The holder escapes each allocation so release optimization preserves the measured work.
-class MemoryBudgetExampleHolder
-  getter item_index : Int32
-
-  def initialize(@item_index : Int32)
-  end
-end
 
 describe MemoryBudget::AllocationMemorySnapshot do
   if ENV["MEMORY_BUDGET_REQUIRE_ALLOCATION"]? == "1"
@@ -82,7 +75,7 @@ describe MemoryBudget::AllocationMemorySnapshot do
 
       it "checks allocation growth at several declared input sizes" do
         list_of_holders = Array(MemoryBudgetExampleHolder).new(100)
-        within_allocation_budget_per_item("holders", item_counts: [1, 10, 50], fixed_calls: 0, calls_per_item: 1,
+        within_allocation_budget_per_item("holders", list_of_item_counts: [1, 10, 50], fixed_calls: 0, calls_per_item: 1,
           fixed_bytes: 0, bytes_per_item: instance_sizeof(MemoryBudgetExampleHolder)) do |count|
           list_of_holders.clear
           count.times { |index| list_of_holders << MemoryBudgetExampleHolder.new(index) }

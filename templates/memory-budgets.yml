@@ -17,6 +17,28 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
+      - name: Install checksum-locked dependencies
+        if: ${{ hashFiles('shard.lock') != '' }}
+        run: |
+          mkdir -p performance/results
+          dependency_status=0
+          /usr/bin/ruby -rdigest -rrbconfig -ryaml -e '
+            abort "Ruby SHA-256 mismatch" unless Digest::SHA256.file(RbConfig.ruby).hexdigest == "b23faefc09375bbc24248218271e30d25590168e1a1f977bdfc528ce547b2c81"
+            tool = File.realpath("/opt/homebrew/bin/minecart")
+            abort "Minecart SHA-256 mismatch" unless Digest::SHA256.file(tool).hexdigest == "b5e7aed47dc33ab9350f2f9323da56886e7a333171f1da829fc8d8aee9583059"
+            pins = ["shard.yml", "shard.lock"].to_h { |path| [path, Digest::SHA256.file(path).hexdigest] }
+            manifest = YAML.load_file("shard.yml")
+            locked = YAML.load_file("shard.lock").fetch("shards")
+            abort "Dependency lock must contain a shard map" unless locked.is_a?(Hash)
+            required = [manifest["dependencies"], manifest["development_dependencies"]].compact.flat_map(&:keys).uniq
+            abort "Dependency lock is missing a required shard" unless (required - locked.keys).empty?
+            abort "Every locked dependency requires an immutable checksum" unless locked.values.all? { |entry| entry.is_a?(Hash) && entry["checksum"].is_a?(String) && entry["checksum"].match?(/\A(?:git-tree:[0-9a-f]{40}|sha256:[0-9a-f]{64})\z/) }
+            abort "Frozen dependency install failed" unless system({"CRYSTAL_WORKERS" => "1"}, tool, "install", "--frozen", "--skip-ai-docs", "--jobs=1")
+            abort "Dependency pins changed" unless pins.all? { |path, hash| Digest::SHA256.file(path).hexdigest == hash }
+          ' > performance/results/dependencies.stdout.txt 2> performance/results/dependencies.stderr.txt || dependency_status=$?
+          cat performance/results/dependencies.stdout.txt
+          cat performance/results/dependencies.stderr.txt >&2
+          exit "$dependency_status"
       - name: Enforce budgets and prove regression detection
         run: /usr/bin/ruby performance/run_memory_budgets.rb --self-test
         env:

@@ -14,7 +14,7 @@ module MemoryBudget
       validate_measurement_coverage
       validate_required_capabilities
       compare_measurements_with_policy
-      MemoryBudgetVerdict.new(@policy.scenario_name, @verdict_status, @list_of_measurements, @list_of_violations)
+      MemoryBudgetVerdict.new(@policy.scenario_name, @verdict_status, @list_of_measurements, @list_of_violations, @list_of_capabilities)
     end
 
     private def validate_policy_definition : Nil

@@ -3,9 +3,16 @@ include MemoryBudgetSpecSupport
 
 describe MemoryBudget::VerifyScenarioMemoryBudget do
   describe "#perform" do
+    it "preserves capabilities for independent evidence verification" do
+      verdict = MemoryBudget::MemoryBudgetVerdict.from_json(memory_verdict.to_json)
+      verdict.list_of_capabilities.size.should eq(1)
+      verdict.list_of_capabilities.first.backend_name.should eq("test")
+      verdict.list_of_capabilities.first.backend_revision.should eq("1")
+    end
+
     it "accepts sufficient and exactly equal byte limits" do
       memory_verdict.passed?.should be_true
-      memory_verdict(observations: [memory_observation(64_u64)]).passed?.should be_true
+      memory_verdict(list_of_measurements: [memory_observation(64_u64)]).passed?.should be_true
     end
 
     it "rejects an independently tightened limit" do
@@ -15,14 +22,14 @@ describe MemoryBudget::VerifyScenarioMemoryBudget do
     end
 
     it "permits an explicitly enforced zero-allocation budget" do
-      memory_verdict(policy: memory_policy(0_u64), observations: [memory_observation(0_u64)]).passed?.should be_true
+      memory_verdict(policy: memory_policy(0_u64), list_of_measurements: [memory_observation(0_u64)]).passed?.should be_true
       memory_verdict(policy: memory_policy(0_u64)).verdict_status.should eq("exceeded")
     end
 
     it "computes fixed plus per-item limits" do
       policy = memory_policy(2_u64, 3_u64, 10_u64)
       memory_verdict(policy: policy).passed?.should be_true
-      memory_verdict(policy: policy, observations: [memory_observation(33_u64)]).verdict_status.should eq("exceeded")
+      memory_verdict(policy: policy, list_of_measurements: [memory_observation(33_u64)]).verdict_status.should eq("exceeded")
     end
 
     it "rejects arithmetic overflow instead of accepting a wrapped limit" do
@@ -30,12 +37,12 @@ describe MemoryBudget::VerifyScenarioMemoryBudget do
     end
 
     it "requires every observation and capability" do
-      memory_verdict(observations: [] of MemoryBudget::ObservedMemoryMeasurement).verdict_status.should eq("invalid")
-      memory_verdict(capabilities: [] of MemoryBudget::AvailableMemoryCapability).verdict_status.should eq("unsupported")
+      memory_verdict(list_of_measurements: [] of MemoryBudget::ObservedMemoryMeasurement).verdict_status.should eq("invalid")
+      memory_verdict(list_of_capabilities: [] of MemoryBudget::AvailableMemoryCapability).verdict_status.should eq("unsupported")
     end
 
     it "rejects duplicated observations" do
-      memory_verdict(observations: [memory_observation, memory_observation]).verdict_status.should eq("invalid")
+      memory_verdict(list_of_measurements: [memory_observation, memory_observation]).verdict_status.should eq("invalid")
     end
 
     it "rejects duplicated metric limits" do
@@ -45,21 +52,21 @@ describe MemoryBudget::VerifyScenarioMemoryBudget do
     end
 
     it "rejects missing coverage before checking the generous byte limit" do
-      memory_verdict(observations: [memory_observation(0_u64, complete: false)]).verdict_status.should eq("invalid")
+      memory_verdict(list_of_measurements: [memory_observation(0_u64, has_complete_coverage: false)]).verdict_status.should eq("invalid")
     end
 
     it "rejects a measurement with a different scope" do
-      memory_verdict(observations: [memory_observation(scope: "process")]).verdict_status.should eq("invalid")
+      memory_verdict(list_of_measurements: [memory_observation(scope: "process")]).verdict_status.should eq("invalid")
     end
 
     it "rejects a measurement for a different scenario" do
       observation = MemoryBudget::ObservedMemoryMeasurement.new("other", "crystal_requested_bytes", "fiber", 0_u64)
-      memory_verdict(observations: [observation]).verdict_status.should eq("invalid")
+      memory_verdict(list_of_measurements: [observation]).verdict_status.should eq("invalid")
     end
 
     it "rejects undeclared and unmeasured metric names" do
       observation = MemoryBudget::ObservedMemoryMeasurement.new("render_records", "unknown_metric", "fiber", 0_u64)
-      memory_verdict(observations: [observation]).verdict_status.should eq("invalid")
+      memory_verdict(list_of_measurements: [observation]).verdict_status.should eq("invalid")
     end
 
     it "requires a named scenario, scope, and at least one limit" do

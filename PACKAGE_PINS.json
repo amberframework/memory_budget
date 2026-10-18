@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "caaf8698beee8eab21f27e035fcfa3ee55569e863aa6dd30a54d164a77f73f54"
+      "sha256": "b9838bd8eccef609f77a8459ad30ff1a36db6bc9571815bdd1d2882ed6f678eb"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -25,7 +25,7 @@
     },
     {
       "file": "examples/fiber_and_items.cr",
-      "sha256": "8293a5879e5e395f25211c5f899e73c3e59d757496a5a7d42cd602214aedb079"
+      "sha256": "8518be8089cf859cc084c32c93c2ef8345b0eefb2a28abe47ddbb0377fa31132"
     },
     {
       "file": "examples/joined_process.cr",
@@ -40,16 +40,20 @@
       "sha256": "3f15eaba9d867d2ae680e93bc7e1cce5cea4ec867d7c478e02b98381c8bd1018"
     },
     {
+      "file": "examples/support/memory_budget_sample_record.cr",
+      "sha256": "683f164b14ad9cd483f34d17283368dc533c21889811d640d6634de2ec4adda9"
+    },
+    {
       "file": "runtime_overlay/crystal/system/thread.cr",
       "sha256": "7f5126246b4d2eae8e8128ad64077bde8f6504325f7f0d2e804686c227eb8e47"
     },
     {
-      "file": "runtime_overlay/fiber/allocation_tally.cr",
-      "sha256": "ad6015c9f8e9adc2ffe5ee46a31ef63be16a8cfcfaad7264597f39ecb77855b1"
-    },
-    {
       "file": "runtime_overlay/fiber.cr",
       "sha256": "2f1eefd6cac6065ec2e15bd8d7a02e1e19ceda91faf6282220c209efe5e68093"
+    },
+    {
+      "file": "runtime_overlay/fiber/allocation_tally.cr",
+      "sha256": "ad6015c9f8e9adc2ffe5ee46a31ef63be16a8cfcfaad7264597f39ecb77855b1"
     },
     {
       "file": "runtime_overlay/gc/boehm.cr",
@@ -96,6 +100,10 @@
       "sha256": "006778ba44bb121561e6da1b274f0523e4b621c4118cc1b60f6593434b820abe"
     },
     {
+      "file": "src/memory_budget.cr",
+      "sha256": "76fe1673410c54fdf6fd37068a715ffba87be09140da099339ddfc6b5dc39ecf"
+    },
+    {
       "file": "src/memory_budget/allocation_memory_snapshot.cr",
       "sha256": "f9448ee68d82989796301d47c7d5f374c9005276e8c13b521bcd4339891d03f0"
     },
@@ -113,7 +121,7 @@
     },
     {
       "file": "src/memory_budget/memory_budget_verdict.cr",
-      "sha256": "bfe2284dc6d14a514bd4499f436561580b233a9c712f0aace76d0c1d15f7abef"
+      "sha256": "387866d859c1897e405c2d66e3263070b1c38ccf1b65708fa10137ac0a64c8eb"
     },
     {
       "file": "src/memory_budget/memory_metric_limit.cr",
@@ -149,7 +157,7 @@
     },
     {
       "file": "src/memory_budget/spec_expectations.cr",
-      "sha256": "05837b50b77f56eb20d16a3f6584875a2960210bed221a5f0952367ea97be5d3"
+      "sha256": "f4299350c1a4a1fe1bc4fc32c65f90b3522f3a3e21f15f748bc59f4331034545"
     },
     {
       "file": "src/memory_budget/sqlite_connection_memory.cr",
@@ -161,19 +169,15 @@
     },
     {
       "file": "src/memory_budget/verify_scenario_memory_budget.cr",
-      "sha256": "fd6a109746a557144b4b5d98365e8e03bb2940f2fe7ee3c4d7d401275f0c31b2"
-    },
-    {
-      "file": "src/memory_budget.cr",
-      "sha256": "76fe1673410c54fdf6fd37068a715ffba87be09140da099339ddfc6b5dc39ecf"
+      "sha256": "7d723284a4887e39768252f7dc8d6b595c72c1cb19e7418f05165af1366da7e8"
     },
     {
       "file": "templates/memory-budgets.yml",
-      "sha256": "b32bb73275e23c676f2690943dac65c36526513c3742e92d41e10866f4930316"
+      "sha256": "a2e41e821641a9b43b26487fde8a95197df3ef07cfa874a5434c726f3f8c271d"
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "ac1303da8ab17188cc6382b7b7d003b8451dc41f5093a41779ed1180cb68a844"
+      "sha256": "ca5bb25241a16deef5a72b8f1733f3dd28debbe7493d059e6373964c01434ae3"
     },
     {
       "file": "toolchain.darwin-arm64.json",

@@ -58,7 +58,7 @@ Requested allocation bytes, live C blocks, collector reservation, and physical p
 
 ## One fail-closed contract
 
-Every scenario declares its exact metric roster and scope. The checker validates nonempty policies, unique required scenarios, complete observations, matching scopes/platforms/backend revisions, and checked limits. Missing counters, incomplete C maps, unsupported required capabilities, unknown JSON fields, omitted readings, and exceeded limits fail acceptance. Zero is a valid explicit limit.
+Every scenario declares its exact metric roster and scope. The checker validates nonempty policies, unique required scenarios, complete observations, matching scopes/platforms/backend revisions, and checked limits. Missing counters, incomplete C maps, unsupported required capabilities, unknown policy and evidence JSON fields, omitted readings, and exceeded limits fail acceptance. Zero is a valid explicit limit.
 
 The command reads a typed contract and evidence receipt and writes a report:
 
@@ -85,3 +85,17 @@ runner labeled `atlas-memory-budget-v1`. Its preflight verifies the approved
 backend, Ruby executable, entire standard library, and shared bundle by hash.
 Runner admission and required-check configuration are deployment steps. The
 same script executes locally; a workflow file alone is not an executed CI result.
+
+The CI job installs dependencies from a committed checksum-bearing lock using the
+verified Minecart executable before running specs. Commit the generated app's
+lock after its initial strict install. The isolated Crystal stdlib gate requires
+its checkout sources and compiler profile; compiler-shard dependencies belong to
+the compiler's separate build workflow.
+
+The spec/CI wrapper compiles one named spec executable and runs that same file
+for its normal and injected-regression controls. It then sends raw measurements
+and capabilities to the common typed checker. The emitted verdict label is
+supplemental information; the checker independently compares every value.
+Reports bind the executable, checker, toolchain profile, policy, source files,
+and installed dependency files by SHA-256. A changed source, dependency, policy,
+or executable during the run fails acceptance.

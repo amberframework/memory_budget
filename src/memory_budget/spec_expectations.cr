@@ -39,14 +39,17 @@ module MemoryBudget
     end
 
     # Checks declared input sizes against checked fixed-plus-per-item limits.
-    def within_allocation_budget_per_item(scenario_name : String, *, item_counts : Enumerable(Int32),
+    def within_allocation_budget_per_item(scenario_name : String, *, list_of_item_counts : Enumerable(Int32),
                                           fixed_calls : Int, calls_per_item : Int, fixed_bytes : Int, bytes_per_item : Int,
                                           & : Int32 ->) : Nil
-      item_counts.each do |count|
+      has_measured_input = false
+      list_of_item_counts.each do |count|
+        has_measured_input = true
         list_of_limits = [MemoryMetricLimit.new("crystal_allocation_calls", fixed_calls.to_u64, calls_per_item.to_u64), MemoryMetricLimit.new("crystal_requested_bytes", fixed_bytes.to_u64, bytes_per_item.to_u64)]
         policy = ScenarioMemoryPolicy.new(scenario_name, "fiber", list_of_limits, count.to_u64)
         within_memory_budget(policy) { yield count }
       end
+      raise MemoryBudgetError.new("At least one input size is required") unless has_measured_input
     end
   end
 end
