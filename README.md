@@ -7,7 +7,8 @@ This is the implementation candidate for the memory-budget-experiment. Publicati
 ## Documentation and agent skill
 
 Read the [0.1.1 guide](docs/0.1.1/index.md), [working spec](docs/0.1.1/fiber-budget.md),
-[capability table](docs/0.1.1/capabilities.md), and [CI guide](docs/0.1.1/ci.md).
+[capability table](docs/0.1.1/capabilities.md), [CI guide](docs/0.1.1/ci.md), and
+[native toolchain guide](docs/0.1.1/native-toolchain.md).
 The [agent skill](skills/crystal-memory-budgets/SKILL.md) uses the same versioned
 corpus. Both are included in the hash-verified consumer bundle. The
 [corpus manifest](docs/corpus-manifest.json) binds their source bytes; the
@@ -47,7 +48,14 @@ direct-backend profile can omit `wrapper_sha256`; a profile that declares that
 hash requires the matching entrypoint. `MEMORY_BUDGET_STDLIB` names an explicit
 installed standard-library root when automatic discovery is unsuitable.
 
-Each profile requires schema1, a nonblank `profile`, counter protocol1, and
+Legacy compiler profiles use schema 1. Native-aware profiles use schema 2 and
+require `native_component_manifest_sha256` plus an explicit
+`MEMORY_BUDGET_NATIVE_COMPONENT_LOCK`. The helper admits complete versioned native
+directory rosters and restores their approved search paths after each Ruby
+boundary. The [native guide](docs/0.1.1/native-toolchain.md) covers preparation
+and actual loaded-image/ordinary-entrypoint qualification.
+
+Both profile schemas require a nonblank `profile`, counter protocol 1, and
 `compiler_sha256`, `stdlib_sha256`, and `ruby_sha256`. Optional
 `ruby_launcher_sha256` is enforced when present. A script compiler entrypoint
 requires its own `wrapper_sha256`; a direct native backend uses its exact

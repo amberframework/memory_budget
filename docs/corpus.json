@@ -15,11 +15,56 @@
   "public_prefix": "public/memory-budget-docs/0.1.1",
   "skill_directory": "skills/crystal-memory-budgets",
   "list_of_pages": [
-    {"file": "docs/0.1.1/index.md", "slug": "index", "title": "Memory budgets", "description": "A shared memory contract for Crystal specs and CI", "order": 96},
-    {"file": "docs/0.1.1/capabilities.md", "slug": "capabilities", "title": "Choose a memory measurement", "description": "Match each budget to its owner, window, and supported capability", "order": 97},
-    {"file": "docs/0.1.1/fiber-budget.md", "slug": "fiber-budget", "title": "A working fiber allocation expectation", "description": "Assert record behavior, then make an actual allocation regression fail", "order": 98},
-    {"file": "docs/0.1.1/ci.md", "slug": "ci", "title": "Memory budgets in CI", "description": "Require complete typed evidence and independently verified limits", "order": 99}
+    {
+      "file": "docs/0.1.1/index.md",
+      "slug": "index",
+      "title": "Memory budgets",
+      "description": "A shared memory contract for Crystal specs and CI",
+      "order": 96
+    },
+    {
+      "file": "docs/0.1.1/capabilities.md",
+      "slug": "capabilities",
+      "title": "Choose a memory measurement",
+      "description": "Match each budget to its owner, window, and supported capability",
+      "order": 97
+    },
+    {
+      "file": "docs/0.1.1/fiber-budget.md",
+      "slug": "fiber-budget",
+      "title": "A working fiber allocation expectation",
+      "description": "Assert record behavior, then make an actual allocation regression fail",
+      "order": 98
+    },
+    {
+      "file": "docs/0.1.1/ci.md",
+      "slug": "ci",
+      "title": "Memory budgets in CI",
+      "description": "Require complete typed evidence and independently verified limits",
+      "order": 99
+    },
+    {
+      "file": "docs/0.1.1/native-toolchain.md",
+      "slug": "native-toolchain",
+      "title": "Admit native libraries",
+      "description": "Pin native files and restore approved library paths across Ruby entrypoints",
+      "order": 100
+    }
   ],
-  "list_of_examples": ["docs/0.1.1/examples/fiber_budget_spec.cr", "examples/support/memory_budget_sample_record.cr"],
-  "list_of_api_sources": ["src/memory_budget/spec_expectations.cr", "src/memory_budget/scenario_memory_policy.cr", "src/memory_budget/memory_metric_limit.cr", "src/memory_budget/allocation_memory_snapshot.cr"]
+  "list_of_examples": [
+    "docs/0.1.1/examples/fiber_budget_spec.cr",
+    "examples/support/memory_budget_sample_record.cr"
+  ],
+  "list_of_api_sources": [
+    "src/memory_budget/spec_expectations.cr",
+    "src/memory_budget/scenario_memory_policy.cr",
+    "src/memory_budget/memory_metric_limit.cr",
+    "src/memory_budget/allocation_memory_snapshot.cr",
+    "scripts/native_environment.rb",
+    "scripts/prepare_native_manifest.rb",
+    "scripts/toolchain_profile.rb",
+    "scripts/budget.rb",
+    "scripts/run_specs.rb",
+    "templates/run_memory_budgets.rb"
+  ]
 }

@@ -34,7 +34,8 @@ def source_tree_sha256
   Digest::SHA256.hexdigest(paths.uniq.select { |path| File.file?(path) && !path.start_with?("performance/results/") }.sort.map { |path| "#{Digest::SHA256.file(path).hexdigest}  #{path}\n" }.join)
 end
 
-def execute_budget_command(command, environment, prefix)
+def execute_budget_command(command, environment, prefix, toolchain)
+  environment = environment.merge(toolchain.environment)
   stdout_path = prefix + ".stdout.txt"
   stderr_path = prefix + ".stderr.txt"
   process_status = nil
@@ -57,6 +58,7 @@ def execute_budget_command(command, environment, prefix)
     end
   end
   output = File.read(stdout_path) + File.read(stderr_path)
+  toolchain.environment
   puts output
   {"command" => command, "exit_status" => process_status && process_status.exitstatus, "timed_out" => has_timed_out, "stdout" => File.basename(stdout_path), "stderr" => File.basename(stderr_path), "output" => output}
 end
@@ -86,7 +88,7 @@ list_of_builds = []
 [["spec-build", entry_path, spec_binary], ["checker-build", File.join(bundle_root, "src", "cli.cr"), checker_binary]].each do |label, source, binary|
   FileUtils.rm_f(binary)
   command = bootstrap + ["build", source, "-Dfiber_allocation_tally", "-Dwithout_mt", "-o", binary]
-  result = execute_budget_command(command, environment, File.join(results_root, "memory-budget-#{label}"))
+  result = execute_budget_command(command, environment, File.join(results_root, "memory-budget-#{label}"), admitted_toolchain)
   list_of_builds << result.reject { |key, _value| key == "output" }
   break unless result.fetch("exit_status") == 0 && !result.fetch("timed_out") && File.executable?(binary)
 end
@@ -101,7 +103,7 @@ if has_passed
     next if run.fetch("injected") && !ARGV.include?("--self-test")
     label = run.fetch("label")
     run_environment = environment.merge("MEMORY_BUDGET_INJECT_REGRESSION" => run.fetch("injected") ? "1" : "0")
-    result = execute_budget_command([spec_binary, "--no-color"], run_environment, File.join(results_root, "memory-budget-#{label}"))
+    result = execute_budget_command([spec_binary, "--no-color"], run_environment, File.join(results_root, "memory-budget-#{label}"), admitted_toolchain)
     output = result.delete("output")
     observations = []
     passed = false
@@ -125,7 +127,7 @@ if has_passed
         verified_path = File.join(results_root, "memory-budget-verified.json")
         File.write(evidence_path, JSON.pretty_generate(evidence) + "\n")
         FileUtils.rm_f(verified_path)
-        verification = execute_budget_command([checker_binary, "check", policy_path, evidence_path, verified_path], environment, File.join(results_root, "memory-budget-verifier"))
+        verification = execute_budget_command([checker_binary, "check", policy_path, evidence_path, verified_path], environment, File.join(results_root, "memory-budget-verifier"), admitted_toolchain)
         verification.delete("output")
         verified = File.file?(verified_path) ? JSON.parse(File.read(verified_path)) : nil
         has_verified_pass = verified && verified.fetch("list_of_errors").empty? && verified.fetch("list_of_verdicts").size == required_scenarios.size && verified.fetch("list_of_verdicts").all? { |verdict| verdict.fetch("verdict_status") == "passed" && verdict.fetch("list_of_violations").empty? }
@@ -154,6 +156,8 @@ report = {"schema_version" => 2, "source_commit" => source_commit.strip, "source
           "bundle_manifest_sha256" => Digest::SHA256.file(manifest_path).hexdigest,
           "spec_executable_sha256" => spec_executable_sha256, "checker_sha256" => checker_sha256,
           "compiler_profile_sha256" => compiler_profile_sha256, "instrumentation_mode" => "fiber_allocation_tally/protocol-1",
+          "toolchain_schema_version" => profile.fetch("schema_version"),
+          "native_component_manifest_sha256" => profile["native_component_manifest_sha256"],
           "list_of_builds" => list_of_builds, "list_of_runs" => list_of_runs, "list_of_errors" => list_of_errors, "passed" => !!has_passed}
 File.write(File.join(results_root, "memory-budget-report.json"), JSON.pretty_generate(report) + "\n")
 exit(has_passed ? 0 : 2)

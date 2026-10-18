@@ -4,6 +4,13 @@ require "digest"
 require "json"
 require "fileutils"
 require "open3"
+require_relative "toolchain_profile"
+
+begin
+  native_environment = MemoryBudget::ToolchainProfile.revalidate_selection
+rescue MemoryBudget::ToolchainProfile::AdmissionError => error
+  abort error.message
+end
 
 # The boundary accepts an approved compiler/backend and an immutable stdlib source.
 package_root = File.expand_path("..", __dir__)
@@ -55,5 +62,18 @@ if %w[build spec run eval].include?(arguments.first)
   has_explicit_thread_count = compiler_arguments.any? { |argument| argument == "--threads" || argument.start_with?("--threads=") }
   arguments.insert(separator, "--threads", "1") unless has_explicit_thread_count
 end
-system(environment, compiler_path, *arguments, chdir: project_root)
-exit($?.exitstatus || 2)
+begin
+  # Apple Ruby clears loader variables at exec. Restore the hash-admitted values
+  # immediately before the compiler or spec process receives its environment.
+  native_environment = MemoryBudget::ToolchainProfile.revalidate_selection
+rescue MemoryBudget::ToolchainProfile::AdmissionError => error
+  abort error.message
+end
+system(environment.merge(native_environment), compiler_path, *arguments, chdir: project_root)
+compiler_status = $?.exitstatus || 2
+begin
+  MemoryBudget::ToolchainProfile.revalidate_selection
+rescue MemoryBudget::ToolchainProfile::AdmissionError => error
+  abort error.message
+end
+exit compiler_status

@@ -6,6 +6,7 @@ require_relative "toolchain_profile"
 package_root = File.expand_path("..", __dir__)
 begin
   identity = MemoryBudget::ToolchainProfile.resolve(package_root)
+  ENV.update(identity.environment)
 rescue MemoryBudget::ToolchainProfile::AdmissionError => error
   abort error.message
 end

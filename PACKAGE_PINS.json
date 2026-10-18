@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "05802d76308ef009954b2cef256a0d86310030c968d3e987f5b924fead98e86f"
+      "sha256": "4486ad28683f1f13931469434e3b4772a577302b25053761e07bb24586cacd04"
     },
     {
       "file": "docs/0.1.1/capabilities.md",
@@ -33,15 +33,19 @@
     },
     {
       "file": "docs/0.1.1/index.md",
-      "sha256": "3ae6ee2f763904b20df2ac42c9326474817d660d10a88481672ee920a78e7fd2"
+      "sha256": "a74e5cb38662ed065866d7c3687cf0e93b263f86b7e1a184d8edfeb00fb2e717"
+    },
+    {
+      "file": "docs/0.1.1/native-toolchain.md",
+      "sha256": "73d1d5baa2c9c4e1c0f7ff03e0d78bf270258c5de6a2eb0fb8cb3e99c7ad9daa"
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "e096501a189c8fe5e4c94fa240d11dff9ca241e77db80d1b63b93015cfdc50c8"
+      "sha256": "6239030a6f6912ecc84c28aa8298c9e06315632aa31fa238b767ebf53ac3d792"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "f3fa495fa59be0ccc2e1e84bb56d0a43a17719741bfd34f6576bfaeea6c0d403"
+      "sha256": "e8bd5b9594cfcb1d52b08e99e62e78a6ec764a13ca8767a26f64db76d9a9eea3"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -93,7 +97,7 @@
     },
     {
       "file": "scripts/budget.rb",
-      "sha256": "94c7c5c2403f2ff0c1ea17de503f596e05e65781ce4cbf60de378b59ceb57365"
+      "sha256": "965d444799df5b5b0aac29e00b620c37cf54444040d29746f285582b18c8e519"
     },
     {
       "file": "scripts/docs/manage_corpus.py",
@@ -112,16 +116,24 @@
       "sha256": "ecbaf6bb043a6aeffac10a940cc2e69ac979f7788a4800495dcafe68ed4f06ba"
     },
     {
+      "file": "scripts/native_environment.rb",
+      "sha256": "43a9bde26fc3fc854a54abc74f8d0aeacd03c89e0286cda1cd29111f2b39e113"
+    },
+    {
+      "file": "scripts/prepare_native_manifest.rb",
+      "sha256": "ba95bafccb4efc8a86ce1f2b5688dc74a0660187cad8aaceef3489174d040f18"
+    },
+    {
       "file": "scripts/run_specs.rb",
-      "sha256": "e62c55a2353f0a2f7d432ae615f34981a23719ce53d9b83a193aa10843804c5d"
+      "sha256": "0a4dd4a4e1ba7f5d371a2f9ab050fd8cb32769ab6eaafbf9a4ac0ac09b68539d"
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "afd9cbed8fe4c82209661addcd21ec8e9c92d65384a4f6e3fe3bf338bd2c234b"
+      "sha256": "586c965e6150854c4e35cfbc03053a05921d0f968f43e6f8f6d443da542e0d36"
     },
     {
       "file": "skills/crystal-memory-budgets/SKILL.md",
-      "sha256": "b52d672363e940a48106fa62bcac1f9208afe8d157327d11e852e79c194a9288"
+      "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
     },
     {
       "file": "skills/crystal-memory-budgets/agents/openai.yaml",
@@ -229,7 +241,7 @@
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "7e3f171afcc6f6e9c033bed2bde400c58c1b660179e9b50a68782eb3461ddc25"
+      "sha256": "22655f693fd7d4312263a90b13626e0ad794bf915a669c4c793f05765e3d48cb"
     },
     {
       "file": "toolchain.darwin-arm64.json",
