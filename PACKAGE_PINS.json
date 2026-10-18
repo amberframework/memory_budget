@@ -177,7 +177,7 @@
     },
     {
       "file": "templates/run_memory_budgets.rb",
-      "sha256": "ca5bb25241a16deef5a72b8f1733f3dd28debbe7493d059e6373964c01434ae3"
+      "sha256": "b7059f02278b9b79cb0b19dd4dd9e05a1063d4983b44e62844b311e9b8acb618"
     },
     {
       "file": "toolchain.darwin-arm64.json",

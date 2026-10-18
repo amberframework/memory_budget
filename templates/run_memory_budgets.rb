@@ -75,7 +75,7 @@ entry_path = File.join(results_root, "memory_budget_spec_entry.cr")
 File.write(entry_path, list_of_spec_files.map { |path| "require #{("../../" + path).to_json}\n" }.join)
 spec_binary = File.join(results_root, "memory-budget-spec")
 checker_binary = File.join(results_root, "memory-budget-check")
-environment = {"MEMORY_BUDGET_PROJECT_ROOT" => project_root, "CRYSTAL_WORKERS" => "1"}
+environment = {"MEMORY_BUDGET_PROJECT_ROOT" => project_root, "CRYSTAL_WORKERS" => "1", "MEMORY_BUDGET_TOOLCHAIN_LOCK" => profile_path}
 list_of_builds = []
 [["spec-build", entry_path, spec_binary], ["checker-build", File.join(bundle_root, "src", "cli.cr"), checker_binary]].each do |label, source, binary|
   FileUtils.rm_f(binary)
