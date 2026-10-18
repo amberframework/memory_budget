@@ -446,4 +446,101 @@ class PortableToolchainTest < Minitest::Test
     assert_includes output + errors, "Dependency lock is missing a required shard"
     refute File.exist?(File.join(project, "fixture-install.json"))
   end
+
+  def prepare_minecart_compiler_fixture
+    @environment["PATH"] = @bin + File::PATH_SEPARATOR + "/usr/bin:/bin"
+    @environment["CRYSTAL"] = nil
+    @environment["CRYSTAL_VERSION"] = nil
+    write_executable(@backend, <<~RUBY)
+      #!#{RbConfig.ruby}
+      require "json"
+      File.open(ENV.fetch("FIXTURE_COMPILER_LOG"), "a") { |file| file.puts(JSON.generate(ARGV)) }
+      if ARGV == ["env", "CRYSTAL_PATH"]
+        puts ENV.fetch("FIXTURE_STDLIB")
+      elsif ARGV == ["env", "CRYSTAL_VERSION"]
+        puts "1.21.0"
+      else
+        abort "Unexpected compiler fixture command"
+      end
+    RUBY
+    write_executable(@minecart, <<~RUBY)
+      #!#{RbConfig.ruby}
+      require "json"
+      require "open3"
+      if ARGV == ["--version"]
+        puts "Minecart fixture-1"
+      else
+        version = ENV["CRYSTAL_VERSION"]
+        unless version
+          compiler = ENV.fetch("CRYSTAL", "crystal")
+          begin
+            output, errors, status = Open3.capture3(compiler, "env", "CRYSTAL_VERSION")
+          rescue Errno::ENOENT => error
+            abort "Could not execute compiler: #{'#{error.message}'}"
+          end
+          abort "Compiler metadata failed: #{'#{errors}'}" unless status.success?
+          version = output.strip
+        end
+        File.open(ENV.fetch("MEMORY_BUDGET_COMPILER_ENTRYPOINT"), "a") { |file| file.puts "# changed admitted entrypoint" } if ENV["FIXTURE_MUTATE_ENTRYPOINT"] == "1"
+        File.open(ENV.fetch("CRYSTAL"), "a") { |file| file.puts "# changed admitted backend" } if ENV["FIXTURE_MUTATE_BACKEND"] == "1"
+        File.write("fixture-install.json", JSON.generate({"arguments" => ARGV,
+          "compiler" => ENV["CRYSTAL"], "reported_compiler_version" => version,
+          "ambient_version_present" => ENV.key?("CRYSTAL_VERSION")}))
+      end
+    RUBY
+    @profile.merge!("compiler_sha256" => hash(@backend), "minecart_sha256" => hash(@minecart))
+    write_profile("normal", @profile)
+    @environment["MEMORY_BUDGET_MINECART"] = @minecart
+  end
+
+  def assert_minecart_uses_the_admitted_compiler(extra = {})
+    output, errors, status, project = dependencies(extra)
+    assert status.success?, output + errors
+    install = JSON.parse(File.read(File.join(project, "fixture-install.json")))
+    assert_equal File.realpath(@backend), install.fetch("compiler")
+    assert_equal "1.21.0", install.fetch("reported_compiler_version")
+    assert_equal false, install.fetch("ambient_version_present")
+    calls = File.readlines(@compiler_log).map { |line| JSON.parse(line) }
+    assert_equal 1, calls.count(["env", "CRYSTAL_VERSION"])
+    receipt = JSON.parse(File.read(File.join(project, "performance/results/dependency-toolchain.json")))
+    assert_equal File.realpath(@backend), receipt.fetch("dependency_compiler_path")
+    assert_equal hash(@backend), receipt.fetch("dependency_compiler_sha256")
+  end
+
+  def test_minecart_compiler_uses_admitted_backend_with_missing_bare_crystal
+    relocate_prefix("admitted compiler prefix with spaces")
+    prepare_minecart_compiler_fixture
+    assert_minecart_uses_the_admitted_compiler
+  end
+
+  def test_minecart_compiler_replaces_wrong_ambient_executable
+    prepare_minecart_compiler_fixture
+    wrong = File.join(@prefix, "wrong compiler")
+    log = File.join(@temporary, "wrong-compiler.log")
+    write_executable(wrong, "#!#{RbConfig.ruby}\nFile.write(#{log.to_json}, 'selected')\nexit 37\n")
+    assert_minecart_uses_the_admitted_compiler("CRYSTAL" => wrong)
+    refute File.exist?(log)
+  end
+
+  def test_minecart_compiler_reads_actual_metadata_instead_of_ambient_version
+    prepare_minecart_compiler_fixture
+    assert_minecart_uses_the_admitted_compiler("CRYSTAL_VERSION" => "0.0.0")
+  end
+
+  def test_dependency_compiler_entrypoint_drift_is_rejected_after_install
+    prepare_minecart_compiler_fixture
+    output, errors, status, project = dependencies("FIXTURE_MUTATE_ENTRYPOINT" => "1")
+    refute status.success?, output + errors
+    assert_includes output + errors, "wrapper SHA-256 mismatch"
+    assert File.file?(File.join(project, "fixture-install.json"))
+  end
+
+  def test_dependency_compiler_backend_drift_is_rejected_after_install
+    prepare_minecart_compiler_fixture
+    output, errors, status, project = dependencies("FIXTURE_MUTATE_BACKEND" => "1")
+    refute status.success?, output + errors
+    assert_includes output + errors, "Compiler SHA-256 mismatch"
+    assert File.file?(File.join(project, "fixture-install.json"))
+  end
+
 end

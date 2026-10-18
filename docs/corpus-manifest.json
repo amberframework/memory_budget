@@ -31,7 +31,7 @@
     },
     {
       "file": "docs/0.1.1/git-provider.md",
-      "sha256": "f0c9b83560931b148752ce852762d3ff0557f6edc17938239b23f801f4b1c061"
+      "sha256": "c9f33fb9bcf6dc7bab74894dfc722fc11419f51578dcb5dd3e074701c65dc26d"
     },
     {
       "file": "docs/0.1.1/index.md",
@@ -105,7 +105,7 @@
     },
     {
       "file": "scripts/install_frozen_dependencies.rb",
-      "sha256": "7e97b15a0be9fa15ce4868c073c61ec0549f7551249e3b9f9f943b26bfd2cf13"
+      "sha256": "1445da62603be93fe1d9a455e2492768a61b0b35855db78a439a9717bbde643c"
     },
     {
       "file": "scripts/git_provider.rb",

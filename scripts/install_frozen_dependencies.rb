@@ -14,7 +14,10 @@ begin
   abort "Toolchain profile requires a nonblank minecart_version" unless version.is_a?(String) && !version.strip.empty?
   tool = MemoryBudget::ToolchainProfile.executable(ENV["MEMORY_BUDGET_MINECART"], "minecart", "Minecart")
   abort "Minecart SHA-256 mismatch: #{tool}" unless Digest::SHA256.file(tool).hexdigest == profile.fetch("minecart_sha256")
-  output, errors, status = Open3.capture3(identity.environment, tool, "--version")
+  dependency_environment = lambda do
+    identity.environment.merge("CRYSTAL" => identity.compiler_path, "CRYSTAL_VERSION" => nil, "CRYSTAL_WORKERS" => "1")
+  end
+  output, errors, status = Open3.capture3(dependency_environment.call, tool, "--version")
   identity.environment
   abort "Minecart SHA-256 mismatch after version readback" unless Digest::SHA256.file(tool).hexdigest == profile.fetch("minecart_sha256")
   abort "Minecart version mismatch: #{output.strip} #{errors.strip}" unless status.success? && output.strip == version
@@ -30,9 +33,11 @@ begin
   abort "Dependency lock is missing a required shard" unless (required - locked.keys).empty?
   abort "Every locked dependency requires an immutable checksum" unless locked.values.all? { |entry| entry.is_a?(Hash) && entry["checksum"].is_a?(String) && entry["checksum"].match?(/\A(?:git-tree:[0-9a-f]{40}|sha256:[0-9a-f]{64})\z/) }
   FileUtils.mkdir_p("performance/results")
-  receipt = identity.to_h.merge("minecart_path" => tool, "minecart_sha256" => profile.fetch("minecart_sha256"), "minecart_version" => output.strip, "dependency_pins" => pins)
+  receipt = identity.to_h.merge("minecart_path" => tool, "minecart_sha256" => profile.fetch("minecart_sha256"), "minecart_version" => output.strip, "dependency_pins" => pins,
+    "dependency_compiler_path" => identity.compiler_path,
+    "dependency_compiler_sha256" => Digest::SHA256.file(identity.compiler_path).hexdigest)
   File.write("performance/results/dependency-toolchain.json", JSON.pretty_generate(receipt) + "\n")
-  has_installed = system(identity.environment.merge("CRYSTAL_WORKERS" => "1"), tool, "install", "--frozen", "--skip-ai-docs", "--jobs=1")
+  has_installed = system(dependency_environment.call, tool, "install", "--frozen", "--skip-ai-docs", "--jobs=1")
   identity.environment
   abort "Minecart SHA-256 mismatch after frozen install" unless Digest::SHA256.file(tool).hexdigest == profile.fetch("minecart_sha256")
   abort "Frozen dependency install failed" unless has_installed

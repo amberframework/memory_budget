@@ -62,7 +62,7 @@ Schema 3 adds `git_provider_manifest_sha256` and an explicit
 identity command require this Git capability. A private account-owned delegate
 selects the pinned backend and complete helper/alias target roster. The
 [Git provider guide](docs/0.1.1/git-provider.md) covers candidate preparation,
-legacy scope, isolated configuration and ordinary-entrypoint acceptance.
+legacy scope, isolated configuration and ordinary-entrypoint acceptance. The frozen installer selects that admitted compiler backend for Minecart metadata and records its path/hash while retaining wrapper admission; compiler selection follows the profile across ordinary installation paths.
 
 All three profile schemas require a nonblank `profile`, counter protocol 1, and
 `compiler_sha256`, `stdlib_sha256`, and `ruby_sha256`. Optional
