@@ -23,6 +23,11 @@ ruby scripts/budget.rb run examples/sqlite_cache.cr -- 1
 
 The first process and C-owner commands pass; their tight-limit counterparts exit 2. The C example replays hash-pinned research evidence, while the process example measures its own live touched 8 MiB buffer. The SQLite specification opens a real connection, grows its cache with 100 blobs, and checks sufficient and tight limits. Instrumented spec runs require the runtime capability explicitly.
 
+The SQLite adapter supplies its own SQLite link by default. A caller whose driver
+already owns that link compiles with `-Dmemory_budget_sqlite_linked_by_caller`.
+This gives the final executable one link owner while preserving the live
+connection-status API. Grant's runnable SQLite example exercises that integration.
+
 ## Use it in a spec
 
 Require `memory_budget/spec_expectations` from the existing spec helper. For the embedded distribution, require `../performance/vendor/memory_budget/src/memory_budget/spec_expectations` instead. App-owned memory policies stay in `performance/memory_budget.json` or the typed configuration API, with package metadata in `shard.yml`. Existing latency policies retain `performance/budget.json`.

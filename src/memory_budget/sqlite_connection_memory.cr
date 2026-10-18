@@ -1,4 +1,6 @@
-@[Link("sqlite3")]
+{% unless flag?(:memory_budget_sqlite_linked_by_caller) %}
+  @[Link("sqlite3")]
+{% end %}
 lib LibMemoryBudgetSQLite
   fun sqlite3_db_status(database : Void*, operation : Int32, current : Int32*, highwater : Int32*, reset : Int32) : Int32
   fun sqlite3_libversion : UInt8*

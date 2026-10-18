@@ -13,7 +13,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "b9838bd8eccef609f77a8459ad30ff1a36db6bc9571815bdd1d2882ed6f678eb"
+      "sha256": "c1a5e7a411276299aedecbc2441f1d2967a32f3b7c353cb0320b4a198b80d20e"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -161,7 +161,7 @@
     },
     {
       "file": "src/memory_budget/sqlite_connection_memory.cr",
-      "sha256": "f61c7a0cc89410b8c7ea641edcd2d35871921d2a755453a27d6cd943c9a7ed1c"
+      "sha256": "60ba3ffea1f11924aaedd21af515c461d0f64413e28c313b67a44e8278d6e191"
     },
     {
       "file": "src/memory_budget/verify_memory_contract_evidence.cr",
@@ -173,7 +173,7 @@
     },
     {
       "file": "templates/memory-budgets.yml",
-      "sha256": "a2e41e821641a9b43b26487fde8a95197df3ef07cfa874a5434c726f3f8c271d"
+      "sha256": "87174f477689587281fe68777490f7367f339449deda8edf466904012df4117f"
     },
     {
       "file": "templates/run_memory_budgets.rb",
