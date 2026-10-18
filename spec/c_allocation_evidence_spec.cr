@@ -32,7 +32,7 @@ describe MemoryBudget::ReadCAllocationEvidence do
 
     it "refuses a missing window instead of taking the remaining maximum" do
       coverage = MemoryBudget::CAllocationCoverage.from_json(c_fixture("labels_released_10_run1.checkpoint.json"))
-      truncated = c_fixture("labels_released_10_run1.tsv").lines.reject { |line| line.includes?("\t20\tthread\t") }.join("\n")
+      truncated = c_fixture("labels_released_10_run1.tsv").lines.reject(&.includes?("\t20\tthread\t")).join("\n")
       reader = MemoryBudget::ReadCAllocationEvidence.new(truncated, coverage)
       policy = MemoryBudget::ScenarioMemoryPolicy.new("c_labels", "c_window", [MemoryBudget::MemoryMetricLimit.new("c_requested_bytes", 100_000_u64)])
       expect_raises(MemoryBudget::MemoryBudgetError, "Missing or duplicated") { reader.read_window_observations(policy) }
