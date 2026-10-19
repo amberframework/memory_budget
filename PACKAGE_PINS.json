@@ -41,7 +41,7 @@
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "08bd63ba9edc6a58e4dda2144c63c78cb47eb45d1d7194f9760b2ae6badf1059"
+      "sha256": "5a0fc398e7cac3cc2beb4e71677383bc722342105cb0268faeaae2d6a7550d33"
     },
     {
       "file": "docs/0.1.1/prepare-toolchain.md",
@@ -49,7 +49,7 @@
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "188d69ec0c500d1f93fd033228521aa05eea42911b8031ba90f0c7d7e0c86ef0"
+      "sha256": "837e7c571b25af6e6aceb987268527f02d850f42f982f2e8d4911051cd03a5c8"
     },
     {
       "file": "docs/corpus.json",
@@ -129,7 +129,7 @@
     },
     {
       "file": "scripts/native_environment.rb",
-      "sha256": "9368fed0c93473b95bdbbbcba708e2c1ad54a5a2f1c37a24a0d6af4f0599d851"
+      "sha256": "ca07fc69dd4ba47658d109537e97eb0bc46352e5833c676920074cc4e3f3feae"
     },
     {
       "file": "scripts/prepare_git_manifest.rb",
@@ -137,7 +137,7 @@
     },
     {
       "file": "scripts/prepare_native_manifest.rb",
-      "sha256": "ba95bafccb4efc8a86ce1f2b5688dc74a0660187cad8aaceef3489174d040f18"
+      "sha256": "c615640d8b2dca83cdc517768ae74850c776051573336cf9ace6edcbfcf3dd2f"
     },
     {
       "file": "scripts/prepare_toolchain_profile.rb",
