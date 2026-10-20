@@ -49,11 +49,11 @@
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "837e7c571b25af6e6aceb987268527f02d850f42f982f2e8d4911051cd03a5c8"
+      "sha256": "f9142bfaad0437553bf7648ed92458fd96c87b3f49e9edd29d2a3cac88320510"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
+      "sha256": "d1f368d6d5bb917f9989308f3cbba4369a7408605f9f0b4e0fb6a60e08cba4d1"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -157,11 +157,15 @@
     },
     {
       "file": "skills/crystal-memory-budgets/SKILL.md",
-      "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
+      "sha256": "8d5acc89dd11b4dbe54cf85e61f2a4b7b31f7431821c271f773e1a0d0aacd1e1"
     },
     {
       "file": "skills/crystal-memory-budgets/agents/openai.yaml",
       "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/references/installation-validation.md",
+      "sha256": "71094350e34b42d0ef9332b8d8e77f04ef6bc547c057d0beac87fa38e64c0396"
     },
     {
       "file": "spec/fixtures/c/SOURCE_PINS.json",
