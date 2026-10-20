@@ -52,6 +52,6 @@ Actual process migration retains a separate acceptance requirement.
 
 These are synthetic private-allocation and process-boundary controls. Their
 actual execution and raw verification determine which claims are earned.
-Shared/migrated-page ownership, compiler-process RSS, a complete real build,
+Actual process migration, other shared cache/reclaim behavior, compiler-process RSS, a complete real build,
 ordinary installation, and Grant's 300/500-model matrix retain their separate
 required evidence. See the [kernel cgroup documentation](https://docs.kernel.org/admin-guide/cgroup-v2.html).

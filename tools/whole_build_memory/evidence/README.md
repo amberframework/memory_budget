@@ -1,5 +1,52 @@
 # Executed Linux descendant qualification
 
+## Shared-page charge extension
+
+Source `c33b03334b49c46e810f7d196428020b848777bd`, manifest
+`233f9658ccd015e2c9e7c268723963ed3713dbb2fc4a552f65d2b52a13288cfd`,
+adds four live shared-page cases and a cgroup write-permission refusal.
+[Actual run 39451872353](https://github.com/amberframework/memory_budget/actions/runs/39451872353)
+passes sixteen workloads, fifty changed-result controls, the preserved
+58-case cohorts and nine profile cases, real OOM and uncapped refusal, and
+complete return of all twenty-one containers and two temporary data files.
+Independent replay binds all 210 raw files. The original seven-file
+provider retains its existing identity.
+
+Both consumers map and consume the same 96-MiB file. Full content hash,
+inode, device, size, owner and mode agree across both consumers, the live
+host check and cleanup. The writer retains its charge while the reader is
+live. The ordinary case records:
+
+| Observation | Bytes |
+| --- | ---: |
+| Shared file | 100,663,296 |
+| Reader RSS high-water mark | 127,991,808 |
+| Reader current cgroup charge | 17,899,520 |
+| Writer current charge while reader is live | 121,696,256 |
+
+The result shows a resident mapping whose charge remains with a separate
+live owner. It supports distinct process-RSS and cgroup-charge policies.
+Kernel documentation describes the broader
+[memory ownership boundary](https://docs.kernel.org/admin-guide/cgroup-v2.html#memory-ownership).
+This experiment earns its observed file-mapping scope. Actual process
+migration and other cache/reclaim situations remain separate.
+
+Archive `linux-shared-39451872353.zip` is 214,487 bytes, SHA256
+`19c4b36d2d60f3c988226f58597e7f1aa8f91a4e6cf09807a725051bc9903bdc`.
+The GitHub metadata and complete acceptance roster are retained beside it.
+Replay uses this exact source commit and manifest, token `39451872353-1`,
+and the descendant evidence directory containing `HOST_RESULT.json`.
+The same validator entry points below apply. Each data-file owner must
+also record its initial absence, verified complete identity and final
+removal; the temporary data files are absent from the artifact.
+
+Every root probe observed EACCES when requesting a write handle for the
+read-only cgroup membership file. Mount and privilege checks remain in
+place. This is a tested mutation-permission boundary; actual process
+migration remains unaccepted. Actual compiler/build, ordinary installation,
+device proof and the observed Docker OOM-marker reliability question also
+remain open. Grant remains **0/144**.
+
 ## RSS protocol extension
 
 Source `3ea3bfcc55e1e520ee25d69000ea5e8d17d4a62a` adds self and
