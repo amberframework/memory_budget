@@ -22,10 +22,13 @@ refusals for changed, mixed, incomplete, duplicate, or wrongly typed profiles.
 Profile drift refuses before workload entry. The runner image and kernel
 remain an explicit observed platform boundary.
 
-The workload source manifest binds seven Python files by SHA256. Its exact
-54 source controls already ran in both ordinary and optimized modes on the
-recorded Darwin ARM64 development profile. The Linux workflow adds actual
-kernel behavior: separate capped ordinary and optimized containers, a real
+The workload source manifest binds seven Python files by SHA256. The original
+54 source controls ran in both ordinary and optimized modes on the recorded
+Darwin ARM64 development profile. The Linux reader uses the current numeric
+PID path so its physical-file identity checks work with the kernel's process
+files. Four additional controls reject external snapshots with missing event
+counters or Boolean/fractional measurements, bringing each cohort to 58.
+The Linux workflow exercises separate capped ordinary and optimized containers, a real
 OOM allocation, an uncapped refusal, and external terminal verification.
 The driver records and removes only its exact owned container identities.
 

@@ -121,6 +121,18 @@ def read_snapshot(read):
 def verify_snapshot(snapshot, limits):
     require(isinstance(snapshot, Snapshot) and isinstance(limits, Limits),
             'Typed kernel snapshot and declared limits are required')
+    counters = (snapshot.memory_max, snapshot.memory_current, snapshot.memory_peak,
+                snapshot.swap_max, snapshot.swap_current, snapshot.cpu_burst,
+                snapshot.pids_max, snapshot.pids_current)
+    require(all(type(value) is int and value >= 0 for value in counters)
+            and type(snapshot.cpu_max) is str,
+            'Complete nonnegative integer kernel counters are required')
+    require(type(snapshot.memory_events) is dict
+            and {'low', 'high', 'max', 'oom', 'oom_kill'} <= set(snapshot.memory_events)
+            and all(type(key) is str and re.fullmatch('[a-z_]+', key) is not None
+                    and type(value) is int and value >= 0
+                    for key, value in snapshot.memory_events.items()),
+            'Complete typed pressure and OOM event counters are required')
     require(snapshot.memory_max == limits.hard_memory_bytes,
             'The exact page-aligned strict memory ceiling must be active')
     require(0 < snapshot.memory_current <= snapshot.memory_peak < limits.strict_memory_bytes,

@@ -45,7 +45,7 @@ class TerminalControls(unittest.TestCase):
                 actual_Crystal_compilations=0, actual_Grant_cells=0)
             if index <= 2:
                 result.update(limits=budget.asdict(limits), before=budget.asdict(sample),
-                    after=budget.asdict(sample), passed=True, tests_run=54, failures=0, errors=0,
+                    after=budget.asdict(sample), passed=True, tests_run=58, failures=0, errors=0,
                     skipped=0, expected_failures=0, unexpected_successes=0,
                     optimized_python=selected == 'optimized')
             elif index == 3:

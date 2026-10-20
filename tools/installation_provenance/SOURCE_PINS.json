@@ -3,15 +3,15 @@
   "files": [
     {
       "path": "cgroup_budget.py",
-      "bytes": 7140,
+      "bytes": 7977,
       "mode": 420,
-      "sha256": "22f3bf0b5df2c8a6fbb86d8185dfbe94a911035d038d5197302f3f5a54cf773c"
+      "sha256": "c7d84f2916401b3d977246b69f94769fdf3c368511af45fb795607cfc199347f"
     },
     {
       "path": "test_cgroup_budget.py",
-      "bytes": 6836,
+      "bytes": 7788,
       "mode": 420,
-      "sha256": "e0b405a7214cf3a24948b051f31d3a0a9f22d063a9a30dd3e837556e17308871"
+      "sha256": "e0a85d445d8cf45508802e692ab85c62e2cbee5c815c5555e89bdca337c59ba2"
     },
     {
       "path": "native_image_protocol.py",
@@ -29,19 +29,19 @@
       "path": "run_controls.py",
       "bytes": 6538,
       "mode": 420,
-      "sha256": "cc8bc0455536da1b66447d026874a4c67364317f578c75b2c58bc264a5786002"
+      "sha256": "0a0ab3361b9714dcb67a7a2dde7b6e4507c4b2dd09b8131492c5cc2e1d2c3cee"
     },
     {
       "path": "verify_terminal.py",
       "bytes": 8763,
       "mode": 420,
-      "sha256": "e5dbe6f170cccd693171a821a666799a524c32dc67de6c058b8cde2ed1681512"
+      "sha256": "f35e2a9804afadf514beced484b02777f4ece92a1a33436afb0f10d82bfcdca9"
     },
     {
       "path": "test_verify_terminal.py",
       "bytes": 9116,
       "mode": 420,
-      "sha256": "d4f9dcee9a0168d3ab7ae73108269f9df89af296bcfb66b4e03fe72a60f8bcd8"
+      "sha256": "6b8166acba4ec1813095f302366429a47decee37daa97eb1484b538a22f44ff1"
     }
   ]
 }

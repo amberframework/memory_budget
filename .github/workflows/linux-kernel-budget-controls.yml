@@ -30,8 +30,8 @@ jobs:
         if: steps.profile.outputs.admitted == 'true'
         shell: bash
         env:
-          ATLAS_SOURCE_PINS_SHA256: c1ac1212bba7df75fc16bb0f50cc4cc4fa911e833d00bd7d34efb3a1b8d1cd61
-          ATLAS_TERMINAL_READER_SHA256: e5dbe6f170cccd693171a821a666799a524c32dc67de6c058b8cde2ed1681512
+          ATLAS_SOURCE_PINS_SHA256: 15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae
+          ATLAS_TERMINAL_READER_SHA256: f35e2a9804afadf514beced484b02777f4ece92a1a33436afb0f10d82bfcdca9
         run: |
           /usr/bin/python3 -I -S -B tools/installation_provenance/test_runner_profiles.py
           printf '%s  %s\n' "$ATLAS_SHA256SUM_SHA256" /usr/bin/sha256sum | /usr/bin/sha256sum --check --strict

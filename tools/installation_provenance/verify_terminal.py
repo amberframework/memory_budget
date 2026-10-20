@@ -94,11 +94,11 @@ def validate(root, pins_hash):
             hard = limits.hard_memory_bytes
             require(host['Memory'] == host['MemorySwap'] == hard
                     and state['ExitCode'] == 0 and state['OOMKilled'] is False
-                    and result['passed'] is True and result['tests_run'] == 54
+                    and result['passed'] is True and result['tests_run'] == 58
                     and result['failures'] == result['errors'] == result['skipped']
                     == result['expected_failures'] == result['unexpected_successes'] == 0
                     and result['optimized_python'] is (selected == 'optimized'),
-                    'Both exact 54-case cohorts must pass inside their finite kernel ceiling')
+                    'Both exact 58-case cohorts must pass inside their finite kernel ceiling')
         elif selected == 'oom':
             require(host['Memory'] == host['MemorySwap'] == 64*2**20-4096
                     and state['ExitCode'] == 137 and state['OOMKilled'] is True

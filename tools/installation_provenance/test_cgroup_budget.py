@@ -130,6 +130,24 @@ class CgroupBudget(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.snapshot(values)
 
+    def test_external_boolean_measurements_refuse(self):
+        with self.assertRaises(budget.BudgetRefused):
+            budget.verify_snapshot(replace(self.snapshot(), memory_current=True, memory_peak=True), self.limits)
+
+    def test_external_fractional_measurements_refuse(self):
+        with self.assertRaises(budget.BudgetRefused):
+            budget.verify_snapshot(replace(self.snapshot(), memory_current=1.5, memory_peak=2.5), self.limits)
+
+    def test_external_empty_event_roster_refuses(self):
+        with self.assertRaises(budget.BudgetRefused):
+            budget.verify_snapshot(replace(self.snapshot(), memory_events={}), self.limits)
+
+    def test_external_missing_OOM_counter_refuses(self):
+        counters = dict(self.snapshot().memory_events)
+        del counters['oom_kill']
+        with self.assertRaises(budget.BudgetRefused):
+            budget.verify_snapshot(replace(self.snapshot(), memory_events=counters), self.limits)
+
 
 if __name__ == '__main__':
     unittest.main()

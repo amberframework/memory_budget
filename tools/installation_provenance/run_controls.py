@@ -104,7 +104,7 @@ def main():
     suite = unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromModule(module)
                                for module in (test_cgroup_budget, test_native_image_protocol,
                                               test_verify_terminal))
-    require(suite.countTestCases() == 54, 'The exact 54 authored controls are required')
+    require(suite.countTestCases() == 58, 'The exact 58 authored controls are required')
     stream = BoundedText()
     result = unittest.TextTestRunner(stream=stream, verbosity=2).run(suite)
     verify_sources(root, root/'SOURCE_PINS.json', arguments.pins_sha256)
@@ -115,7 +115,7 @@ def main():
                   unexpected_successes=len(result.unexpectedSuccesses),
                   optimized_python=not __debug__, log=stream.getvalue(),
                   finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
-    report['passed'] = (result.wasSuccessful() and result.testsRun == 54
+    report['passed'] = (result.wasSuccessful() and result.testsRun == 58
                         and not result.skipped and not result.expectedFailures
                         and not result.unexpectedSuccesses)
     output.write_text(json.dumps(report, indent=2)+'\n')
