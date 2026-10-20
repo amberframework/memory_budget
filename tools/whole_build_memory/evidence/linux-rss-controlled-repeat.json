@@ -1,0 +1,10 @@
+{
+  "run": 39449551836,
+  "source": "3ea3bfcc55e1e520ee25d69000ea5e8d17d4a62a",
+  "first_attempt_terminal": true,
+  "repeat_count": 1,
+  "same_source_and_oom_predicate": true,
+  "reason": "Characterize the new missing Docker OOM marker while preserving the failed first attempt and requiring all original gates. A successful repeat earns its own execution scope and preserves the intermittency evidence.",
+  "first_failed_receipt_sha256": "2875eb4369bc0b0f47bb8cfdf7a037ab76d225d2407881072e47169932ca2ffd",
+  "actual_Grant_cells": 0
+}

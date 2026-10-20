@@ -1,5 +1,51 @@
 # Executed Linux descendant qualification
 
+## RSS protocol extension
+
+Source `3ea3bfcc55e1e520ee25d69000ea5e8d17d4a62a` adds self and
+largest-waited-child RSS counters, with Linux KiB units, to every observation.
+The new source manifest is
+`a2b816772ffc66ed8bebbb405c52f54434baa663a5d6afae63e87252da1b287c`.
+The original seven-file provider is unchanged. Two further cases hold two
+consumed 64-MiB private allocations live at once. In the ordinary case,
+the largest waited-child RSS peak is 94,117,888 bytes and the whole-group
+charged peak is 185,487,360 bytes. This demonstrates why the two metrics
+need their own names and budgets. Linux documents the largest-child scope
+in [getrusage](https://man7.org/linux/man-pages/man2/getrusage.2.html).
+
+[Actual run 39449551836, attempt 2](https://github.com/amberframework/memory_budget/actions/runs/39449551836/attempts/2)
+passes twelve probes, 34 changed-actual-result controls, the preserved
+58-case cohorts and nine profile controls, real OOM and uncapped refusal,
+and complete return of all seventeen containers. Independent replay binds
+all 162 raw files. Archive `linux-rss-39449551836-attempt-2.zip` is
+169,372 bytes, SHA256
+`4ff7637e68a81fa5ed218733a14238219b9b9908a23cdddc4a836136da7999cf`.
+The acceptance and GitHub metadata files are retained beside it. Replay
+uses that source commit, its exact manifest, token `39449551836-2`, and the
+directory containing `HOST_RESULT.json`. The same validation entry points
+described below apply.
+
+The original attempt is also retained. Its ordinary/optimized controls
+passed, but the deliberately over-limit process exited 137 with Docker's
+OOM marker false. The existing predicate refused before the RSS stage.
+All five containers were removed and read back absent. One controlled
+repeat retained the same source and exact OOM predicate; the complete
+observed tool/kernel/runner profiles match between attempts. A successful
+repeat preserves the first attempt's evidence. The missing marker's cause
+and its effect on operational reliability remain open release questions.
+
+The first archive is 49,299 bytes, SHA256
+`e3600ec03e73ffb8eaeec868628fd70b85ec38e610bf9420b36e0fc5b850843f`,
+with its complete 41-file roster and five returns in the refusal JSON.
+The repeat decision is also retained. The gate continues to require the
+actual OOM marker; exit 137 alone earns no OOM acceptance.
+
+This extension qualifies synthetic self/largest-child RSS observations.
+The actual compiler, shared/migrated charges, whole real builds, normal
+installation and devices remain required. Grant remains **0/144**.
+
+## Earlier descendant and sibling dataset
+
 Source `b2da5a87af39cbb198d315512d60a4f7e7fc0431` passed the
 [actual hosted run](https://github.com/amberframework/memory_budget/actions/runs/39447776437).
 Its exact three-file source manifest is
