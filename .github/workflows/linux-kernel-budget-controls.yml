@@ -4,6 +4,7 @@ on:
     paths:
       - tools/installation_provenance/**
       - .github/workflows/linux-kernel-budget-controls.yml
+      - tools/whole_build_memory/**
 permissions:
   contents: read
 concurrency:
@@ -37,6 +38,13 @@ jobs:
           printf '%s  %s\n' "$ATLAS_SHA256SUM_SHA256" /usr/bin/sha256sum | /usr/bin/sha256sum --check --strict
           printf '%s  %s\n' '2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee' tools/installation_provenance/run_ci.sh | /usr/bin/sha256sum --check --strict
           bash tools/installation_provenance/run_ci.sh
+      - name: Exercise transient descendants and sibling isolation
+        if: steps.profile.outputs.admitted == 'true'
+        shell: bash
+        run: |
+          /usr/bin/python3 -I -S -B tools/whole_build_memory/run_host.py \
+            --pins-sha256 cd52ce68149e386079d8ecb2eb3d03aa11d86ab8f1401fa4dfa21c90c157592d \
+            --runner-metadata "$RUNNER_TEMP/atlas-linux-runner.json"
       - name: Retain runner profile and complete control evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
@@ -45,5 +53,6 @@ jobs:
           path: |
             ${{ runner.temp }}/atlas-linux-runner.json
             tools/installation_provenance/ci-evidence-*/
+            tools/whole_build_memory/ci-evidence-*/
           if-no-files-found: error
           retention-days: 14

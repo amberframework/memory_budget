@@ -1,0 +1,23 @@
+{
+  "format": "atlas-whole-build-probe-sources-v1",
+  "files": [
+    {
+      "path": "probe.py",
+      "mode": 420,
+      "bytes": 14811,
+      "sha256": "db676293c6f694c0ec0fae3abc6f9910139f0341f9d6de6c000f4211d5043426"
+    },
+    {
+      "path": "run_host.py",
+      "mode": 420,
+      "bytes": 10026,
+      "sha256": "fe55969945f7b380c909eef9cb79bce4d0c03e14929a275f320675cf1997c9e0"
+    },
+    {
+      "path": "verify_results.py",
+      "mode": 420,
+      "bytes": 14694,
+      "sha256": "4eca5f9ff9ff8fe35ed038895bf4114454d4552d9275dd97908d13bc921b936c"
+    }
+  ]
+}
