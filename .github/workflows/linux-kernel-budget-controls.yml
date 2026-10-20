@@ -1,0 +1,48 @@
+name: Linux kernel budget qualification
+on:
+  pull_request:
+    paths:
+      - tools/installation_provenance/**
+      - .github/workflows/linux-kernel-budget-controls.yml
+permissions:
+  contents: read
+concurrency:
+  group: linux-kernel-budget-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  kernel-budget:
+    name: Record runner identity and exercise reviewed Linux controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Read runner identities and compare the reviewed profile
+        id: profile
+        shell: bash
+        run: |
+          sudo --non-interactive --preserve-env=ImageOS,ImageVersion /usr/bin/python3 -I -S -B tools/installation_provenance/record_linux_runner.py \
+            --output "$RUNNER_TEMP/atlas-linux-runner.json" \
+            --expected-profile tools/installation_provenance/runner_profile.json \
+            --github-output "$GITHUB_OUTPUT" --github-env "$GITHUB_ENV"
+      - name: Exercise capped, OOM, uncapped and terminal controls
+        if: steps.profile.outputs.admitted == 'true'
+        shell: bash
+        env:
+          ATLAS_SOURCE_PINS_SHA256: 449a03f954938c77d505c0759929c40568bdd01fd23dce3e16e65c23c0eba144
+          ATLAS_TERMINAL_READER_SHA256: e5dbe6f170cccd693171a821a666799a524c32dc67de6c058b8cde2ed1681512
+        run: |
+          printf '%s  %s\n' "$ATLAS_SHA256SUM_SHA256" /usr/bin/sha256sum | /usr/bin/sha256sum --check --strict
+          printf '%s  %s\n' '2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee' tools/installation_provenance/run_ci.sh | /usr/bin/sha256sum --check --strict
+          bash tools/installation_provenance/run_ci.sh
+      - name: Retain runner profile and complete control evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: linux-kernel-budget-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/atlas-linux-runner.json
+            tools/installation_provenance/ci-evidence-*/
+          if-no-files-found: error
+          retention-days: 14
