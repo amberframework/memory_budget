@@ -10,6 +10,8 @@ Python, Bash, sudo, sha256sum, and timeout. It records the daemon's reported
 version and Git revision, kernel, cgroup controller, and GitHub image identity.
 Reading the daemon executable uses the hosted VM's administrative metadata
 access. This phase starts zero containers and earns zero workload acceptance.
+The missing reviewed profile produces exit 2 while retaining the candidate
+artifact, so pending qualification remains a failed gate.
 
 Review the candidate and commit its exact `profile` object in
 `runner_profile.json` with format `atlas-linux-runner-profile-v1`. The next

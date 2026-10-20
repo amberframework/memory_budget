@@ -160,7 +160,8 @@ def main():
         with Path(args.github_output).open("a") as stream:
             stream.write("admitted=" + str(result["admitted"]).lower() + "\n")
         print(json.dumps(result, indent=2))
+    return 0 if result["admitted"] else 2
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
