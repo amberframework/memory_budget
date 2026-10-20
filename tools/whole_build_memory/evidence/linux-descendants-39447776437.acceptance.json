@@ -1,0 +1,1056 @@
+{
+  "passed": true,
+  "observed_at": "2026-10-20T15:24:48.992157+00:00",
+  "scope": "Linux private-allocation descendant peak retention, exact membership, sibling isolation and terminal return",
+  "source_commit": "b2da5a87af39cbb198d315512d60a4f7e7fc0431",
+  "source_manifest_sha256": "061ece6c4c78bd2e1c471facfcc048d81db09065f5935e3cda925a07bcfb8f09",
+  "provider_manifest_sha256": "15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae",
+  "workflow_url": "https://github.com/amberframework/memory_budget/actions/runs/39447776437",
+  "pull_request": "https://github.com/amberframework/memory_budget/pull/2",
+  "artifact_id": 12276662830,
+  "archive_sha256": "5bbdcbb53413e7f95fb67f310802a925cb767d2b06ea451dc409704fae059b4d",
+  "archive_published_digest": "sha256:5bbdcbb53413e7f95fb67f310802a925cb767d2b06ea451dc409704fae059b4d",
+  "accepted_probe_cases": 10,
+  "changed_actual_result_controls": {
+    "passed": true,
+    "controls": [
+      {
+        "mode": "ordinary",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "The final kernel peak must retain the retired private allocation"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_adoption",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "ordinary",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "ordinary-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "ordinary",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "ordinary-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_command",
+        "changed_actual_file": "ordinary-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "The final kernel peak must retain the retired private allocation"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_adoption",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "optimized",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "optimized-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "optimized",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "optimized-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "optimized",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_command",
+        "changed_actual_file": "optimized-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      }
+    ],
+    "restored_actual_accepted": true
+  },
+  "preserved_cohorts": [
+    {
+      "mode": "ordinary",
+      "tests": 58
+    },
+    {
+      "mode": "optimized",
+      "tests": 58
+    }
+  ],
+  "profile_admission_cases": 9,
+  "measurements": [
+    {
+      "case": "optimized-detached",
+      "before_current_bytes": 17387520,
+      "after_current_bytes": 17530880,
+      "retained_charged_peak_bytes": 109641728,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "optimized-direct",
+      "before_current_bytes": 17534976,
+      "after_current_bytes": 17575936,
+      "retained_charged_peak_bytes": 101400576,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "optimized-fork-exec",
+      "before_current_bytes": 17485824,
+      "after_current_bytes": 17879040,
+      "retained_charged_peak_bytes": 117981184,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "optimized-load",
+      "before_current_bytes": 17698816,
+      "after_current_bytes": 17674240,
+      "retained_charged_peak_bytes": 219279360,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "optimized-observer",
+      "before_current_bytes": 17424384,
+      "after_current_bytes": 17408000,
+      "retained_charged_peak_bytes": 17707008,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "ordinary-detached",
+      "before_current_bytes": 16764928,
+      "after_current_bytes": 16830464,
+      "retained_charged_peak_bytes": 109555712,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "ordinary-direct",
+      "before_current_bytes": 16945152,
+      "after_current_bytes": 17076224,
+      "retained_charged_peak_bytes": 100646912,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "ordinary-fork-exec",
+      "before_current_bytes": 16814080,
+      "after_current_bytes": 17383424,
+      "retained_charged_peak_bytes": 117428224,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "ordinary-load",
+      "before_current_bytes": 17571840,
+      "after_current_bytes": 17543168,
+      "retained_charged_peak_bytes": 219414528,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    },
+    {
+      "case": "ordinary-observer",
+      "before_current_bytes": 16756736,
+      "after_current_bytes": 16707584,
+      "retained_charged_peak_bytes": 17674240,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ]
+    }
+  ],
+  "all_owned_containers_removed": [
+    "06b86717d23fc3eca89eae3d3f83ee6aeb28970303a142f969b81989a2ed7d72",
+    "2f2bdf73ff676a552cb42ffb37b0064e241507b4fa36d02031e04cbacc6fef1e",
+    "3ac07189b5b5df05bc0d668054ad3be87438c5e271ac8372cd8e885a74f25eb9",
+    "46b531dd4c8f265f7c8f4f37020ac9e1c011e0083ff8dc92a193ad7144525a73",
+    "47d9387ee2bb904ac698ef2e07d12edcaf070252f5666a1a72d9df8a6e7462cb",
+    "51a9962361d055d5fffa120eecc59fbd2293a31b69450552e6c8e0910a0ecb71",
+    "67fe32a8e203049ac3522dcf851bffa076bb0918b556b415a3aa59c2eb91c057",
+    "7351a8a5a19f6c6ec07db12baa13c2871de02203f00232a2f0984c947852375f",
+    "90a850f512fee1bf7a48506920d691665a1941d36b4e01c971a8aebf8edef361",
+    "92d5aeaa2c9ac1206a35517336d2994c2acd8e00281eb3f5ce5f4ca3c15503ea",
+    "a7c87a1da254a8c03058cea6afa5292b1faa0af3d60afceccff5224331171177",
+    "c85901ba053e34b639388408b68492ad2ba785251dd738584a320149291f333f",
+    "db1b1d86767aaf817cfa031ffd1d1578e716d00f2cfeda33f6ce5f17b022573d",
+    "e5f9a55aeb78f12ab333a3c17e6492b1936dd44421651c9f171e4bd567317536",
+    "fb9c557a31209ece63da30e94e080a7dcf40d6a2363cc56a21d384e58afbbf34"
+  ],
+  "original_reader_gap": {
+    "path": "DESCENDANT_MEMBERSHIP_SENSITIVITY_AUDIT.json",
+    "sha256": "2ce22c4bfee61bf30551967e45a74ad168bc7f720591af084d545226031dd611",
+    "cases": 6
+  },
+  "raw_files": [
+    {
+      "path": "descendants-39447776437/_temp/atlas-linux-runner.json",
+      "bytes": 3166,
+      "sha256": "8c6d7f589c9693eae10a17b263d5777358023e4bae61335928e902c708f6238f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/2f2bdf73ff676a552cb42ffb37b0064e241507b4fa36d02031e04cbacc6fef1e.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/2f2bdf73ff676a552cb42ffb37b0064e241507b4fa36d02031e04cbacc6fef1e.cleanup-before.json",
+      "bytes": 10030,
+      "sha256": "3233cb53798b17f036dd633d4f8e05c04be39b2c7c00ff80b18b2c180841a11b"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/2f2bdf73ff676a552cb42ffb37b0064e241507b4fa36d02031e04cbacc6fef1e.cleanup.txt",
+      "bytes": 65,
+      "sha256": "67d23a32086490c11ae580646701ced79c0c5e1400f828ffc4fcb477a0ca6d71"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/46b531dd4c8f265f7c8f4f37020ac9e1c011e0083ff8dc92a193ad7144525a73.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/46b531dd4c8f265f7c8f4f37020ac9e1c011e0083ff8dc92a193ad7144525a73.cleanup-before.json",
+      "bytes": 9692,
+      "sha256": "8c96370b27e1b3138e098a4601d09302bbe070d7222c2656cb3b33ee02ab0bc6"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/46b531dd4c8f265f7c8f4f37020ac9e1c011e0083ff8dc92a193ad7144525a73.cleanup.txt",
+      "bytes": 65,
+      "sha256": "794e5e1fa45c1ba960924da2ba211f065cd7b73be48c9e968db26bcb169abcd3"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/7351a8a5a19f6c6ec07db12baa13c2871de02203f00232a2f0984c947852375f.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/7351a8a5a19f6c6ec07db12baa13c2871de02203f00232a2f0984c947852375f.cleanup-before.json",
+      "bytes": 10047,
+      "sha256": "9de787fb87f0bdeef82f30e039d0dff780a0e40527c5ef015bfc4a274372b1e2"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/7351a8a5a19f6c6ec07db12baa13c2871de02203f00232a2f0984c947852375f.cleanup.txt",
+      "bytes": 65,
+      "sha256": "3d76d1b9f4203cf0729af6d0c949d5d1618dae43e4e34167a7c08ce0b958a9ed"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/TERMINAL_ACCEPTANCE.json",
+      "bytes": 979,
+      "sha256": "c65e1a7a610ad66c8410859c5d42d8773e0c52eebf2628dc13aedc41653c34f0"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/a7c87a1da254a8c03058cea6afa5292b1faa0af3d60afceccff5224331171177.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/a7c87a1da254a8c03058cea6afa5292b1faa0af3d60afceccff5224331171177.cleanup-before.json",
+      "bytes": 10090,
+      "sha256": "982712f183cef3fdb1ffc23f4b9e2a9987b235c5e5126c414ee9f8bb08dcb3a2"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/a7c87a1da254a8c03058cea6afa5292b1faa0af3d60afceccff5224331171177.cleanup.txt",
+      "bytes": 65,
+      "sha256": "8cafeaf4fcff4976a58116ea190c2097f0bd57120df552dc5472d85a7cf25227"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/db1b1d86767aaf817cfa031ffd1d1578e716d00f2cfeda33f6ce5f17b022573d.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/db1b1d86767aaf817cfa031ffd1d1578e716d00f2cfeda33f6ce5f17b022573d.cleanup-before.json",
+      "bytes": 10042,
+      "sha256": "b8a53eb8ff4fb99b484cb3a3314cae2601f9f5a602806807c095dd797090b1c7"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/db1b1d86767aaf817cfa031ffd1d1578e716d00f2cfeda33f6ce5f17b022573d.cleanup.txt",
+      "bytes": 65,
+      "sha256": "daf771e2d2edea1d16b7e9b4be495fa3844d0e4f37ab0dfb474b522746f4efce"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/docker-version.txt",
+      "bytes": 769,
+      "sha256": "7ba4296d98811b3f6017879e4adb5452f8fe84ab8242b9bfd4fe14e394459098"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/image-inspect.json",
+      "bytes": 2761,
+      "sha256": "d13a2343013fce26ebed9867149ae25d3e0e4536b54c8493ae6f6c9b9f79c907"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/oom.client-exit.txt",
+      "bytes": 4,
+      "sha256": "e3b9c2844b5a5c2677b3a2279db2ec8487491dd9a23d6b22fac153391b3bb63c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/oom.inspect.json",
+      "bytes": 10030,
+      "sha256": "3233cb53798b17f036dd633d4f8e05c04be39b2c7c00ff80b18b2c180841a11b"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/oom.json",
+      "bytes": 1093,
+      "sha256": "6f8120e8cda8f3682d506462ee5abff482888cf73c547319aa1d2d0e292905fc"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/oom.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/oom.stdout.txt",
+      "bytes": 25,
+      "sha256": "f3543810a54f40b085722baba561f6fc9f617643baeb8def6b5ff20ec3906fbe"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/optimized.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/optimized.inspect.json",
+      "bytes": 10090,
+      "sha256": "982712f183cef3fdb1ffc23f4b9e2a9987b235c5e5126c414ee9f8bb08dcb3a2"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/optimized.json",
+      "bytes": 10543,
+      "sha256": "ed673ba3323d4a641dbfc11d9415b003feb6fe65ebff45ed0005d0346b8864d0"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/optimized.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/optimized.stdout.txt",
+      "bytes": 120,
+      "sha256": "48682fb7a0ad60b153234896eecbdac0ab3e4e8d6219fc9b05800530a8cec2df"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/ordinary.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/ordinary.inspect.json",
+      "bytes": 10047,
+      "sha256": "7539df1506b494e1600ad8ab10c6d5b584d57a38af723982f47dd9011630bd7d"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/ordinary.json",
+      "bytes": 10544,
+      "sha256": "85b3e1a5b2957ab341d90115c3a0c35fca95dfad524acbb4183365f66ed55f32"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/ordinary.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/ordinary.stdout.txt",
+      "bytes": 121,
+      "sha256": "b845d0f25f5cb004e5d049eabbf9d0d8b8bc6601db21cbdd9101007e19b3b19c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/terminal-reader.inspect.json",
+      "bytes": 9692,
+      "sha256": "8c96370b27e1b3138e098a4601d09302bbe070d7222c2656cb3b33ee02ab0bc6"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/terminal-reader.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/terminal-reader.stdout.txt",
+      "bytes": 821,
+      "sha256": "2b99cba09b2532458209da8716bda38c547277658e06a9d0f85e3c8e42d657f7"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/uncapped.client-exit.txt",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/uncapped.inspect.json",
+      "bytes": 10042,
+      "sha256": "ce879dc9819e599a4cba83568f99a2c2f2730a0d6992cefd1a3f57aa4e3601a6"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/uncapped.json",
+      "bytes": 767,
+      "sha256": "f69637448b1d87b05a796530f7334932fd703fc02232a9f2a58c5ba4bdfc3c6f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/uncapped.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39447776437-1/uncapped.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/HOST_RESULT.json",
+      "bytes": 10416,
+      "sha256": "39e6e14f1575f90201e3a931da042f70e1c3025fd79730543e395ad9b5b84280"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/image-inspect.json",
+      "bytes": 2403,
+      "sha256": "577cf7cbc2e736bf03c5fb30c574d3afddad538988293ca5533a6371b977cfbe"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.child.json",
+      "bytes": 933,
+      "sha256": "e044a8fff49684f3a1df5f85b780afcabdc65f7f4dceefc88eeb23017b6ce1a8"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.cleanup-before.json",
+      "bytes": 8366,
+      "sha256": "a2458706b4f4ffb2e2f29067c2a1aaae6fd7b4c3532c327bc554d6605ae619e8"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "39de94162b371b6e4d294fe6274ea718179af3afcfcc23326e359d4d962a4e08"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.inspect.json",
+      "bytes": 8366,
+      "sha256": "a2458706b4f4ffb2e2f29067c2a1aaae6fd7b4c3532c327bc554d6605ae619e8"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.json",
+      "bytes": 4293,
+      "sha256": "54771c7825e3067422cedc9df3b9dd76fdb92d90ba3fdd45533ea94719c3015f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.cleanup-before.json",
+      "bytes": 8355,
+      "sha256": "d3a256b6c5bdbd85c60d425b477bf8fccb7454ffe50e810b7bea0bca886f0ae6"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "d0df829902865561bd3cdcdfd995a38b7b1c12bf0b24e5ac919acd36c7b9123e"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.inspect.json",
+      "bytes": 8355,
+      "sha256": "9b6704c37d9b1a3794aad5ced7f366bd15b109451ab01a4444b3a622c1a4d0dc"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.json",
+      "bytes": 4001,
+      "sha256": "732e116346044eb03ccb82751b83d8bfa9f88056d243b094791e77113145641d"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.cleanup-before.json",
+      "bytes": 8373,
+      "sha256": "3af70627f56dd6a82aa83b7f19e874be1e6fdb2db45cba7caa56029609092886"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "d16cf028e56fcdb8b411e313b69c7afaada8e0644d7ee7b1783cdeb53c4cae8c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.inspect.json",
+      "bytes": 8373,
+      "sha256": "3af70627f56dd6a82aa83b7f19e874be1e6fdb2db45cba7caa56029609092886"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.json",
+      "bytes": 4415,
+      "sha256": "ed02f5ab74a56e51ef8e93397b6b6dc8e80a3700166def28bcd915eca71f2d90"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "cc115eb13ccac85fd53e6821fd413188d2dc46180dcc4b51f0ecf42c5790cb6c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "3052d99fa67dea6fac6742cb2d6aaed334a0748dd71cd160c07e25e7cda98b34"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.inspect.json",
+      "bytes": 8343,
+      "sha256": "cc115eb13ccac85fd53e6821fd413188d2dc46180dcc4b51f0ecf42c5790cb6c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.json",
+      "bytes": 2723,
+      "sha256": "cd5c2d4686e687758945daec40f44890eebcba9542fc5128f2e1a54893782604"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.ready.json",
+      "bytes": 759,
+      "sha256": "5e0a660b2a590c77cac0c8406d54da869608fb4d91b8aa36430949b560733f07"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.cleanup-before.json",
+      "bytes": 8366,
+      "sha256": "b6e9fabd7647a008df18f9f1bb1bb56caaa64b5c29750a1d1dcacd95f8638efa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "00bbec30bf96076606278258c34efdfdc39be9613973037fe5efc28c0a5b896c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.inspect.json",
+      "bytes": 8366,
+      "sha256": "b6e9fabd7647a008df18f9f1bb1bb56caaa64b5c29750a1d1dcacd95f8638efa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.json",
+      "bytes": 3549,
+      "sha256": "5fce963125e8b92e0c9230b67145709e659a223d343c334fc2a6baf33c0ab453"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.ready.json",
+      "bytes": 727,
+      "sha256": "ae248f4bcadb617659214efdde3450e68e88cb8a2429d2bb4bbd209d2fc5f44f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.sampled.json",
+      "bytes": 727,
+      "sha256": "e108d0638fd956215ca76111b565492328bc4141a67aa90303208134d3ca55cd"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/optimized-sibling-host.json",
+      "bytes": 1051,
+      "sha256": "8bd79d7e70b5f040346d52533bb1428260fb09d82db24bb621837604a3cb0889"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.child.json",
+      "bytes": 934,
+      "sha256": "ca7c1a9cc3c406e539a484e4584f5877a439b3f59926ece7cce39985d5c3292b"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.cleanup-before.json",
+      "bytes": 8337,
+      "sha256": "3bbdb2eaf395279365a6fa95b43be2e73791594db553f5cbd899c24a08b781b7"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "1bda561c0296d9a9362838943ef1e01d9232a3e40f4e57265391ea084b0a89ee"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.inspect.json",
+      "bytes": 8337,
+      "sha256": "3bbdb2eaf395279365a6fa95b43be2e73791594db553f5cbd899c24a08b781b7"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.json",
+      "bytes": 4295,
+      "sha256": "c2d47597770a38baa011bd9e3e6c60ce08923ac3c341c78a101faba00da3c720"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.cleanup-before.json",
+      "bytes": 8324,
+      "sha256": "aa5803c335e511ed0f0d861414c472b8d9ec07bf8e9f63571fc8a047e84e4d20"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "4f48dfb57fb9706e8f9638d1ac14e3f22a1d53dea6233e5e092e96c34a92e963"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.inspect.json",
+      "bytes": 8324,
+      "sha256": "aa5803c335e511ed0f0d861414c472b8d9ec07bf8e9f63571fc8a047e84e4d20"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.json",
+      "bytes": 4003,
+      "sha256": "b6925b62c4c22ca120cb6930aed4576c6b4a68df67a35cac2e3ce86f0f9ac286"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "1edf9e7876855dc4f8d61f9218546af4fb66756e51eb7b34a57da03e30e88a76"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "bc3d9058ff3bbdd8f1c98e763f34db47ab6ce668219b3cccfc4a61b53b7686ab"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.inspect.json",
+      "bytes": 8343,
+      "sha256": "1edf9e7876855dc4f8d61f9218546af4fb66756e51eb7b34a57da03e30e88a76"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.json",
+      "bytes": 4417,
+      "sha256": "a292016a46451f2a68c5b0407130ecf55e3953c260d514ca97301132ee5d52ad"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.cleanup-before.json",
+      "bytes": 8311,
+      "sha256": "e62a0955f278b0020ead077ad8b3ed00ab0f82dffae2e372f33fab8d9397ce9c"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "aa529c98d08be5251c677a70423031088450128e9b9989367fe39121be933f20"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.inspect.json",
+      "bytes": 8311,
+      "sha256": "7b3473565d43909f8858b06642b5b3cd6e6f5b4d267e5e4c9e737b4a1ce7998e"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.json",
+      "bytes": 2724,
+      "sha256": "b5e14b9527565dd3806060d95b92f4390d20babb16910fae87bf3e8b992f0fd8"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.ready.json",
+      "bytes": 759,
+      "sha256": "c0d6d38fca2bec1b6658587f22c5e10091314c372af6a0902ce7bb905c9ac077"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.cleanup-before.json",
+      "bytes": 8336,
+      "sha256": "2c81a04d565db5875ad4739b61abff3792b01024c651a8d87daf4e8cea0ee05f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "5822c7c1f6551dd6f08f3da8ce9fd89637f3cb1a35dc43534cff83a85d176559"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.inspect.json",
+      "bytes": 8336,
+      "sha256": "b8cdef31b346eb722df5f3d0113ac858b247548b751399a5a4166f241a7a1f22"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.json",
+      "bytes": 3550,
+      "sha256": "6ca0badb43d5471c5047269dae7ad69d825c2fca028b487dbcf99f73556c8bbf"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.ready.json",
+      "bytes": 727,
+      "sha256": "6fa4358d548e30bccb3dc295c676ac587a722c03ea6caebf12588e2d8e1cf10f"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.release",
+      "bytes": 31,
+      "sha256": "1f720fe3cfb345b4a77488bba20acd8def9d3d9c1a281029604f3904b8a01053"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.sampled.json",
+      "bytes": 727,
+      "sha256": "bee9331e3a55be6fbbbbb5e2eded71f1bf60553329ee3122eeead2428b457070"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39447776437/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39447776437-1/ordinary-sibling-host.json",
+      "bytes": 1051,
+      "sha256": "ae653214534072d4c3dd6b8e5cf9cc35c45638e90aa16f67be8058ca1916a3c0"
+    }
+  ],
+  "actual_Crystal_compilations": 0,
+  "actual_Grant_cells": 0,
+  "compiler_rss_accepted": false,
+  "complete_Grant_build_accepted": false,
+  "installed_SDK_accepted": false,
+  "clean_device_installation_accepted": false,
+  "remaining_build_provider_gates": [
+    "shared and migrated charge boundaries",
+    "compiler-process RSS qualification",
+    "complete real build window and behavior"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "source": "568aee6a60f380612f13c29aa2610ddc7c90aaf3",
+  "actual_result_mutation": "omit parent and launcher from hot worker membership",
+  "observations": [
+    {
+      "case": "ordinary-direct.json",
+      "changed_roster_accepted": true
+    },
+    {
+      "case": "ordinary-fork-exec.json",
+      "changed_roster_accepted": true
+    },
+    {
+      "case": "ordinary-detached.json",
+      "changed_roster_accepted": true
+    },
+    {
+      "case": "optimized-direct.json",
+      "changed_roster_accepted": true
+    },
+    {
+      "case": "optimized-fork-exec.json",
+      "changed_roster_accepted": true
+    },
+    {
+      "case": "optimized-detached.json",
+      "changed_roster_accepted": true
+    }
+  ]
+}
