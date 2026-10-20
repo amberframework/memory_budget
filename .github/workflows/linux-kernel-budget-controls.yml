@@ -30,7 +30,7 @@ jobs:
         if: steps.profile.outputs.admitted == 'true'
         shell: bash
         env:
-          ATLAS_SOURCE_PINS_SHA256: 449a03f954938c77d505c0759929c40568bdd01fd23dce3e16e65c23c0eba144
+          ATLAS_SOURCE_PINS_SHA256: c1ac1212bba7df75fc16bb0f50cc4cc4fa911e833d00bd7d34efb3a1b8d1cd61
           ATLAS_TERMINAL_READER_SHA256: e5dbe6f170cccd693171a821a666799a524c32dc67de6c058b8cde2ed1681512
         run: |
           /usr/bin/python3 -I -S -B tools/installation_provenance/test_runner_profiles.py

@@ -160,7 +160,8 @@ class CurrentCgroup:
         self.limits = limits
 
     def snapshot(self):
-        verify_mount(read_small('/proc/self/mountinfo', 1024*1024),
-                     read_small('/proc/self/cgroup'))
+        process = Path('/proc') / str(os.getpid())
+        verify_mount(read_small(process/'mountinfo', 1024*1024),
+                     read_small(process/'cgroup'))
         return verify_snapshot(read_snapshot(
             lambda name: read_small(Path('/sys/fs/cgroup')/name)), self.limits)
