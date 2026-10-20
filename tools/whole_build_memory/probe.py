@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import resource
 import signal
 import stat
 import subprocess
@@ -101,6 +102,8 @@ def context(budget, provider):
          and all(value > 0 for value in members), 'Stable finite live cgroup membership required')
     return {'identity': identity, 'cgroup_key': {'device': group.st_dev, 'inode': group.st_ino},
             'membership': membership, 'members': sorted(members),
+            'self_peak_rss_kib': resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+            'waited_children_peak_rss_kib': resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss,
             'snapshot': budget.asdict(provider.snapshot()), 'monotonic_ns': time.monotonic_ns()}
 
 
@@ -132,10 +135,14 @@ def command(args, worker):
 
 def worker(args, budget, provider):
     output = Path(args.output)
-    if args.worker == 'allocate':
+    if args.worker in ('allocate', 'hold'):
         before = context(budget, provider)
         value = allocation(CHILD_BYTES, provider.limits.page_size)
         hot = context(budget, provider)
+        if args.worker == 'hold':
+            save(marker(output, '.rss-' + str(os.getpid()) + '.ready.json'), {'hot': hot})
+            need(json.loads(wait_file(marker(output, '.overlap.release')).read_bytes()) == {'token': args.token},
+                 'Exact overlapping-worker release token required')
         print(json.dumps({'stage': 'allocation', 'before': before, 'hot': hot, 'optimized_python': not __debug__,
                           'allocation_bytes': len(value), 'touched_pages': len(value) // provider.limits.page_size}), flush=True)
         return
@@ -212,6 +219,39 @@ def run_child(args, budget, provider):
             'worker_records': rows, 'detached': detached, 'parent_live_child_polls': 0 if args.case != 'detached' else 1}
 
 
+def overlapping_rss(args, budget, provider):
+    before = alone(budget, provider)
+    children = []
+    try:
+        for unused in range(2):
+            children.append(subprocess.Popen(command(args, 'hold'), stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE))
+        ready = []
+        for child in children:
+            path = marker(Path(args.output), '.rss-' + str(child.pid) + '.ready.json')
+            ready.append(json.loads(wait_file(path).read_bytes()))
+        during = context(budget, provider)
+        need(during['members'] == sorted([os.getpid()] + [child.pid for child in children])
+             and during['snapshot']['memory_current'] >= 2 * CHILD_BYTES,
+             'Both private workers must overlap in the same complete charged window')
+        save(marker(Path(args.output), '.overlap.release'), {'token': args.token})
+        rows = []
+        for child in children:
+            stdout, stderr = child.communicate(timeout=10)
+            need(child.returncode == 0 and not stderr and len(stdout) <= 128 * 1024,
+                 'Both overlapping workers must complete normally')
+            records = [json.loads(line) for line in stdout.splitlines()]
+            need(len(records) == 1 and records[0]['hot'] == ready[len(rows)]['hot'],
+                 'The overlapping output must bind the held live observation')
+            rows.append({'pid': child.pid, 'exit_code': child.returncode, 'allocation': records[0]})
+        return {'before': before, 'during': during, 'after': alone(budget, provider), 'workers': rows}
+    finally:
+        for child in children:
+            if child.poll() is None:
+                child.kill()
+                child.wait(timeout=3)
+
+
 def sibling(args, budget, provider):
     output = Path(args.output)
     prefix = output.stem.rsplit('-', 1)[0]
@@ -254,8 +294,8 @@ def host_identity(args, budget):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--case', choices=('direct', 'fork-exec', 'detached', 'observer', 'load'))
-    parser.add_argument('--worker', choices=('allocate', 'fork-exec', 'detach'))
+    parser.add_argument('--case', choices=('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load'))
+    parser.add_argument('--worker', choices=('allocate', 'hold', 'fork-exec', 'detach'))
     parser.add_argument('--output')
     parser.add_argument('--token')
     parser.add_argument('--pins-sha256', required=True)
@@ -282,7 +322,12 @@ def main():
               'provider_pins_sha256': PROVIDER_PINS, 'runtime_sha256': digest(Path(sys.executable).resolve()),
               'compiler_rss_accepted': False, 'complete_Grant_build_accepted': False, 'actual_Grant_cells': 0}
     try:
-        result = run_child(args, budget, provider) if args.case in ('direct', 'fork-exec', 'detached') else sibling(args, budget, provider)
+        if args.case == 'rss-overlap':
+            result = overlapping_rss(args, budget, provider)
+        elif args.case in ('direct', 'fork-exec', 'detached'):
+            result = run_child(args, budget, provider)
+        else:
+            result = sibling(args, budget, provider)
         report.update(result)
         verify_sources(args.pins_sha256)
         report['passed'] = True

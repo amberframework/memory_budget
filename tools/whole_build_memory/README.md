@@ -18,16 +18,26 @@ identities and process start times to distinct sibling cgroup paths. The
 inner cgroup identity must agree with that host context.
 
 The host driver verifies exact tool/source/profile identities, executes the
-ten fresh containers, checks commands, kernel limits, functional page counts,
+twelve fresh containers, checks commands, kernel limits, functional page counts,
 membership and terminal results, then removes only its exact owned identities
 and reads them back absent. All measurements and cleanup records become CI
 artifacts. Missing or inconsistent evidence fails acceptance.
 
-Twenty-four sensitivity controls change copies of the actual observations across
+Thirty-four sensitivity controls change copies of the actual observations across
 both execution modes. They challenge retained peaks, process birth and
 adoption, orphan membership, sibling charges and hierarchy, kernel counters,
 executed commands, complete parent membership, and window boundaries. Every changed copy must fail; the restored actual
 dataset must pass. Original observations remain available in the artifact.
+
+RSS counters have a separate scope and unit. Each process records its own
+maximum RSS and the maximum RSS among its waited children in Linux KiB.
+Two additional overlapping-worker cases each hold two consumed 64-MiB private
+allocations simultaneously. Their whole-group charge must cover both while
+the waited-child maximum remains the largest individual worker. Every child
+is joined before the final measurement. Damaged-unit, summed-RSS, lost-peak,
+typed-counter and missing-live-worker controls challenge these boundaries.
+The actual compiler has its own remaining acceptance; this synthetic protocol
+supplies a tested measurement boundary.
 
 These are synthetic private-allocation and process-boundary controls. Their
 actual execution and raw verification determine which claims are earned.

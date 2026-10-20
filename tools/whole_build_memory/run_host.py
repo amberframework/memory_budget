@@ -123,7 +123,7 @@ def main():
         image = json.loads(call(docker + ['image', 'inspect', IMAGE]).stdout)
         (evidence / 'image-inspect.json').write_text(json.dumps(image, indent=2) + '\n')
         for mode in ('ordinary', 'optimized'):
-            for case in ('direct', 'fork-exec', 'detached'):
+            for case in ('direct', 'fork-exec', 'detached', 'rss-overlap'):
                 owner = create(mode, case)
                 call(docker + ['start', owner['id']])
                 finish(owner)
@@ -170,7 +170,7 @@ def main():
             except BaseException as error:
                 errors.append({'name': owner['name'], 'message': str(error)})
         report['cleanup_errors'] = errors
-        report['passed'] = report['passed'] and not errors and len(owners) == 10 and all(item['removed'] for item in owners)
+        report['passed'] = report['passed'] and not errors and len(owners) == 12 and all(item['removed'] for item in owners)
         (evidence / 'HOST_RESULT.json').write_text(json.dumps(report, indent=2) + '\n')
         need(report['passed'], 'Complete probe verification and exact container return required')
     print(json.dumps({'passed': True, 'owned_containers_removed': len(owners), 'actual_Grant_cells': 0}))

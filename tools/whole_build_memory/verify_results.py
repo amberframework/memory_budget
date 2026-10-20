@@ -6,7 +6,7 @@ import re
 
 import probe
 
-CASES = ('direct', 'fork-exec', 'detached', 'observer', 'load')
+CASES = ('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load')
 IMAGE = 'python:3.12.10-slim@sha256:fd95fa221297a88e1cf49c55ec1828edd7c5a428187e67b5d1805692d11588db'
 RUNTIME = '4dbf3143240288fb2170257ffaa7bd030cdda5d2703d1f5f30b627042267e2e3'
 
@@ -44,6 +44,9 @@ def context(value, budget):
     snapshot = budget.Snapshot(**value['snapshot'])
     budget.verify_snapshot(snapshot, budget.Limits(probe.STRICT_BYTES, 4096))
     need(snapshot.pids_current >= len(members), 'Process slots must cover the live member roster')
+    need(type(value['self_peak_rss_kib']) is int and value['self_peak_rss_kib'] > 0
+         and type(value['waited_children_peak_rss_kib']) is int and value['waited_children_peak_rss_kib'] >= 0,
+         'Typed Linux maximum RSS counters in KiB are required')
     return value
 
 
@@ -63,6 +66,12 @@ def validate_single(value, case, mode, pins, token, budget):
     budget.compare_snapshots(budget.Snapshot(**before['snapshot']), budget.Snapshot(**after['snapshot']),
                              budget.Limits(probe.STRICT_BYTES, 4096))
     need(after['monotonic_ns'] > before['monotonic_ns'], 'The final window must follow workload entry')
+    need(after['self_peak_rss_kib'] >= before['self_peak_rss_kib']
+         and after['waited_children_peak_rss_kib'] >= before['waited_children_peak_rss_kib'],
+         'Both lifetime maximum RSS counters must retain their high-water marks')
+    if case == 'rss-overlap':
+        validate_overlapping_rss(value, before, after, mode, budget)
+        return
     if case in ('observer', 'load'):
         selected = 'during' if case == 'observer' else 'hot'
         hot = context(value[selected], budget)
@@ -132,10 +141,53 @@ def validate_single(value, case, mode, pins, token, budget):
          and allocation['allocation_bytes'] == probe.CHILD_BYTES and allocation['touched_pages'] == probe.CHILD_BYTES // 4096
          and hot['snapshot']['memory_current'] >= probe.CHILD_BYTES,
          'Every declared private page must be consumed inside the same measured cgroup')
+    need(hot['self_peak_rss_kib'] * 1024 >= probe.CHILD_BYTES
+         and after['waited_children_peak_rss_kib'] >= hot['self_peak_rss_kib'],
+         'The waited-child maximum must retain the real worker RSS high-water mark')
+    if case != 'detached':
+        need((hot['self_peak_rss_kib'] - entry['self_peak_rss_kib']) * 1024 >= probe.CHILD_BYTES // 2,
+             'Known private allocation must raise the worker RSS high-water mark')
     need(after['snapshot']['memory_peak'] >= hot['snapshot']['memory_peak']
          and after['snapshot']['memory_peak'] >= before['snapshot']['memory_peak'] + probe.CHILD_BYTES // 2
          and after['snapshot']['memory_peak'] - after['snapshot']['memory_current'] >= probe.CHILD_BYTES // 2,
          'The final kernel peak must retain the retired private allocation')
+
+
+def validate_overlapping_rss(value, before, after, mode, budget):
+    workers = value['workers']
+    need(type(workers) is list and len(workers) == 2 and len({row['pid'] for row in workers}) == 2,
+         'Two distinct actual overlapping workers are required')
+    during = context(value['during'], budget)
+    members = sorted([1] + [row['pid'] for row in workers])
+    need(during['identity'] == before['identity'] and during['cgroup_key'] == before['cgroup_key']
+         and during['members'] == members and during['snapshot']['pids_current'] == 3
+         and before['monotonic_ns'] < during['monotonic_ns'] < after['monotonic_ns']
+         and during['snapshot']['memory_current'] >= 2 * probe.CHILD_BYTES,
+         'Both consumed private allocations must be live in the same measured window')
+    peaks = []
+    for row in workers:
+        allocation = row['allocation']
+        entry, hot = context(allocation['before'], budget), context(allocation['hot'], budget)
+        need(row['exit_code'] == 0 and allocation['stage'] == 'allocation'
+             and allocation['optimized_python'] is (mode == 'optimized')
+             and allocation['allocation_bytes'] == probe.CHILD_BYTES
+             and allocation['touched_pages'] == probe.CHILD_BYTES // 4096,
+             'Both exact workers must consume the known private allocation and finish normally')
+        need(entry['identity'] == hot['identity'] and hot['identity']['pid'] == row['pid']
+             and hot['identity']['ppid'] == 1 and hot['cgroup_key'] == entry['cgroup_key'] == before['cgroup_key']
+             and set(hot['members']) <= set(members) and {1, row['pid']} <= set(hot['members'])
+             and before['monotonic_ns'] < entry['monotonic_ns'] <= hot['monotonic_ns'] <= during['monotonic_ns'],
+             'Each held worker must retain its birth, owner, membership and window')
+        need(hot['self_peak_rss_kib'] * 1024 >= probe.CHILD_BYTES
+             and (hot['self_peak_rss_kib'] - entry['self_peak_rss_kib']) * 1024 >= probe.CHILD_BYTES // 2,
+             'Each held private allocation must raise its own RSS high-water mark')
+        peaks.append(hot['self_peak_rss_kib'])
+    largest = after['waited_children_peak_rss_kib']
+    need(before['waited_children_peak_rss_kib'] == during['waited_children_peak_rss_kib'] == 0
+         and max(peaks) <= largest and probe.CHILD_BYTES <= largest * 1024 < 2 * probe.CHILD_BYTES
+         and after['snapshot']['memory_peak'] >= during['snapshot']['memory_current']
+         and after['snapshot']['memory_peak'] > largest * 1024,
+         'Largest waited-child RSS and simultaneous whole-group charge must remain distinct')
 
 
 def validate(evidence, pins, token, read_result=read):
@@ -187,6 +239,7 @@ def validate(evidence, pins, token, read_result=read):
                  'Outer Docker/PID/cgroup identity must bind the inner owner')
     return {'passed': True, 'format': 'atlas-build-descendant-verdict-v1',
             'cases': sorted(results), 'distinct_container_ids': sorted(identities),
+            'rss_protocol_accepted': True, 'rss_scope': 'self-and-largest-waited-child-high-water-kib-v1',
             'compiler_rss_accepted': False, 'complete_Grant_build_accepted': False, 'actual_Grant_cells': 0}
 
 
@@ -201,6 +254,7 @@ def sensitivity_controls(evidence, pins, token):
         observer = mode + '-observer.json'
         host = mode + '-sibling-host.json'
         command = mode + '-direct.inspect.json'
+        overlap = mode + '-rss-overlap.json'
         changes = (
             ('lost_retired_peak', direct, lambda value: value['after']['snapshot'].update(
                 memory_peak=value['before']['snapshot']['memory_peak'])),
@@ -224,6 +278,13 @@ def sensitivity_controls(evidence, pins, token):
                 members=[value['detached']['hot']['identity']['pid']])),
             ('allocation_outside_window', direct, lambda value: value['worker_records'][0]['hot'].update(
                 monotonic_ns=value['before']['monotonic_ns'] - 1)),
+            ('lost_waited_rss_peak', direct, lambda value: value['after'].update(waited_children_peak_rss_kib=0)),
+            ('boolean_self_rss', direct, lambda value: value['worker_records'][0]['hot'].update(self_peak_rss_kib=True)),
+            ('rss_bytes_used_as_kib', overlap, lambda value: value['after'].update(
+                waited_children_peak_rss_kib=value['after']['waited_children_peak_rss_kib'] * 1024)),
+            ('summed_rss_used_as_largest', overlap, lambda value: value['after'].update(
+                waited_children_peak_rss_kib=sum(row['allocation']['hot']['self_peak_rss_kib'] for row in value['workers']))),
+            ('overlap_omitted_worker', overlap, lambda value: value['during'].update(members=[1, value['workers'][0]['pid']])),
         )
         for label, filename, change in changes:
             changed = copy.deepcopy(read(evidence / filename))
