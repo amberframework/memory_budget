@@ -41,7 +41,7 @@
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "5a0fc398e7cac3cc2beb4e71677383bc722342105cb0268faeaae2d6a7550d33"
+      "sha256": "6c96c085bf5bb7cadeb45c6d1c37862e076f872e068e195b829c738877f6a987"
     },
     {
       "file": "docs/0.1.1/prepare-toolchain.md",
@@ -49,7 +49,7 @@
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "f9142bfaad0437553bf7648ed92458fd96c87b3f49e9edd29d2a3cac88320510"
+      "sha256": "b4022202a7ab5f016f0e12744ba39fa7b7577611815bd58f6464ca9b7011e60a"
     },
     {
       "file": "docs/corpus.json",
@@ -153,7 +153,7 @@
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
+      "sha256": "2948b349b72cf97a4604fd41a38465a73d5e6dcd9aafc1c9c1b74c91d6e4897b"
     },
     {
       "file": "skills/crystal-memory-budgets/SKILL.md",
@@ -165,7 +165,7 @@
     },
     {
       "file": "skills/crystal-memory-budgets/references/installation-validation.md",
-      "sha256": "71094350e34b42d0ef9332b8d8e77f04ef6bc547c057d0beac87fa38e64c0396"
+      "sha256": "7ec59d18241d7dc4e19b3777f54d8999bced1826f967fe5a509983f68eee5eca"
     },
     {
       "file": "spec/fixtures/c/SOURCE_PINS.json",

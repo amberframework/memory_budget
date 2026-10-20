@@ -32,7 +32,9 @@ module MemoryBudget
         {"MEMORY_BUDGET_COMPILER" => entrypoint_path, "MEMORY_BUDGET_TOOLCHAIN_LOCK" => profile_path,
          "MEMORY_BUDGET_TOOLCHAIN_PROFILE_SHA256" => @profile_sha256,
          "MEMORY_BUDGET_COMPILER_ENTRYPOINT" => entrypoint_path,
-         "MEMORY_BUDGET_STDLIB" => stdlib_root}.merge(ToolchainProfile.native_environment(profile)).merge(ToolchainProfile.git_environment(profile))
+         "MEMORY_BUDGET_STDLIB" => stdlib_root}
+          .merge(ToolchainProfile.wrapper_runtime_environment(entrypoint_path, compiler_path, profile))
+          .merge(ToolchainProfile.native_environment(profile)).merge(ToolchainProfile.git_environment(profile))
       end
 
       def source_commit(require_git_provider: false)
@@ -103,6 +105,80 @@ module MemoryBudget
     def stdlib_sha256(root)
       paths = Dir.glob(File.join(root, "**", "*"), File::FNM_DOTMATCH).select { |path| File.file?(path) }.sort
       Digest::SHA256.hexdigest(paths.map { |path| "#{Digest::SHA256.file(path).hexdigest}  #{path.delete_prefix(root + "/")}\n" }.join)
+    end
+
+    # A direct backend keeps the prepared counter overlay. Restore only the
+    # hash-admitted wrapper's literal Linux link-search setting at this boundary.
+    def wrapper_runtime_environment(entrypoint, backend, profile, environment = ENV)
+      raise AdmissionError, "Compiler SHA-256 mismatch" unless Digest::SHA256.file(backend).hexdigest == profile.fetch("compiler_sha256")
+      return {} if entrypoint == backend
+      expected = profile["wrapper_sha256"]
+      raise AdmissionError, "Selected script wrapper requires wrapper_sha256" unless expected
+      raise AdmissionError, "wrapper SHA-256 mismatch" unless Digest::SHA256.file(entrypoint).hexdigest == expected
+      source = File.binread(entrypoint, 4096)
+      unless Digest::SHA256.file(entrypoint).hexdigest == expected && compiler_backend(entrypoint) == backend
+        raise AdmissionError, "Selected wrapper/backend changed during runtime admission"
+      end
+      lines = source.lines.map { |line| line.delete_suffix("\n").sub(/\A[ \t]+/, "").sub(/[ \t]+\z/, "") }.reject { |line| line.empty? || line.start_with?("#") }
+      assignments = lines.flat_map { |line| line.scan(/\bLD_RUN_PATH[ \t]*=/) }
+      result = {}
+      unless assignments.empty?
+        raise AdmissionError, "Wrapper runtime source exceeds the complete 4096-byte admission window" unless File.size(entrypoint) <= 4096
+        raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; unsupported shell control byte" if source.match?(/[\x00-\x08\x0b-\x1f\x7f]/)
+        unless ["#!/bin/bash", "#!/bin/sh"].include?(source.lines.first.delete_suffix("\n"))
+          raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; use the reviewed static shell interpreter"
+        end
+        raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; one literal assignment is required" unless assignments.size == 1
+        # Check the complete statement roster before Shellwords can erase the
+        # distinction between a shell assignment and a quoted command name.
+        exec_statement = lines.last && lines.last.match(/\A(?:(.+?)[ \t]+)?exec[ \t]+"([^\x00"\r\n\$`\\]+)"[ \t]+"\$@"\z/)
+        if exec_statement && !(exec_statement[2].start_with?("/") && File.realpath(exec_statement[2]) == backend)
+          exec_statement = nil
+        end
+        raw_assignments = []
+        raw_assignments << exec_statement[1] if exec_statement && exec_statement[1]
+        if lines.size == 2 && lines.first.start_with?("export ", "export\t")
+          raw_assignments << lines.first.sub(/\Aexport[ \t]+/, "")
+        end
+        token = /[A-Za-z_][A-Za-z0-9_]*=(?:"[^"\r\n]*"|'[^'\r\n]*'|[^ \t"'\\`;$|&(){}<>]+)/
+        supported_roster = exec_statement && (lines.size == 1 || (lines.size == 2 && raw_assignments.size >= 1 && lines.first.match?(/\Aexport[ \t]+/)))
+        valid_assignments = raw_assignments.all? { |raw| raw.match?(/\A#{token}(?:[ \t]+#{token})*\z/) }
+        unless supported_roster && !raw_assignments.empty? && valid_assignments
+          raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; use the leading exec environment or an explicit export"
+        end
+        pairs = raw_assignments.flat_map { |raw| raw.scan(/([A-Za-z_][A-Za-z0-9_]*)=("[^"\r\n]*"|'[^'\r\n]*'|[^ \t"'\\`;$|&(){}<>]+)/) }
+        unless pairs.count { |key, _value| key == "LD_RUN_PATH" } == 1 && pairs.all? { |key, value| key == "LD_RUN_PATH" || !value.match?(/[\x00\r\n\$`\\]/) }
+          raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; static assignment values are required"
+        end
+        line = lines.find { |candidate| candidate.match?(/\bLD_RUN_PATH[ \t]*=/) }
+        match = line.match(/(?:\A|[ \t])LD_RUN_PATH="([^"\r\n]*)"(?=[ \t]|\z)/)
+        raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; use the reviewed double-quoted literal form" unless match
+        value = match[1]
+        prefix = '${LD_RUN_PATH:+${LD_RUN_PATH}:}'
+        suffix = '${LD_RUN_PATH:+:$LD_RUN_PATH}'
+        order = value.start_with?(prefix) ? :ambient_first : (value.end_with?(suffix) ? :literal_first : :literal_only)
+        base = order == :ambient_first ? value.delete_prefix(prefix) : (order == :literal_first ? value.delete_suffix(suffix) : value)
+        paths = base.split(File::PATH_SEPARATOR, -1)
+        unless !paths.empty? && paths.all? { |path| path.start_with?("/") && !path.match?(/[\x00\r\n\$`"\\]/) && File.expand_path(path) == path }
+          raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; literal absolute search paths are required"
+        end
+        ambient = environment["LD_RUN_PATH"]
+        ambient = nil if ambient == ""
+        restored = if order == :ambient_first
+          ambient && ambient != base && !ambient.end_with?(File::PATH_SEPARATOR + base) ? ambient + File::PATH_SEPARATOR + base : (ambient || base)
+        elsif order == :literal_first
+          ambient && ambient != base && !ambient.start_with?(base + File::PATH_SEPARATOR) ? base + File::PATH_SEPARATOR + ambient : (ambient || base)
+        else
+          base
+        end
+        result["LD_RUN_PATH"] = restored
+      end
+      unless Digest::SHA256.file(entrypoint).hexdigest == expected && Digest::SHA256.file(backend).hexdigest == profile.fetch("compiler_sha256")
+        raise AdmissionError, "Selected wrapper/backend changed during runtime admission"
+      end
+      result
+    rescue ArgumentError => error
+      raise AdmissionError, "Invalid wrapper runtime assignment: #{error.message}"
     end
 
     def read_profile(path)
@@ -188,7 +264,7 @@ module MemoryBudget
       unless ENV["MEMORY_BUDGET_COMPILER_SHA256"] == profile.fetch("compiler_sha256") && ENV["MEMORY_BUDGET_STDLIB_SHA256"] == profile.fetch("stdlib_sha256")
         raise AdmissionError, "Selected compiler/stdlib profile differs"
       end
-      native_environment(profile).merge(git_environment(profile))
+      wrapper_runtime_environment(entrypoint, backend, profile).merge(native_environment(profile)).merge(git_environment(profile))
     rescue Errno::ENOENT, Errno::EACCES, JSON::ParserError => error
       raise AdmissionError, "Selected toolchain admission failed: #{error.message}"
     end
