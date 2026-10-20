@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           /usr/bin/python3 -I -S -B tools/whole_build_memory/run_host.py \
-            --pins-sha256 cd52ce68149e386079d8ecb2eb3d03aa11d86ab8f1401fa4dfa21c90c157592d \
+            --pins-sha256 061ece6c4c78bd2e1c471facfcc048d81db09065f5935e3cda925a07bcfb8f09 \
             --runner-metadata "$RUNNER_TEMP/atlas-linux-runner.json"
       - name: Retain runner profile and complete control evidence
         if: always()

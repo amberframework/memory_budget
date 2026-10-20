@@ -95,7 +95,9 @@ def validate_single(value, case, mode, pins, token, budget):
              'Detached process/session identity, adoption, mode and normal join required')
         observed = context(detached['observed_after_launcher_exit'], budget)
         need(observed['members'] == sorted([1, adopted['pid']])
-             and observed['cgroup_key'] == before['cgroup_key'] and value['parent_live_child_polls'] == 1,
+             and observed['identity'] == before['identity']
+             and observed['cgroup_key'] == before['cgroup_key'] and value['parent_live_child_polls'] == 1
+             and hot['monotonic_ns'] <= observed['monotonic_ns'] <= after['monotonic_ns'],
              'The detached worker must be observed after its launcher retires')
         allocation = detached
     else:
@@ -105,7 +107,11 @@ def validate_single(value, case, mode, pins, token, budget):
              else {'before-exec', 'allocation', 'joined'}), 'Unique required worker stages must be present')
         allocation = stages['allocation']
         hot = context(allocation['hot'], budget)
-        context(allocation['before'], budget)
+        entry = context(allocation['before'], budget)
+        need(entry['identity'] == hot['identity'] and entry['cgroup_key'] == before['cgroup_key']
+             and entry['members'] == hot['members']
+             and before['monotonic_ns'] <= entry['monotonic_ns'] <= hot['monotonic_ns'],
+             'Worker entry must bind the same live owner, roster and measured window')
         need(allocation['optimized_python'] is (mode == 'optimized') and value['parent_live_child_polls'] == 0,
              'The transient worker must preserve mode while the parent samples entry and final state')
         if case == 'direct':
@@ -118,6 +124,10 @@ def validate_single(value, case, mode, pins, token, budget):
                  and launcher['ppid'] == 1 and previous['ppid'] == launcher['pid']
                  and joined['child_pid'] == previous['pid'] and joined['exit_code'] == 0,
                  'The same forked process must exec and be reaped by the actual launcher')
+    expected_members = sorted({1, value['launcher_pid'], hot['identity']['pid']})
+    need(hot['members'] == expected_members
+         and before['monotonic_ns'] <= hot['monotonic_ns'] <= after['monotonic_ns'],
+         'Every live supervisor, launcher and worker must appear inside the measured window')
     need(hot['cgroup_key'] == before['cgroup_key'] and hot['membership'] == before['membership']
          and allocation['allocation_bytes'] == probe.CHILD_BYTES and allocation['touched_pages'] == probe.CHILD_BYTES // 4096
          and hot['snapshot']['memory_current'] >= probe.CHILD_BYTES,
@@ -200,11 +210,20 @@ def sensitivity_controls(evidence, pins, token):
                 ppid=value['launcher_pid'])),
             ('omitted_live_orphan', detached, lambda value: value['detached']['observed_after_launcher_exit'].update(
                 members=[1])),
-            ('mixed_sibling_charge', observer, lambda value: value['during']['snapshot'].update(
-                memory_peak=probe.SIBLING_BYTES)),
+            ('mixed_sibling_charge', observer, lambda value: (
+                value['during']['snapshot'].update(memory_peak=probe.SIBLING_BYTES),
+                value['after']['snapshot'].update(memory_peak=probe.SIBLING_BYTES))),
             ('same_host_cgroup', host, lambda value: value[1].update(cgroup_path=value[0]['cgroup_path'])),
             ('missing_kernel_events', direct, lambda value: value['before']['snapshot'].update(memory_events={})),
             ('changed_command', command, lambda value: value[0]['Config']['Cmd'].append('--changed-command')),
+            ('omitted_direct_parent', direct, lambda value: value['worker_records'][0]['hot'].update(
+                members=[value['worker_records'][0]['hot']['identity']['pid']])),
+            ('omitted_fork_parents', fork, lambda value: value['worker_records'][1]['hot'].update(
+                members=[value['worker_records'][1]['hot']['identity']['pid']])),
+            ('omitted_detached_parents', detached, lambda value: value['detached']['hot'].update(
+                members=[value['detached']['hot']['identity']['pid']])),
+            ('allocation_outside_window', direct, lambda value: value['worker_records'][0]['hot'].update(
+                monotonic_ns=value['before']['monotonic_ns'] - 1)),
         )
         for label, filename, change in changes:
             changed = copy.deepcopy(read(evidence / filename))

@@ -23,10 +23,10 @@ membership and terminal results, then removes only its exact owned identities
 and reads them back absent. All measurements and cleanup records become CI
 artifacts. Missing or inconsistent evidence fails acceptance.
 
-Sixteen sensitivity controls change copies of the actual observations across
+Twenty-four sensitivity controls change copies of the actual observations across
 both execution modes. They challenge retained peaks, process birth and
 adoption, orphan membership, sibling charges and hierarchy, kernel counters,
-and executed commands. Every changed copy must fail; the restored actual
+executed commands, complete parent membership, and window boundaries. Every changed copy must fail; the restored actual
 dataset must pass. Original observations remain available in the artifact.
 
 These are synthetic private-allocation and process-boundary controls. Their
