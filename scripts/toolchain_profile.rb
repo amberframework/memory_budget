@@ -85,6 +85,14 @@ module MemoryBudget
     def compiler_backend(entrypoint)
       source = File.binread(entrypoint, 4096)
       return entrypoint unless source.start_with?("#!")
+      has_runtime_assignment = source.lines.any? { |line| !line.sub(/\A[ \t]+/, "").start_with?("#") && line.match?(/\bLD_RUN_PATH[ \t]*=/) }
+      if has_runtime_assignment
+        raise AdmissionError, "Wrapper runtime source exceeds the complete 4096-byte admission window" unless File.size(entrypoint) <= 4096
+        raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; unsupported shell control byte" if source.match?(/[\x00-\x08\x0b-\x1f\x7f]/)
+        unless ["#!/bin/bash", "#!/bin/sh"].include?(source.lines.first.delete_suffix("\n"))
+          raise AdmissionError, "Unsupported wrapper LD_RUN_PATH assignment; use the reviewed static shell interpreter"
+        end
+      end
       commands = source.lines.reject { |line| line.lstrip.start_with?("#") }.map do |line|
         tokens = Shellwords.split(line)
         position = tokens.index("exec")

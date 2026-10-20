@@ -93,7 +93,7 @@
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "2948b349b72cf97a4604fd41a38465a73d5e6dcd9aafc1c9c1b74c91d6e4897b"
+      "sha256": "03d437ba7ce3d44bf6ae92b3298afa0db676fc2667b87c34d72686002b1f445f"
     },
     {
       "file": "scripts/budget.rb",
