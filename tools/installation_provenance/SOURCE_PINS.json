@@ -1,0 +1,47 @@
+{
+  "format": "atlas-linux-control-sources-v1",
+  "files": [
+    {
+      "path": "cgroup_budget.py",
+      "bytes": 7977,
+      "mode": 420,
+      "sha256": "c7d84f2916401b3d977246b69f94769fdf3c368511af45fb795607cfc199347f"
+    },
+    {
+      "path": "test_cgroup_budget.py",
+      "bytes": 7788,
+      "mode": 420,
+      "sha256": "e0a85d445d8cf45508802e692ab85c62e2cbee5c815c5555e89bdca337c59ba2"
+    },
+    {
+      "path": "native_image_protocol.py",
+      "bytes": 8642,
+      "mode": 420,
+      "sha256": "b7705b1b85f24ba296d5565e3981451b58f7a3a9c9f6d79a7bc9b824877eddf5"
+    },
+    {
+      "path": "test_native_image_protocol.py",
+      "bytes": 10227,
+      "mode": 420,
+      "sha256": "22f6762ad3ebb0e1d689dab8357a9571b591cc25420bf3293654cd7117a201ad"
+    },
+    {
+      "path": "run_controls.py",
+      "bytes": 6538,
+      "mode": 420,
+      "sha256": "0a0ab3361b9714dcb67a7a2dde7b6e4507c4b2dd09b8131492c5cc2e1d2c3cee"
+    },
+    {
+      "path": "verify_terminal.py",
+      "bytes": 8763,
+      "mode": 420,
+      "sha256": "f35e2a9804afadf514beced484b02777f4ece92a1a33436afb0f10d82bfcdca9"
+    },
+    {
+      "path": "test_verify_terminal.py",
+      "bytes": 9116,
+      "mode": 420,
+      "sha256": "6b8166acba4ec1813095f302366429a47decee37daa97eb1484b538a22f44ff1"
+    }
+  ]
+}

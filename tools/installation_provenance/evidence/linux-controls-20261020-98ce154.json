@@ -1,0 +1,88 @@
+{
+  "format": "atlas-linux-kernel-control-evidence-v1",
+  "source_commit": "98ce154b71f6896eff941d8662a9288e08eddc5a",
+  "workflow_url": "https://github.com/amberframework/memory_budget/actions/runs/39435844814",
+  "archive": {
+    "file": "linux-controls-20261020-98ce154.zip",
+    "sha256": "4562b5d0e1398f63a725bde4b180ce148101ed3846cf8b1ccecb04346389a0a3",
+    "bytes": 50197,
+    "raw_file_count": 42
+  },
+  "source_manifest_sha256": "15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae",
+  "cohorts": [
+    {
+      "mode": "ordinary",
+      "tests": 58,
+      "peak_bytes": 21069824,
+      "strict_budget_bytes": 536870912
+    },
+    {
+      "mode": "optimized",
+      "tests": 58,
+      "peak_bytes": 20594688,
+      "strict_budget_bytes": 536870912
+    }
+  ],
+  "profile_admission_cases": 9,
+  "container_cases": [
+    {
+      "case": "ordinary",
+      "container_id": "bfe1cff7a2aad0bee393c98dc730fa25148bede39b0ebd4e28a94420af7b5da7",
+      "exit_code": 0,
+      "OOMKilled": false
+    },
+    {
+      "case": "optimized",
+      "container_id": "e314ae8fba4848418ba1ba4d8197ec4f4b90347b468724c10a765799d9ba20c2",
+      "exit_code": 0,
+      "OOMKilled": false
+    },
+    {
+      "case": "oom",
+      "container_id": "e50ca67544a7e3a07f2686384a4d6b5f6d265c2b79b205aa36b3bd4f77cabb82",
+      "exit_code": 137,
+      "OOMKilled": true
+    },
+    {
+      "case": "uncapped",
+      "container_id": "5f870fde8fc794b3de5d610cde6f9941b982ca6b534ed11f72468512531c447b",
+      "exit_code": 2,
+      "OOMKilled": false
+    }
+  ],
+  "removed_owned_containers": 5,
+  "changed_actual_snapshot_controls": [
+    {
+      "case": "empty_events",
+      "rejected": true,
+      "reason": "Complete typed pressure and OOM event counters are required"
+    },
+    {
+      "case": "missing_oom_kill",
+      "rejected": true,
+      "reason": "Complete typed pressure and OOM event counters are required"
+    },
+    {
+      "case": "boolean_measurements",
+      "rejected": true,
+      "reason": "Complete nonnegative integer kernel counters are required"
+    },
+    {
+      "case": "float_measurements",
+      "rejected": true,
+      "reason": "Complete nonnegative integer kernel counters are required"
+    }
+  ],
+  "actual_Crystal_compilations": 0,
+  "actual_Grant_cells": 0,
+  "installed_SDK_accepted": false,
+  "clean_device_installation_accepted": false,
+  "complete_Grant_build_provider_qualified": false,
+  "remaining_build_provider_gates": [
+    "short-lived and fork-exec descendants",
+    "membership and sibling isolation",
+    "shared/migrated memory-charge boundaries",
+    "complete build and terminal window",
+    "compiler-process RSS qualification"
+  ]
+}

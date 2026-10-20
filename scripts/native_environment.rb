@@ -11,6 +11,15 @@ module MemoryBudget
     class AdmissionError < StandardError; end
     VARIABLES = %w[CRYSTAL_LIBRARY_PATH DYLD_LIBRARY_PATH PKG_CONFIG_LIBDIR PKG_CONFIG_PATH].freeze
     PLATFORM_KEYS = %w[sysname release version machine].freeze
+    LOADER_FAMILIES = {"Darwin" => "darwin_dyld", "Linux" => "elf_ld"}.freeze
+    VERSION_TWO_VARIABLES = {
+      "darwin_dyld" => VARIABLES,
+      "elf_ld" => %w[CRYSTAL_LIBRARY_PATH LD_LIBRARY_PATH PKG_CONFIG_LIBDIR PKG_CONFIG_PATH].freeze
+    }.freeze
+    LOADER_KEYS = %w[DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH DYLD_FRAMEWORK_PATH
+      DYLD_FALLBACK_FRAMEWORK_PATH DYLD_INSERT_LIBRARIES DYLD_PRINT_LIBRARIES
+      LD_LIBRARY_PATH LD_RUN_PATH LD_PRELOAD LD_AUDIT LD_DEBUG LD_DEBUG_OUTPUT
+      LD_TRACE_LOADED_OBJECTS].freeze
 
     class Identity
       attr_reader :path, :sha256, :manifest
@@ -23,10 +32,7 @@ module MemoryBudget
         NativeEnvironment.require_condition(Digest::SHA256.file(path).hexdigest == sha256, "Native manifest SHA-256 mismatch")
         NativeEnvironment.validate_manifest(manifest)
         NativeEnvironment.require_condition(Digest::SHA256.file(path).hexdigest == sha256, "Native manifest changed during admission")
-        manifest.fetch("environment").each_with_object({
-          "MEMORY_BUDGET_NATIVE_COMPONENT_LOCK" => path,
-          "DYLD_PRINT_LIBRARIES" => manifest.fetch("loader_trace") ? "1" : nil
-        }) { |(key, paths), result| result[key] = paths.join(File::PATH_SEPARATOR) }
+        NativeEnvironment.environment_for(manifest, path)
       end
     end
 
@@ -39,6 +45,55 @@ module MemoryBudget
     def object_keys(value, required, description)
       require_condition(value.is_a?(Hash) && value.keys.sort == required.sort,
         "Invalid #{description} fields; expected #{required.join(', ')}")
+    end
+
+    # Schema 1 keeps the public Darwin contract. Schema 2 requires its loader
+    # family explicitly; old helpers refuse its schema and additional field.
+    def environment_variables(schema, loader_family = nil)
+      return VARIABLES if schema == 1
+      require_condition(schema.is_a?(Integer) && schema == 2, "Unsupported native manifest schema")
+      require_condition(LOADER_FAMILIES.fetch(platform.fetch("sysname"), nil) == loader_family &&
+        VERSION_TWO_VARIABLES.key?(loader_family), "Native loader family differs from platform")
+      VERSION_TWO_VARIABLES.fetch(loader_family)
+    end
+
+    def environment_for(manifest, path)
+      if manifest.fetch("schema_version") == 1
+        return manifest.fetch("environment").each_with_object({
+          "MEMORY_BUDGET_NATIVE_COMPONENT_LOCK" => path,
+          "DYLD_PRINT_LIBRARIES" => manifest.fetch("loader_trace") ? "1" : nil
+        }) { |(key, paths), result| result[key] = paths.join(File::PATH_SEPARATOR) }
+      end
+      family = manifest.fetch("loader_family")
+      environment_variables(manifest.fetch("schema_version"), family)
+      # Ruby/system/Open3 interpret nil values as explicit removals. Rebuild the
+      # complete overlay at every boundary; the caller's ENV stays unchanged.
+      loader_keys = LOADER_KEYS | ENV.keys.grep(/\A(?:DYLD_|LD_)/)
+      result = loader_keys.each_with_object({}) { |key, values| values[key] = nil }
+      result["MEMORY_BUDGET_NATIVE_COMPONENT_LOCK"] = path
+      manifest.fetch("environment").each { |key, paths| result[key] = paths.join(File::PATH_SEPARATOR) }
+      trace = family == "darwin_dyld" ? "DYLD_PRINT_LIBRARIES" : "LD_DEBUG"
+      result[trace] = manifest.fetch("loader_trace") ? (family == "darwin_dyld" ? "1" : "libs") : nil
+      result
+    end
+
+    def validate_configuration(config)
+      require_condition(config.is_a?(Hash), "Native configuration must be an object")
+      schema = config.fetch("schema_version", 1)
+      keys = %w[profile environment files loader_trace]
+      keys += %w[schema_version loader_family] if schema == 2
+      object_keys(config, keys, "native roots configuration")
+      variables = environment_variables(schema, config["loader_family"])
+      object_keys(config.fetch("environment"), variables, "native environment")
+      config.fetch("environment").each_value do |paths|
+        require_condition(paths.is_a?(Array), "Native configuration search paths must be arrays")
+        paths.each { |path| canonical_path(path) }
+      end
+      require_condition(config.fetch("files").is_a?(Array), "Native configuration files must be an array")
+      config.fetch("files").each { |path| canonical_path(path) }
+      {"schema_version" => schema}.tap do |value|
+        value["loader_family"] = config.fetch("loader_family") if schema == 2
+      end
     end
 
     def deep_freeze(value)
@@ -88,8 +143,12 @@ module MemoryBudget
 
     # Recompute the full physical roster rather than trusting listed files alone.
     def validate_manifest(manifest)
-      object_keys(manifest, %w[schema_version profile platform directories files environment loader_trace], "native manifest")
-      require_condition(manifest["schema_version"] == 1, "Unsupported native manifest schema")
+      require_condition(manifest.is_a?(Hash), "Native manifest must be an object")
+      schema = manifest["schema_version"]
+      require_condition(schema.is_a?(Integer) && [1, 2].include?(schema), "Unsupported native manifest schema")
+      keys = %w[schema_version profile platform directories files environment loader_trace]
+      keys += %w[loader_family] if schema == 2
+      object_keys(manifest, keys, "native manifest")
       require_condition(manifest["profile"].is_a?(String) && !manifest["profile"].strip.empty?, "Native manifest requires a profile identity")
       require_condition(manifest["platform"] == platform, "Native platform identity differs")
       require_condition([true, false].include?(manifest["loader_trace"]), "Native loader_trace must be a boolean")
@@ -122,13 +181,15 @@ module MemoryBudget
         require_condition(target && %w[file directory].include?(target["kind"]), "Native symlink target must have its own admitted physical entry: #{path}")
       end
       environment = manifest["environment"]
-      object_keys(environment, VARIABLES, "native environment")
+      variables = environment_variables(schema, manifest["loader_family"])
+      object_keys(environment, variables, "native environment")
       environment.each do |key, paths|
         require_condition(paths.is_a?(Array) && paths.all? { |path| admitted[path] && admitted[path]["kind"] == "directory" } && paths.uniq == paths,
           "#{key} must contain unique admitted physical directories in reviewed order")
       end
-      require_condition(!environment.fetch("CRYSTAL_LIBRARY_PATH").empty? && !environment.fetch("DYLD_LIBRARY_PATH").empty?, "Native library search paths must be explicit and nonempty")
-      VARIABLES.each do |key|
+      loader_path = schema == 1 || manifest["loader_family"] == "darwin_dyld" ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"
+      require_condition(!environment.fetch("CRYSTAL_LIBRARY_PATH").empty? && !environment.fetch(loader_path).empty?, "Native library search paths must be explicit and nonempty")
+      variables.each do |key|
         aliases = {}
         environment.fetch(key).each do |root|
           admitted.each do |path, row|

@@ -7,15 +7,14 @@ require_relative "native_environment"
 begin
   abort "Usage: ruby scripts/prepare_native_manifest.rb native-roots.json" unless ARGV.length == 1
   config = JSON.parse(File.read(ARGV.first))
-  MemoryBudget::NativeEnvironment.object_keys(config, %w[profile environment files loader_trace], "native roots configuration")
-  MemoryBudget::NativeEnvironment.object_keys(config.fetch("environment"), MemoryBudget::NativeEnvironment::VARIABLES, "native environment")
+  metadata = MemoryBudget::NativeEnvironment.validate_configuration(config)
   roots = config.fetch("environment").values.flatten.uniq
   roots = roots.reject { |root| roots.any? { |other| root != other && root.start_with?(other + "/") } }
-  manifest = {"schema_version" => 1, "profile" => config.fetch("profile"),
+  manifest = metadata.merge("profile" => config.fetch("profile"),
     "platform" => MemoryBudget::NativeEnvironment.platform,
     "directories" => roots.map { |path| MemoryBudget::NativeEnvironment.snapshot_directory(path) },
     "files" => config.fetch("files").map { |path| MemoryBudget::NativeEnvironment.snapshot_entry(path).merge("path" => path) },
-    "environment" => config.fetch("environment"), "loader_trace" => config.fetch("loader_trace")}
+    "environment" => config.fetch("environment"), "loader_trace" => config.fetch("loader_trace"))
   MemoryBudget::NativeEnvironment.validate_manifest(manifest)
   puts JSON.pretty_generate(manifest)
 rescue MemoryBudget::NativeEnvironment::AdmissionError, JSON::ParserError, Errno::ENOENT, KeyError => error

@@ -1,0 +1,1315 @@
+{
+  "passed": true,
+  "observed_at": "2026-10-20T15:38:34.835804+00:00",
+  "scope": "Linux self/largest-waited-child RSS contrasted with overlapping private cgroup charges and inherited descendant/sibling controls",
+  "source_commit": "3ea3bfcc55e1e520ee25d69000ea5e8d17d4a62a",
+  "run_attempt": 2,
+  "source_manifest_sha256": "a2b816772ffc66ed8bebbb405c52f54434baa663a5d6afae63e87252da1b287c",
+  "provider_manifest_sha256": "15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae",
+  "workflow_url": "https://github.com/amberframework/memory_budget/actions/runs/39449551836/attempts/2",
+  "pull_request": "https://github.com/amberframework/memory_budget/pull/2",
+  "artifact_id": 12277666488,
+  "archive_sha256": "4ff7637e68a81fa5ed218733a14238219b9b9908a23cdddc4a836136da7999cf",
+  "archive_published_digest": "sha256:4ff7637e68a81fa5ed218733a14238219b9b9908a23cdddc4a836136da7999cf",
+  "accepted_probe_cases": 12,
+  "changed_actual_result_controls": {
+    "passed": true,
+    "controls": [
+      {
+        "mode": "ordinary",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Positive current and peak memory must fit the strict byte budget"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_adoption",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "ordinary",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "ordinary-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "ordinary",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "ordinary-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_command",
+        "changed_actual_file": "ordinary-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_waited_rss_peak",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "The waited-child maximum must retain the real worker RSS high-water mark"
+      },
+      {
+        "mode": "ordinary",
+        "case": "boolean_self_rss",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Typed Linux maximum RSS counters in KiB are required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "rss_bytes_used_as_kib",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "ordinary",
+        "case": "summed_rss_used_as_largest",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "ordinary",
+        "case": "overlap_omitted_worker",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Both consumed private allocations must be live in the same measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "The final kernel peak must retain the retired private allocation"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_adoption",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "optimized",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "optimized-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "optimized",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "optimized-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "optimized",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_command",
+        "changed_actual_file": "optimized-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_waited_rss_peak",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "The waited-child maximum must retain the real worker RSS high-water mark"
+      },
+      {
+        "mode": "optimized",
+        "case": "boolean_self_rss",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Typed Linux maximum RSS counters in KiB are required"
+      },
+      {
+        "mode": "optimized",
+        "case": "rss_bytes_used_as_kib",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "optimized",
+        "case": "summed_rss_used_as_largest",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "optimized",
+        "case": "overlap_omitted_worker",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Both consumed private allocations must be live in the same measured window"
+      }
+    ],
+    "restored_actual_accepted": true
+  },
+  "preserved_cohorts": [
+    {
+      "mode": "ordinary",
+      "tests": 58
+    },
+    {
+      "mode": "optimized",
+      "tests": 58
+    }
+  ],
+  "profile_admission_cases": 9,
+  "measurements": [
+    {
+      "case": "optimized-detached",
+      "before_current_bytes": 17784832,
+      "after_current_bytes": 17862656,
+      "retained_charged_peak_bytes": 110305280,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 26910720,
+      "after_largest_waited_child_rss_bytes": 88014848,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "optimized-direct",
+      "before_current_bytes": 17457152,
+      "after_current_bytes": 17743872,
+      "retained_charged_peak_bytes": 101339136,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27123712,
+      "after_largest_waited_child_rss_bytes": 93872128,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "optimized-fork-exec",
+      "before_current_bytes": 16801792,
+      "after_current_bytes": 17412096,
+      "retained_charged_peak_bytes": 116256768,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27021312,
+      "after_largest_waited_child_rss_bytes": 93212672,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "optimized-load",
+      "before_current_bytes": 17465344,
+      "after_current_bytes": 17969152,
+      "retained_charged_peak_bytes": 219308032,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 228270080,
+      "after_largest_waited_child_rss_bytes": 0,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "optimized-observer",
+      "before_current_bytes": 17543168,
+      "after_current_bytes": 17571840,
+      "retained_charged_peak_bytes": 18087936,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 26963968,
+      "after_largest_waited_child_rss_bytes": 0,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "optimized-rss-overlap",
+      "before_current_bytes": 18001920,
+      "after_current_bytes": 17879040,
+      "retained_charged_peak_bytes": 185597952,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27013120,
+      "after_largest_waited_child_rss_bytes": 93970432,
+      "held_individual_rss_bytes": [
+        93782016,
+        93970432
+      ]
+    },
+    {
+      "case": "ordinary-detached",
+      "before_current_bytes": 17575936,
+      "after_current_bytes": 17838080,
+      "retained_charged_peak_bytes": 110313472,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 26976256,
+      "after_largest_waited_child_rss_bytes": 87949312,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "ordinary-direct",
+      "before_current_bytes": 17289216,
+      "after_current_bytes": 17862656,
+      "retained_charged_peak_bytes": 101642240,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27054080,
+      "after_largest_waited_child_rss_bytes": 93872128,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "ordinary-fork-exec",
+      "before_current_bytes": 17539072,
+      "after_current_bytes": 17960960,
+      "retained_charged_peak_bytes": 118145024,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 26947584,
+      "after_largest_waited_child_rss_bytes": 93741056,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "ordinary-load",
+      "before_current_bytes": 17600512,
+      "after_current_bytes": 17842176,
+      "retained_charged_peak_bytes": 219181056,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 228233216,
+      "after_largest_waited_child_rss_bytes": 0,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "ordinary-observer",
+      "before_current_bytes": 17539072,
+      "after_current_bytes": 17526784,
+      "retained_charged_peak_bytes": 17825792,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 26816512,
+      "after_largest_waited_child_rss_bytes": 0,
+      "held_individual_rss_bytes": []
+    },
+    {
+      "case": "ordinary-rss-overlap",
+      "before_current_bytes": 17698816,
+      "after_current_bytes": 18030592,
+      "retained_charged_peak_bytes": 185487360,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27144192,
+      "after_largest_waited_child_rss_bytes": 94117888,
+      "held_individual_rss_bytes": [
+        93851648,
+        93974528
+      ]
+    }
+  ],
+  "all_owned_containers_removed": [
+    "0612fba6c5250fa5e44808ec1da252942a530b991f21ff0a8b4600c56fb1cf7f",
+    "0bf0a142efb01742b56387f26fc0790fb5af5ee59c49ab829065abde332049bc",
+    "295e2691b9c83200fd662035a89005c25c3a7ef7b9d7eb7ad8f77e211514b881",
+    "3cf15c93e09477df416bd11ac78f46da25bf310bee51b958c5a24e5ef193970d",
+    "45b81194de489b1a4c9c489c74ed87a74e78ae26dd9cbd710aa7a056e6c858c6",
+    "522be44c1750ace95b26b1d62d1a350c534d9ec33f6988dd048047f530954965",
+    "5cca2de58d8d88ae7818c7fe6d71a856f0952d4bd511acb20a2d8ce43d9cfdec",
+    "75e0333cfde3c5e2c16affe36fad7fae2480e3cc444f44250e67ac772dc941e2",
+    "8541342d964b16c0619ea217a17ca1f6b00671dd864227127fed7f76e85c9152",
+    "965f2c1d6c1f1fad01748de8eeb9ca2422dd5598fe1336ff42a6e6fca2d45b5e",
+    "b2650f9b616596a58afdeb53a2d358b3c156f9915354cca2bf6d01ba0d0a079c",
+    "c6fd287c922f69ec575723ddab7f668dbf30b0473dd6d03289d04e7395738732",
+    "c881c1a7e620825a15de221014f38974cfc13c9665bd93937ed5f5699b68130c",
+    "d18c4a0c8e13dc79feb659e33038c9e7f56fc10bcd7f810c1c29d990e8ba3d3d",
+    "d2b14706fdcc7c2b625d15f0c7a40c9bc66d0fbbd6fef86a58f1e401eb44ecfe",
+    "d4677e7c0948a79cb11aba1823b862a8733b4d0c2d7dad9458fbfe88a72cdb45",
+    "d97c27694c3f3fd245408392a6b772742016d38ff6f3ffab526b3b94133badaa"
+  ],
+  "original_reader_gap": {
+    "path": "DESCENDANT_MEMBERSHIP_SENSITIVITY_AUDIT.json",
+    "sha256": "2ce22c4bfee61bf30551967e45a74ad168bc7f720591af084d545226031dd611",
+    "cases": 6
+  },
+  "first_attempt_refusal": {
+    "path": "RSS_PREREQUISITE_OOM_MARKER_REFUSAL.json",
+    "sha256": "2875eb4369bc0b0f47bb8cfdf7a037ab76d225d2407881072e47169932ca2ffd",
+    "archive_sha256": "e3600ec03e73ffb8eaeec868628fd70b85ec38e610bf9420b36e0fc5b850843f",
+    "all_owned_containers_removed": 5,
+    "identical_observed_profile": true,
+    "rss_stage_executed": false
+  },
+  "raw_files": [
+    {
+      "path": "rss-39449551836-attempt-2/_temp/atlas-linux-runner.json",
+      "bytes": 3164,
+      "sha256": "0f455643708d2bb033591841088444d32262ec7f77499fb6b5c942552f57ceb7"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/5cca2de58d8d88ae7818c7fe6d71a856f0952d4bd511acb20a2d8ce43d9cfdec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/5cca2de58d8d88ae7818c7fe6d71a856f0952d4bd511acb20a2d8ce43d9cfdec.cleanup-before.json",
+      "bytes": 10047,
+      "sha256": "094cfe10a0ecb5a38ca2543fd18a1992f30fc19a72ac73f4fcf42030cc90d0b5"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/5cca2de58d8d88ae7818c7fe6d71a856f0952d4bd511acb20a2d8ce43d9cfdec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "b7f97514d8a2bbce4b417ff37e554d955ce35d5fa3eb0e84608b495a4e55ca6e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/965f2c1d6c1f1fad01748de8eeb9ca2422dd5598fe1336ff42a6e6fca2d45b5e.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/965f2c1d6c1f1fad01748de8eeb9ca2422dd5598fe1336ff42a6e6fca2d45b5e.cleanup-before.json",
+      "bytes": 10041,
+      "sha256": "134a597951121c50ede724bcbac33320999e430f3eca465adfee4f88bad4843b"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/965f2c1d6c1f1fad01748de8eeb9ca2422dd5598fe1336ff42a6e6fca2d45b5e.cleanup.txt",
+      "bytes": 65,
+      "sha256": "5b76d40f860f4d3d296ff3400e3755fce7bc327d2eb933a7a676b6befa96969c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/TERMINAL_ACCEPTANCE.json",
+      "bytes": 979,
+      "sha256": "1ab25af61db2af5be48e41d77a2bb4ef812af7653d6538aa68bee3cd0c9621e2"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/c6fd287c922f69ec575723ddab7f668dbf30b0473dd6d03289d04e7395738732.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/c6fd287c922f69ec575723ddab7f668dbf30b0473dd6d03289d04e7395738732.cleanup-before.json",
+      "bytes": 10089,
+      "sha256": "04d1697d2533041bb56838f3906c6cee7f9673f321418f0310eab8b33a2766cf"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/c6fd287c922f69ec575723ddab7f668dbf30b0473dd6d03289d04e7395738732.cleanup.txt",
+      "bytes": 65,
+      "sha256": "4b2e6912361316d5035718e09b7cd398a51c200b2fc3f88a71bcf6ee86974f2c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d18c4a0c8e13dc79feb659e33038c9e7f56fc10bcd7f810c1c29d990e8ba3d3d.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d18c4a0c8e13dc79feb659e33038c9e7f56fc10bcd7f810c1c29d990e8ba3d3d.cleanup-before.json",
+      "bytes": 9695,
+      "sha256": "a194e746222d8a9d03fb4a794adffdaf0a7abd7c74a1468d2d612d267efef46f"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d18c4a0c8e13dc79feb659e33038c9e7f56fc10bcd7f810c1c29d990e8ba3d3d.cleanup.txt",
+      "bytes": 65,
+      "sha256": "85781cb6a932c291614d14bc45df6fdda8b421d889b8bd5f1a5c0e8b4b4c9293"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d2b14706fdcc7c2b625d15f0c7a40c9bc66d0fbbd6fef86a58f1e401eb44ecfe.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d2b14706fdcc7c2b625d15f0c7a40c9bc66d0fbbd6fef86a58f1e401eb44ecfe.cleanup-before.json",
+      "bytes": 10031,
+      "sha256": "4410af23c8414f6a47aa91b7ef2f5e1fb2502fdd14b2eb1c757d3a350ec94d21"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/d2b14706fdcc7c2b625d15f0c7a40c9bc66d0fbbd6fef86a58f1e401eb44ecfe.cleanup.txt",
+      "bytes": 65,
+      "sha256": "ad978c788163096615c58fcfe33e01670025459b52979a78cef9ad8fee5d09cc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/docker-version.txt",
+      "bytes": 769,
+      "sha256": "8402d8b7679b4087fa4fb62264e49054f974146c5d134195d8b7a341747ab4ed"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/image-inspect.json",
+      "bytes": 2761,
+      "sha256": "f2714d0fbe7c83698cd1100df723fa005845a6a1bb71cb35e35edb8b394442a3"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/oom.client-exit.txt",
+      "bytes": 4,
+      "sha256": "e3b9c2844b5a5c2677b3a2279db2ec8487491dd9a23d6b22fac153391b3bb63c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/oom.inspect.json",
+      "bytes": 10031,
+      "sha256": "3512d9197a568efe45aa558bb11d060ebcea0c0da8cd7fe63e6bf46f121ba14e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/oom.json",
+      "bytes": 1119,
+      "sha256": "d55b006f19faee91b1ac01a090836eccef4d4003c58a81d3ded72516a649937e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/oom.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/oom.stdout.txt",
+      "bytes": 25,
+      "sha256": "f3543810a54f40b085722baba561f6fc9f617643baeb8def6b5ff20ec3906fbe"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/optimized.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/optimized.inspect.json",
+      "bytes": 10089,
+      "sha256": "9de0fb253df670dedf26cbbcfb5ad3507eb9a01cfb774ffe22332618bb91ecd4"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/optimized.json",
+      "bytes": 10596,
+      "sha256": "f63761601642949b8884aad9ae702324e1b4977fa6f886b50d5a0924c6e45a4c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/optimized.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/optimized.stdout.txt",
+      "bytes": 120,
+      "sha256": "48682fb7a0ad60b153234896eecbdac0ab3e4e8d6219fc9b05800530a8cec2df"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/ordinary.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/ordinary.inspect.json",
+      "bytes": 10047,
+      "sha256": "094cfe10a0ecb5a38ca2543fd18a1992f30fc19a72ac73f4fcf42030cc90d0b5"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/ordinary.json",
+      "bytes": 10597,
+      "sha256": "0b5db75c4cb53aa569f2fd4453ceeae802286b6804acfedc26182349e67bbda3"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/ordinary.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/ordinary.stdout.txt",
+      "bytes": 121,
+      "sha256": "b845d0f25f5cb004e5d049eabbf9d0d8b8bc6601db21cbdd9101007e19b3b19c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/terminal-reader.inspect.json",
+      "bytes": 9695,
+      "sha256": "a194e746222d8a9d03fb4a794adffdaf0a7abd7c74a1468d2d612d267efef46f"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/terminal-reader.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/terminal-reader.stdout.txt",
+      "bytes": 821,
+      "sha256": "83a2b6f9d5695d720f96ee9fa4ae812be0e36ce22f61b910e7531b1617622302"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/uncapped.client-exit.txt",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/uncapped.inspect.json",
+      "bytes": 10041,
+      "sha256": "134a597951121c50ede724bcbac33320999e430f3eca465adfee4f88bad4843b"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/uncapped.json",
+      "bytes": 766,
+      "sha256": "999e454ac13b39d06b6d16acf653de618b74e63b3aa55fb9ed60ea5ad23c62d2"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/uncapped.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-2/uncapped.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/HOST_RESULT.json",
+      "bytes": 13923,
+      "sha256": "fc4ca4934b0f5626c236f4451fe5d6872853f1f2f0a5753f409853cd484ba291"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/image-inspect.json",
+      "bytes": 2403,
+      "sha256": "05f160105b788cb6c5de8bf17f866a2791fb980c398fb32f6253a1c426475d72"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.child.json",
+      "bytes": 1033,
+      "sha256": "162acbeeff065a63783a3221d2a351f9ee4a129dc6fe0c2454e687402dfade4e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.cleanup-before.json",
+      "bytes": 8367,
+      "sha256": "88b625f3a21fb5de28679e352617dfdad7a18ee2714d23efd64815b6f5c3abd9"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "4a00ccdf446357fc100a43ada8b26c085620478153e1936a595dd075aaee021e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.inspect.json",
+      "bytes": 8367,
+      "sha256": "88b625f3a21fb5de28679e352617dfdad7a18ee2714d23efd64815b6f5c3abd9"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.json",
+      "bytes": 4713,
+      "sha256": "b49981aaab5242ae31508801c5570ae9c57a0104e6a5062a3b5a52c6a8ecc40f"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.cleanup-before.json",
+      "bytes": 8355,
+      "sha256": "234d9603bc7a5812f3fee91cf424dd8604697fadf7cbbc4397375d2e09b809bc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "bc5d899bf24f23b25a11f0aed976248fabbae215a67b9d6ca651a076d4290483"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.inspect.json",
+      "bytes": 8355,
+      "sha256": "234d9603bc7a5812f3fee91cf424dd8604697fadf7cbbc4397375d2e09b809bc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.json",
+      "bytes": 4429,
+      "sha256": "5aed823b9153e4faf08b6b8c37560494808fa49527f7cf1ecbf9b0931cf30e59"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.cleanup-before.json",
+      "bytes": 8373,
+      "sha256": "3c4d072b5ca961aa9a7b8419a2be25660df96837de6f44f544c7b283961d2a16"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "6b3603ec8aa6b917933e71af4d42d2c2bc6225b14941f70700ee9bad557a32f5"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.inspect.json",
+      "bytes": 8373,
+      "sha256": "ab25d2a31c86855cf6627530ff14537eeafd3e2a73edcbacfb35ee87886dcffc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.json",
+      "bytes": 4843,
+      "sha256": "262625f47d404ded4f665d8c801e4e903d2e6978ef37b847087ab2470170e677"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "f5c22ad972a794d4ec8571e7b595c1ebfc8aab6a9531646c0a232ef6e3d563ba"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "7211eaeafd572b81020fc336c5a3fea8c32272aac898d74a4d063d7c4ad04827"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.inspect.json",
+      "bytes": 8343,
+      "sha256": "f5c22ad972a794d4ec8571e7b595c1ebfc8aab6a9531646c0a232ef6e3d563ba"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.json",
+      "bytes": 3025,
+      "sha256": "1873d816a24eb98f1eb52a48fd10c75fb7acbc44f3f77970c571afe21b360c3f"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.ready.json",
+      "bytes": 860,
+      "sha256": "be13538964f5599bf751f5d90df8f25b5bf951d3b72607e96d86a8ab258a45f4"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.cleanup-before.json",
+      "bytes": 8367,
+      "sha256": "5f16f17637faa2d4b4bcce1d7a94c133cdef1f617f1754775233087f83ff6cbc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "da95d6fb4068ac61240887d85527835906bcbfef4eec7629bd964b8efa56f925"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.inspect.json",
+      "bytes": 8367,
+      "sha256": "2c90f2d2a2b9cba6b3be0df032502bf9ca10f70bef0b083fbd8194f84f66f425"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.json",
+      "bytes": 3956,
+      "sha256": "addbe82a82a9dbb2fc8c4edf02548f1382fc970d0fa2196e6c7714c19fa4e9e8"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.ready.json",
+      "bytes": 827,
+      "sha256": "bb0620ab29d9c7eb59c29bca84a7216d4ec887f2560c9fe691abc5925e222d82"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.sampled.json",
+      "bytes": 827,
+      "sha256": "ee8a82fbf25aa75931c62841c5d6bd2433879db3405fa8fc86a4a8cf5ffad31e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.cleanup-before.json",
+      "bytes": 8385,
+      "sha256": "9f822d51c9fb911c09280bb87b8f299264251b4e4b731eb321781f788f2fc28a"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.cleanup.txt",
+      "bytes": 65,
+      "sha256": "72926007b972f7667879d3178be5762acf56ac994dc87ee5c58138dd79819254"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.inspect.json",
+      "bytes": 8385,
+      "sha256": "835b462cf4a843e7da055d265a0bc8f75b8b387b6d4b98405d1603e10bfecc99"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.json",
+      "bytes": 7845,
+      "sha256": "034f4f4ac967c304ab4b1c1f96467a93d8dde3e83d93eaf90687cc58c080e666"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.overlap.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.rss-7.ready.json",
+      "bytes": 844,
+      "sha256": "02e1caa3afb969af7708a4a739d5ca864c6ff2fbf1b57e995af053bdee4e80f2"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.rss-8.ready.json",
+      "bytes": 844,
+      "sha256": "4d7c44e8630c8ff0ea447ef860ba783f8d98242804d2cda11f07641927a0bcd5"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-rss-overlap.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/optimized-sibling-host.json",
+      "bytes": 1051,
+      "sha256": "6e5cebae11f7d657b679e91921596c01a5b8d8e20629efce46b5c50be06e1554"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.child.json",
+      "bytes": 1034,
+      "sha256": "0fcf4d90a3c92a21e2d83114baaeff71605d3d0a84139f506cbd477bd1ecc64f"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.cleanup-before.json",
+      "bytes": 8337,
+      "sha256": "9916dc88f5cb278bd86967479f85e23dbb1a93f02a7931cd0c3666bd80adef87"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "c393849c923056798be974f7ab774ebdd9c8edaf37ca2602d3ffa0ec6ced3220"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.inspect.json",
+      "bytes": 8337,
+      "sha256": "9916dc88f5cb278bd86967479f85e23dbb1a93f02a7931cd0c3666bd80adef87"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.json",
+      "bytes": 4715,
+      "sha256": "c2d1d0e7fdca2e5d66a74b918fc76d968fc9dbf0d076f24f19d1a3ed09d13c0e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.cleanup-before.json",
+      "bytes": 8325,
+      "sha256": "b42ee66f733aa6742b277986ea076523bd7c8c364b3493961302797d1080f376"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "3a6258c00b17d4b946b0eea78eb43709a5cd12b655ec1ef4630758fbd2126b8e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.inspect.json",
+      "bytes": 8325,
+      "sha256": "1183695ad7b09f5cc7387658de3588be58d0fb8356313e215bf721824790ba93"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.json",
+      "bytes": 4431,
+      "sha256": "aa088dac27ee2cd62881a8fe2061d2f94f93eed8bab423a7e6358a207aa3a778"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "deaff54175b26a4e3fb524880ba93a6921b152d23c430fc39d7ea16acd828fd3"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "d5817a985d639cae0020746a524371471e8992cca6ce210992d871a8bf03db00"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.inspect.json",
+      "bytes": 8343,
+      "sha256": "33694cc74d13b9d40935c189fa9332b16e8aa6cfb9b9666fa25be90c08c49aa9"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.json",
+      "bytes": 4845,
+      "sha256": "87ceabe2d8555e7893f13a846e3f0695ab7a6f671e5eb2bd1e49dcf07f63252c"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.cleanup-before.json",
+      "bytes": 8313,
+      "sha256": "eb32e67df0c456975eb885732fddd0e24d8fcd878751a2a0113da5d578ecc36e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "a61bfa59fdfaa00cdb8b0f8ea3ce6e7f431d1e596303d7af43dcae8bb4731f97"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.inspect.json",
+      "bytes": 8313,
+      "sha256": "eb32e67df0c456975eb885732fddd0e24d8fcd878751a2a0113da5d578ecc36e"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.json",
+      "bytes": 3026,
+      "sha256": "bc9ddd7914f4ed4207bc37ea350cf0b43bd84e0ebc426b16d728eef1a802a802"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.ready.json",
+      "bytes": 860,
+      "sha256": "e646318be3c1905cb97de1d071a827d3cac186fdd84710715d0845c701fb2844"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.cleanup-before.json",
+      "bytes": 8337,
+      "sha256": "5a18c614efe92e69201ba8722e726ef4fbf8ee16443d4bfa64c8a71ff5dda1dc"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "52857067af723bff91231155a1343e762fb7fa3e7988a564ae4e8189ee4a06c8"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.inspect.json",
+      "bytes": 8337,
+      "sha256": "15b93ae5edb3b521d74bc20b90162d99701c28e128910b9d2f88c05930e82574"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.json",
+      "bytes": 3957,
+      "sha256": "f78468ba95498345d04bfa99a853a8bc0935da0392d4c53af7715274b8d751bb"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.ready.json",
+      "bytes": 827,
+      "sha256": "82afb80241f7d5f347df092f31823da31869048507a4b9803d67f2ffdf3cfa62"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.sampled.json",
+      "bytes": 827,
+      "sha256": "721ae31e4e088d2b954de4f85f13d1cec6e7c54005e940975b0a744795a9ccc9"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.cleanup-before.json",
+      "bytes": 8355,
+      "sha256": "bfb8628d10db03f904efc266ad0f07b152dbc7d0318c23ec3b42048066085f33"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.cleanup.txt",
+      "bytes": 65,
+      "sha256": "d980b9008fe0ac8396618cdcc6e3fb8f2a6c43fb38576d102343ecdc333fc780"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.inspect.json",
+      "bytes": 8355,
+      "sha256": "bfb8628d10db03f904efc266ad0f07b152dbc7d0318c23ec3b42048066085f33"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.json",
+      "bytes": 7848,
+      "sha256": "75483284e3f8ffca5a284aed176a1b69c943a54de3cf631cfb998f44d09a41f0"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.overlap.release",
+      "bytes": 31,
+      "sha256": "b949cb06de5e7d5f4fc97c2867af7958d56dfc81b3e3b966415f0f25309ced11"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.rss-7.ready.json",
+      "bytes": 844,
+      "sha256": "936812762e9dee57d1a0fbc3464930db2aff8242ad6bf39a13e228c2d6c00c22"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.rss-8.ready.json",
+      "bytes": 844,
+      "sha256": "8cb2924341d9902e76a3749a629f9ba8633d3e526787878f8ca19018f9c666e9"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-rss-overlap.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "rss-39449551836-attempt-2/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39449551836-2/ordinary-sibling-host.json",
+      "bytes": 1051,
+      "sha256": "e0ce85b9d2a460f94feb2ffa3849ae043dd9050b260e6c3f1d754a572127f13d"
+    }
+  ],
+  "actual_Crystal_compilations": 0,
+  "actual_Grant_cells": 0,
+  "rss_protocol_accepted": true,
+  "rss_scope": "self-and-largest-waited-child-high-water-kib-v1",
+  "compiler_rss_accepted": false,
+  "complete_Grant_build_accepted": false,
+  "installed_SDK_accepted": false,
+  "clean_device_installation_accepted": false,
+  "remaining_build_provider_gates": [
+    "shared and migrated charge boundaries",
+    "actual compiler RSS under the qualified protocol",
+    "complete real build window and behavior"
+  ]
+}

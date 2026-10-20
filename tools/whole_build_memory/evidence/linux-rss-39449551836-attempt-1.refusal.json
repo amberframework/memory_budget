@@ -1,0 +1,312 @@
+{
+  "passed": false,
+  "source_commit": "3ea3bfcc55e1e520ee25d69000ea5e8d17d4a62a",
+  "run_id": 39449551836,
+  "attempt": 1,
+  "reason": "Real over-limit process exited 137; Docker OOMKilled was false in both terminal and cleanup observations. Existing exact OOM gate correctly refused.",
+  "ordinary_tests": 58,
+  "optimized_tests": 58,
+  "profile_tests": 9,
+  "RSS_stage_executed": false,
+  "actual_Grant_cells": 0,
+  "all_owned_returned": [
+    {
+      "id": "138847c9712e29cd8616632d9eb6142d390ffc1ae74668258c1ecc2264d694e1",
+      "case": "/atlas-install-39449551836-1-oom",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 137,
+        "Error": "",
+        "StartedAt": "2026-10-20T15:34:02.814097183Z",
+        "FinishedAt": "2026-10-20T15:34:03.189917213Z"
+      },
+      "removed_and_absent": true
+    },
+    {
+      "id": "5907a01803cb9c59e2b089b0d46382dcdb2c12b8256a33f86d6723893fbfb45e",
+      "case": "/atlas-install-39449551836-1-optimized",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-20T15:34:01.771658794Z",
+        "FinishedAt": "2026-10-20T15:34:02.699348476Z"
+      },
+      "removed_and_absent": true
+    },
+    {
+      "id": "6a92efc4e67e3094e3199e21005cc730c272b543b0ab3769a5541c2c9f294925",
+      "case": "/atlas-install-39449551836-1-terminal-reader",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 1,
+        "Error": "",
+        "StartedAt": "2026-10-20T15:34:03.770888144Z",
+        "FinishedAt": "2026-10-20T15:34:04.128246372Z"
+      },
+      "removed_and_absent": true
+    },
+    {
+      "id": "d8076a80563347b9f2d3d094b42104c4817f9cb9d1b21d74238b5378d6db5320",
+      "case": "/atlas-install-39449551836-1-ordinary",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-20T15:34:00.681296506Z",
+        "FinishedAt": "2026-10-20T15:34:01.646042949Z"
+      },
+      "removed_and_absent": true
+    },
+    {
+      "id": "f6096d139d134327e78f45c1505860346e7818cd2eed6969ef8fbf57d5dfe842",
+      "case": "/atlas-install-39449551836-1-uncapped",
+      "state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 2,
+        "Error": "",
+        "StartedAt": "2026-10-20T15:34:03.306358688Z",
+        "FinishedAt": "2026-10-20T15:34:03.66370995Z"
+      },
+      "removed_and_absent": true
+    }
+  ],
+  "archive_sha256": "e3600ec03e73ffb8eaeec868628fd70b85ec38e610bf9420b36e0fc5b850843f",
+  "raw_files": [
+    {
+      "path": "failed-rss-prerequisite-39449551836/_temp/atlas-linux-runner.json",
+      "bytes": 3165,
+      "sha256": "1fc62417fdfa37c71e6a09bb201bca76eed668767057dd7cbbc70fe9dc732310"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/138847c9712e29cd8616632d9eb6142d390ffc1ae74668258c1ecc2264d694e1.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/138847c9712e29cd8616632d9eb6142d390ffc1ae74668258c1ecc2264d694e1.cleanup-before.json",
+      "bytes": 10032,
+      "sha256": "b51cc45b9742bd90ae9b5b1eb5e80d35b59fc47ffaff862c8cff523297040aa2"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/138847c9712e29cd8616632d9eb6142d390ffc1ae74668258c1ecc2264d694e1.cleanup.txt",
+      "bytes": 65,
+      "sha256": "dae98a3da1f7320a3cd158c751619f0e6b3136743d5627c8dcf338e0fccf9a2a"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/5907a01803cb9c59e2b089b0d46382dcdb2c12b8256a33f86d6723893fbfb45e.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/5907a01803cb9c59e2b089b0d46382dcdb2c12b8256a33f86d6723893fbfb45e.cleanup-before.json",
+      "bytes": 10090,
+      "sha256": "d802619c70f8f6222ddd9bc6b281fabf798530ca4a8acc0487b0bfadfac10ed7"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/5907a01803cb9c59e2b089b0d46382dcdb2c12b8256a33f86d6723893fbfb45e.cleanup.txt",
+      "bytes": 65,
+      "sha256": "eb936be3a725430b24d771a7053b6ae487e29756241f260d1a2024acf5c6fdd8"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/6a92efc4e67e3094e3199e21005cc730c272b543b0ab3769a5541c2c9f294925.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/6a92efc4e67e3094e3199e21005cc730c272b543b0ab3769a5541c2c9f294925.cleanup-before.json",
+      "bytes": 9695,
+      "sha256": "1df2d899c12125adff6f02c1b73af70127c425f1294948f5a5a8a12966d1a9a9"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/6a92efc4e67e3094e3199e21005cc730c272b543b0ab3769a5541c2c9f294925.cleanup.txt",
+      "bytes": 65,
+      "sha256": "8e49d1c64a90eb7423cb2dab9dc4f95b64aa109c2fff7073c3e782f46839fa66"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/d8076a80563347b9f2d3d094b42104c4817f9cb9d1b21d74238b5378d6db5320.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/d8076a80563347b9f2d3d094b42104c4817f9cb9d1b21d74238b5378d6db5320.cleanup-before.json",
+      "bytes": 10047,
+      "sha256": "18af50b8e020a111a3ff46bb0b79bcf5ddfc9df45f169d5ecb5ec740eb9fb4a4"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/d8076a80563347b9f2d3d094b42104c4817f9cb9d1b21d74238b5378d6db5320.cleanup.txt",
+      "bytes": 65,
+      "sha256": "32b25ae496c8ea7de58ae31c0090413ae0119b8ac7b1ae114d0afea545994bfd"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/docker-version.txt",
+      "bytes": 769,
+      "sha256": "8402d8b7679b4087fa4fb62264e49054f974146c5d134195d8b7a341747ab4ed"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/f6096d139d134327e78f45c1505860346e7818cd2eed6969ef8fbf57d5dfe842.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/f6096d139d134327e78f45c1505860346e7818cd2eed6969ef8fbf57d5dfe842.cleanup-before.json",
+      "bytes": 10042,
+      "sha256": "71ae45814f3f1cf734140b2ae8a83dc4f0b868d345cb7aeb734b639c289dac63"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/f6096d139d134327e78f45c1505860346e7818cd2eed6969ef8fbf57d5dfe842.cleanup.txt",
+      "bytes": 65,
+      "sha256": "beba10c418f87e9d6fecf90a7173f5f459aa948c3db0d1b0397caa9cf9b47769"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/image-inspect.json",
+      "bytes": 2761,
+      "sha256": "d87bcbfd7ce0611ced8a14703751a47a41ec7a419535f0628ede60ab4f201150"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/oom.client-exit.txt",
+      "bytes": 4,
+      "sha256": "e3b9c2844b5a5c2677b3a2279db2ec8487491dd9a23d6b22fac153391b3bb63c"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/oom.inspect.json",
+      "bytes": 10032,
+      "sha256": "572f6aa301ba39fa7c198c124d5e62f4942f744f9f687350afbf24638aeaa3bc"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/oom.json",
+      "bytes": 1119,
+      "sha256": "46f1f8a9bc696cd3621f9d5924ee1915dbcd90ecf7e812849681b38160526d9a"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/oom.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/oom.stdout.txt",
+      "bytes": 25,
+      "sha256": "f3543810a54f40b085722baba561f6fc9f617643baeb8def6b5ff20ec3906fbe"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/optimized.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/optimized.inspect.json",
+      "bytes": 10090,
+      "sha256": "d802619c70f8f6222ddd9bc6b281fabf798530ca4a8acc0487b0bfadfac10ed7"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/optimized.json",
+      "bytes": 10596,
+      "sha256": "50964cbf2010e2a2ce20b7cdafe651b01b550fa5cfb430f5f0b858d3bca73201"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/optimized.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/optimized.stdout.txt",
+      "bytes": 120,
+      "sha256": "48682fb7a0ad60b153234896eecbdac0ab3e4e8d6219fc9b05800530a8cec2df"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/ordinary.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/ordinary.inspect.json",
+      "bytes": 10047,
+      "sha256": "18af50b8e020a111a3ff46bb0b79bcf5ddfc9df45f169d5ecb5ec740eb9fb4a4"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/ordinary.json",
+      "bytes": 10597,
+      "sha256": "db5342a46cb494a81e0f6edda9d4d3b7513f0c3f1d42c82ad27cbe373df83ee2"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/ordinary.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/ordinary.stdout.txt",
+      "bytes": 121,
+      "sha256": "b845d0f25f5cb004e5d049eabbf9d0d8b8bc6601db21cbdd9101007e19b3b19c"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/terminal-reader.inspect.json",
+      "bytes": 9695,
+      "sha256": "d76f02e25e9ac80fe81981493b457f6ee161e694da002bfca020c1ee0f9d83d9"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/terminal-reader.stderr.txt",
+      "bytes": 631,
+      "sha256": "fe1990792b72646941c4e8dfe589f7363f912d6228882aebab6f08a45af107c8"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/terminal-reader.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/uncapped.client-exit.txt",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/uncapped.inspect.json",
+      "bytes": 10042,
+      "sha256": "71ae45814f3f1cf734140b2ae8a83dc4f0b868d345cb7aeb734b639c289dac63"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/uncapped.json",
+      "bytes": 766,
+      "sha256": "fdc0d3fdd22bd24a2c093a524d9faf69c3813d1560d6ba962b2491268d85bd5a"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/uncapped.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failed-rss-prerequisite-39449551836/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39449551836-1/uncapped.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

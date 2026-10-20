@@ -1,0 +1,57 @@
+{
+  "actual_compiler_container_native_ssh_jobs": 0,
+  "contents_sha256": "6ed26546943e29553c6cdf062652ecd30529924da402b53b5b39d3f7f6456080",
+  "corrected_hosted_source_acceptance": "pending",
+  "files": [
+    {
+      "bytes": 3895,
+      "mode": 420,
+      "path": "README.md",
+      "sha256": "ec5de572875c4133a91ebb5b12f9a490f28c0109f5be507afaed3159fd55bd6f"
+    },
+    {
+      "bytes": 2908563,
+      "mode": 420,
+      "path": "grant-linux-first-build-publication-v100.tar.gz",
+      "sha256": "aebd690e5978aa6373e2177aa7ee2d5bcb8b7e064cc50aee18ae9c4d53fc5601"
+    },
+    {
+      "bytes": 5511524,
+      "mode": 420,
+      "path": "grant-linux-first-build-publication-v101.tar.gz",
+      "sha256": "39ae53df3f72668f63101e0f65606cc41b2787c71292bff0f163031bb4bb309e"
+    },
+    {
+      "bytes": 16623,
+      "mode": 420,
+      "path": "verify_publication_v101.py",
+      "sha256": "728f7df0eb6b36c127bc9ea81e8356834cb2272acfd6ae357f8ec27cfe219695"
+    }
+  ],
+  "format": "atlas-grant-source-publication-review-v101",
+  "frozen_v100_outer_sha256": "aebd690e5978aa6373e2177aa7ee2d5bcb8b7e064cc50aee18ae9c4d53fc5601",
+  "outer_archive_sha256": "39ae53df3f72668f63101e0f65606cc41b2787c71292bff0f163031bb4bb309e",
+  "provider_scope": "Linux 3.12.3 and macOS 3.15.0 interpreter pins are observed hosted-control profiles. Xcode 3.9.6 is the local source-review profile. Full native dependency closure remains separate for every profile.",
+  "required_target_cells": 144,
+  "source_only": true,
+  "source_python_profiles": {
+    "darwin": [
+      {
+        "sha256": "1955899cb535256cfa477d926d016819e52e747984722c44f76e39a4950fee0e",
+        "version": "3.15.0"
+      },
+      {
+        "sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb",
+        "version": "3.9.6"
+      }
+    ],
+    "linux": [
+      {
+        "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+        "version": "3.12.3"
+      }
+    ]
+  },
+  "source_tool_manifest_sha256": "f009edff0608a625517df0e01803be9a349d579d3e2dbdd73d6d05a557109164",
+  "target_cells_accepted": 0
+}

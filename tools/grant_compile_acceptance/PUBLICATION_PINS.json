@@ -1,0 +1,45 @@
+{
+  "format": "atlas-grant-source-publication-review-v1",
+  "source_only": true,
+  "outer_archive_sha256": "aebd690e5978aa6373e2177aa7ee2d5bcb8b7e064cc50aee18ae9c4d53fc5601",
+  "contents_sha256": "292430bfd276814ed8bfda4e0edb16aa04e582a9bc92bd927c6c4bf2a9beb9c6",
+  "source_review_receipt_sha256": "3898d7113d7e944df2ce057bf3223e6c85133fe2ef96bc5e90ed384b1b0e7df9",
+  "target_cells_accepted": 0,
+  "required_target_cells": 144,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3357,
+      "sha256": "e583771d017ffbbe2de31a71996e23755f5e0ab6ddcc7766d107620e52e7309b"
+    },
+    {
+      "path": "grant-linux-first-build-publication-v100.tar.gz",
+      "bytes": 2908563,
+      "sha256": "aebd690e5978aa6373e2177aa7ee2d5bcb8b7e064cc50aee18ae9c4d53fc5601"
+    },
+    {
+      "path": "verify_publication.py",
+      "bytes": 13407,
+      "sha256": "c7bb0b45e7df41fd45ba28f498b109fce797772bfe4707898c92401bd1bb3041"
+    }
+  ],
+  "source_python_profiles": {
+    "linux": [
+      {
+        "version": "3.12.3",
+        "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
+      }
+    ],
+    "darwin": [
+      {
+        "version": "3.15.0",
+        "sha256": "1955899cb535256cfa477d926d016819e52e747984722c44f76e39a4950fee0e"
+      },
+      {
+        "version": "3.9.6",
+        "sha256": "271143990bc83af0fb2404a255038f5faafb96df1584ed7f085e5018c0f33ffb"
+      }
+    ]
+  },
+  "provider_scope": "Linux 3.12.3 and macOS 3.15.0 interpreter pins are observed hosted-control profiles. Xcode 3.9.6 is the local source-review profile. Full native dependency closure remains separate for every profile."
+}

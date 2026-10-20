@@ -2,12 +2,12 @@
   "schema_version": 1,
   "package_name": "memory_budget",
   "package_version": "0.1.1",
-  "distribution_state": "local_candidate",
+  "distribution_state": "public_review_candidate",
   "counter_protocol": 1,
   "source_binding": "Resolve the actual checkout commit/clean state when building a release or projection; this tracked manifest hashes canonical source bytes.",
   "source_repository": "https://github.com/amberframework/memory_budget",
   "proposed_repository": "https://github.com/amberframework/memory_budget",
-  "repository_state": "owner_verified_public_source_readback_pending",
+  "repository_state": "public_source_verified",
   "api_basis": {
     "package_version": "0.1.0",
     "source_commit": "1a1f89e981b820ff5b375da9b9365be85180190b"
@@ -39,7 +39,7 @@
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "08bd63ba9edc6a58e4dda2144c63c78cb47eb45d1d7194f9760b2ae6badf1059"
+      "sha256": "6c96c085bf5bb7cadeb45c6d1c37862e076f872e068e195b829c738877f6a987"
     },
     {
       "file": "docs/0.1.1/prepare-toolchain.md",
@@ -47,7 +47,7 @@
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
+      "sha256": "d1f368d6d5bb917f9989308f3cbba4369a7408605f9f0b4e0fb6a60e08cba4d1"
     },
     {
       "file": "examples/support/memory_budget_sample_record.cr",
@@ -55,11 +55,15 @@
     },
     {
       "file": "skills/crystal-memory-budgets/SKILL.md",
-      "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
+      "sha256": "8d5acc89dd11b4dbe54cf85e61f2a4b7b31f7431821c271f773e1a0d0aacd1e1"
     },
     {
       "file": "skills/crystal-memory-budgets/agents/openai.yaml",
       "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/references/installation-validation.md",
+      "sha256": "7ec59d18241d7dc4e19b3777f54d8999bced1826f967fe5a509983f68eee5eca"
     }
   ],
   "list_of_api_sources": [
@@ -81,15 +85,15 @@
     },
     {
       "file": "scripts/native_environment.rb",
-      "sha256": "9368fed0c93473b95bdbbbcba708e2c1ad54a5a2f1c37a24a0d6af4f0599d851"
+      "sha256": "ca07fc69dd4ba47658d109537e97eb0bc46352e5833c676920074cc4e3f3feae"
     },
     {
       "file": "scripts/prepare_native_manifest.rb",
-      "sha256": "ba95bafccb4efc8a86ce1f2b5688dc74a0660187cad8aaceef3489174d040f18"
+      "sha256": "c615640d8b2dca83cdc517768ae74850c776051573336cf9ace6edcbfcf3dd2f"
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
+      "sha256": "03d437ba7ce3d44bf6ae92b3298afa0db676fc2667b87c34d72686002b1f445f"
     },
     {
       "file": "scripts/budget.rb",
