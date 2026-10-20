@@ -29,7 +29,7 @@ jobs:
               ruby -rrbconfig -rdigest -e "puts Digest::SHA256.file(RbConfig.ruby).hexdigest" > /results/ruby-sha256.txt
               ruby -Itest -e "Dir[\"test/*_test.rb\"].sort.each { |file| require File.expand_path(file) }" > /results/portable-fixtures.stdout 2> /results/portable-fixtures.stderr
               cat /results/portable-fixtures.stdout
-              ruby -e "text=File.read(ARGV.fetch(0)); abort \"Incomplete portable fixture suite\" unless text.match?(/^112 runs, [0-9]+ assertions, 0 failures, 0 errors, 0 skips$/)" /results/portable-fixtures.stdout
+              ruby -e "text=File.read(ARGV.fetch(0)); abort \"Incomplete portable fixture suite\" unless text.match?(/^143 runs, [0-9]+ assertions, 0 failures, 0 errors, 0 skips$/)" /results/portable-fixtures.stdout
               MEMORY_BUDGET_TEST_OUTPUT_PARENT=/tmp ruby test/native_platform_behavior.rb /tmp/native-platform-behavior > /results/native-platform.stdout 2> /results/native-platform.stderr
               ruby -rjson -e "r=JSON.parse(File.read(ARGV.fetch(0))); abort \"Incomplete native platform fixture cohort\" unless r.fetch(\"passed\") && r.fetch(\"test_count\")==27 && r.fetch(\"cases\").all?{|v| v.fetch(\"passed\")} && r.fetch(\"ELF_link_or_loaded_provider_acceptance\")==false" /tmp/native-platform-behavior/RESULT.json
               ruby scripts/install_bundle.rb "/tmp/ordinary consumer" > /results/bundle-install.stdout

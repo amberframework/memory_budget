@@ -1,0 +1,87 @@
+{
+  "format": "atlas-linux-runner-profile-set-v1",
+  "profiles": [
+    {
+      "format": "atlas-linux-runner-profile-v1",
+      "profile": {
+        "docker_cli_sha256": "6435ff9214bf8e0931078fb0980809728cac0a54a526d4f28a26d3e48132b58d",
+        "sha256sum_sha256": "4d2db56c867e5324e0084c9e897f6360d37517de77ac96f2bd31494223d69a60",
+        "timeout_sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52",
+        "bash_sha256": "bc5945feb8bd26203ebfafea5ce1878bb2e32cb8fb50ab7ae395cfb1e1aaaef1",
+        "sudo_sha256": "6ae6665cc51295ea8aaba94a3377dafa563f950aafc6296c0704fb33401a31ff",
+        "python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+        "docker_daemon_sha256": "b8644399e73e2c9b32ea3983daf3a9856a483a79196bea10c01977d2b021fe71",
+        "docker_server_version": "28.0.4",
+        "docker_server_git_commit": "6430e49",
+        "docker_api_version": "1.48",
+        "kernel_release": "7.0.0-1017-azure",
+        "machine": "x86_64",
+        "runner_image_os": "ubuntu24",
+        "runner_image_version": "20261018.339.1",
+        "cgroup_version": "2",
+        "cgroup_driver": "systemd",
+        "memory_limit_supported": true,
+        "swap_limit_supported": true,
+        "package_versions": {
+          "bash": "5.2.21-2ubuntu4",
+          "containerd.io": "2.4.2-2~ubuntu.24.04~noble",
+          "coreutils": "9.4-3ubuntu6.3",
+          "docker-ce": "5:28.0.4-1~ubuntu.24.04~noble",
+          "docker-ce-cli": "5:28.0.4-1~ubuntu.24.04~noble",
+          "python3.12-minimal": "3.12.3-1ubuntu0.17",
+          "sudo": "1.9.15p5-3ubuntu5.24.04.4"
+        }
+      },
+      "review": {
+        "source_commit": "510b76a47b120afeb70211b3ac199e51e89cc44b",
+        "read_only_run": "https://github.com/amberframework/memory_budget/actions/runs/39433354318",
+        "candidate_sha256": "03538662c7b7e224e771cbeca7007ad6660a1d0a6b043f394bcf1a5cbec36a9b",
+        "collector_sha256": "3a3bfbdf275dc43015d2bf7422c23b581cc29c811fef1fb7f7ab402eb90a4104",
+        "runner_image_reference": "https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md",
+        "docker_release_reference": "https://github.com/moby/moby/releases/tag/v28.0.4",
+        "docker_release_commit_matches": true,
+        "scope": "Exact direct driver tools and observed hosted kernel/image; actual container controls and complete-build ownership qualification remain required"
+      }
+    },
+    {
+      "format": "atlas-linux-runner-profile-v1",
+      "profile": {
+        "docker_cli_sha256": "6435ff9214bf8e0931078fb0980809728cac0a54a526d4f28a26d3e48132b58d",
+        "sha256sum_sha256": "4d2db56c867e5324e0084c9e897f6360d37517de77ac96f2bd31494223d69a60",
+        "timeout_sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52",
+        "bash_sha256": "bc5945feb8bd26203ebfafea5ce1878bb2e32cb8fb50ab7ae395cfb1e1aaaef1",
+        "sudo_sha256": "6ae6665cc51295ea8aaba94a3377dafa563f950aafc6296c0704fb33401a31ff",
+        "python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+        "docker_daemon_sha256": "b8644399e73e2c9b32ea3983daf3a9856a483a79196bea10c01977d2b021fe71",
+        "docker_server_version": "28.0.4",
+        "docker_server_git_commit": "6430e49",
+        "docker_api_version": "1.48",
+        "kernel_release": "6.17.0-1022-azure",
+        "machine": "x86_64",
+        "runner_image_os": "ubuntu24",
+        "runner_image_version": "20261012.334.1",
+        "cgroup_version": "2",
+        "cgroup_driver": "systemd",
+        "memory_limit_supported": true,
+        "swap_limit_supported": true,
+        "package_versions": {
+          "bash": "5.2.21-2ubuntu4",
+          "containerd.io": "2.4.1-2~ubuntu.24.04~noble",
+          "coreutils": "9.4-3ubuntu6.3",
+          "docker-ce": "5:28.0.4-1~ubuntu.24.04~noble",
+          "docker-ce-cli": "5:28.0.4-1~ubuntu.24.04~noble",
+          "python3.12-minimal": "3.12.3-1ubuntu0.17",
+          "sudo": "1.9.15p5-3ubuntu5.24.04.4"
+        }
+      },
+      "review": {
+        "source_commit": "9f94f22e148df7b1f1e3fa316748739baaf84c09",
+        "read_only_run": "https://github.com/amberframework/memory_budget/actions/runs/39433737581",
+        "candidate_sha256": "626b0ae8b043061ae57333d80dba10bbbedbf3a4e8b51750b1a5e0d739ec0873",
+        "direct_tool_hashes_match_first_profile": true,
+        "runner_image_reference": "https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md",
+        "scope": "Second separately observed exact hosted platform; actual container controls and complete-build ownership qualification remain required"
+      }
+    }
+  ]
+}

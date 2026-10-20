@@ -1,0 +1,58 @@
+name: Linux kernel budget qualification
+on:
+  pull_request:
+    paths:
+      - tools/installation_provenance/**
+      - .github/workflows/linux-kernel-budget-controls.yml
+      - tools/whole_build_memory/**
+permissions:
+  contents: read
+concurrency:
+  group: linux-kernel-budget-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  kernel-budget:
+    name: Record runner identity and exercise reviewed Linux controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Read runner identities and compare the reviewed profile
+        id: profile
+        shell: bash
+        run: |
+          sudo --non-interactive --preserve-env=ImageOS,ImageVersion /usr/bin/python3 -I -S -B tools/installation_provenance/record_linux_runner.py \
+            --output "$RUNNER_TEMP/atlas-linux-runner.json" \
+            --expected-profile tools/installation_provenance/runner_profile.json \
+            --github-output "$GITHUB_OUTPUT" --github-env "$GITHUB_ENV"
+      - name: Exercise capped, OOM, uncapped and terminal controls
+        if: steps.profile.outputs.admitted == 'true'
+        shell: bash
+        env:
+          ATLAS_SOURCE_PINS_SHA256: 15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae
+          ATLAS_TERMINAL_READER_SHA256: f35e2a9804afadf514beced484b02777f4ece92a1a33436afb0f10d82bfcdca9
+        run: |
+          /usr/bin/python3 -I -S -B tools/installation_provenance/test_runner_profiles.py
+          printf '%s  %s\n' "$ATLAS_SHA256SUM_SHA256" /usr/bin/sha256sum | /usr/bin/sha256sum --check --strict
+          printf '%s  %s\n' '2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee' tools/installation_provenance/run_ci.sh | /usr/bin/sha256sum --check --strict
+          bash tools/installation_provenance/run_ci.sh
+      - name: Exercise transient descendants and sibling isolation
+        if: ${{ always() && steps.profile.outputs.admitted == 'true' }}
+        shell: bash
+        run: |
+          /usr/bin/python3 -I -S -B tools/whole_build_memory/run_host.py \
+            --pins-sha256 233f9658ccd015e2c9e7c268723963ed3713dbb2fc4a552f65d2b52a13288cfd \
+            --runner-metadata "$RUNNER_TEMP/atlas-linux-runner.json"
+      - name: Retain runner profile and complete control evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: linux-kernel-budget-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/atlas-linux-runner.json
+            tools/installation_provenance/ci-evidence-*/
+            tools/whole_build_memory/ci-evidence-*/
+          if-no-files-found: error
+          retention-days: 14

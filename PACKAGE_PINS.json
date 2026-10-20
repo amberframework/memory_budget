@@ -41,7 +41,7 @@
     },
     {
       "file": "docs/0.1.1/native-toolchain.md",
-      "sha256": "5a0fc398e7cac3cc2beb4e71677383bc722342105cb0268faeaae2d6a7550d33"
+      "sha256": "6c96c085bf5bb7cadeb45c6d1c37862e076f872e068e195b829c738877f6a987"
     },
     {
       "file": "docs/0.1.1/prepare-toolchain.md",
@@ -49,11 +49,11 @@
     },
     {
       "file": "docs/corpus-manifest.json",
-      "sha256": "837e7c571b25af6e6aceb987268527f02d850f42f982f2e8d4911051cd03a5c8"
+      "sha256": "d4e6a7e23d6b9795b736a6645c102fb3aa6cdd6785e9a6facc7ed1f33c758000"
     },
     {
       "file": "docs/corpus.json",
-      "sha256": "b515d90dfe74db78ad0ae6184f12092c82bd599f6c3f2186a6f0c7ddb4ece4db"
+      "sha256": "d1f368d6d5bb917f9989308f3cbba4369a7408605f9f0b4e0fb6a60e08cba4d1"
     },
     {
       "file": "examples/c_allocation_owner.cr",
@@ -153,15 +153,19 @@
     },
     {
       "file": "scripts/toolchain_profile.rb",
-      "sha256": "3bf554c7bca8606bf24b3f4b01e41c552b2d454da8b253a164bf73622e117091"
+      "sha256": "03d437ba7ce3d44bf6ae92b3298afa0db676fc2667b87c34d72686002b1f445f"
     },
     {
       "file": "skills/crystal-memory-budgets/SKILL.md",
-      "sha256": "dd8fda6c5e0faa6cd85f5ac2cd2c187955697f041ce98c09999df2a08b5b44ce"
+      "sha256": "8d5acc89dd11b4dbe54cf85e61f2a4b7b31f7431821c271f773e1a0d0aacd1e1"
     },
     {
       "file": "skills/crystal-memory-budgets/agents/openai.yaml",
       "sha256": "7678cc353f933b0dd881b32a8aa6be50a72ddfcbb2fa56e3c9c2ebd152e6784e"
+    },
+    {
+      "file": "skills/crystal-memory-budgets/references/installation-validation.md",
+      "sha256": "7ec59d18241d7dc4e19b3777f54d8999bced1826f967fe5a509983f68eee5eca"
     },
     {
       "file": "spec/fixtures/c/SOURCE_PINS.json",

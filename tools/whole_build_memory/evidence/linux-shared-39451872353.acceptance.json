@@ -1,0 +1,1766 @@
+{
+  "passed": true,
+  "observed_at": "2026-10-20T15:51:30.040404+00:00",
+  "scope": "Linux first-touch shared-file charge, live resident-page contrast, read-only cgroup mutation refusal and inherited process/RSS controls",
+  "source_commit": "c33b03334b49c46e810f7d196428020b848777bd",
+  "source_manifest_sha256": "233f9658ccd015e2c9e7c268723963ed3713dbb2fc4a552f65d2b52a13288cfd",
+  "provider_manifest_sha256": "15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406eae",
+  "workflow_url": "https://github.com/amberframework/memory_budget/actions/runs/39451872353",
+  "pull_request": "https://github.com/amberframework/memory_budget/pull/2",
+  "artifact_id": 12279316928,
+  "archive_sha256": "19c4b36d2d60f3c988226f58597e7f1aa8f91a4e6cf09807a725051bc9903bdc",
+  "archive_published_digest": "sha256:19c4b36d2d60f3c988226f58597e7f1aa8f91a4e6cf09807a725051bc9903bdc",
+  "accepted_probe_cases": 16,
+  "changed_actual_result_controls": {
+    "passed": true,
+    "controls": [
+      {
+        "mode": "ordinary",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "The final kernel peak must retain the retired private allocation"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_adoption",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "ordinary",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "ordinary-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "ordinary",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "ordinary-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_command",
+        "changed_actual_file": "ordinary-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "ordinary-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "ordinary-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_waited_rss_peak",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "The waited-child maximum must retain the real worker RSS high-water mark"
+      },
+      {
+        "mode": "ordinary",
+        "case": "boolean_self_rss",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Typed Linux maximum RSS counters in KiB are required"
+      },
+      {
+        "mode": "ordinary",
+        "case": "rss_bytes_used_as_kib",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "ordinary",
+        "case": "summed_rss_used_as_largest",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "ordinary",
+        "case": "overlap_omitted_worker",
+        "changed_actual_file": "ordinary-rss-overlap.json",
+        "rejected": true,
+        "reason": "Both consumed private allocations must be live in the same measured window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_shared_inode",
+        "changed_actual_file": "ordinary-shared-observer.json",
+        "rejected": true,
+        "reason": "Independent host and both live consumers must bind the same shared inode and charge window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "changed_shared_content",
+        "changed_actual_file": "ordinary-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared inode and content signature must match"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_shared_writer_charge",
+        "changed_actual_file": "ordinary-shared-load.json",
+        "rejected": true,
+        "reason": "The writer must retain the first-touch charge while the shared reader is live"
+      },
+      {
+        "mode": "ordinary",
+        "case": "shared_reader_charged_as_private",
+        "changed_actual_file": "ordinary-shared-observer.json",
+        "rejected": true,
+        "reason": "The shared reader RSS must rise while its own cgroup charge remains separate"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_shared_reader_rss",
+        "changed_actual_file": "ordinary-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared-page consumer must preserve its owner, consumption, RSS and window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "wrong_shared_page_checksum",
+        "changed_actual_file": "ordinary-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared-page consumer must preserve its owner, consumption, RSS and window"
+      },
+      {
+        "mode": "ordinary",
+        "case": "lost_retained_shared_charge",
+        "changed_actual_file": "ordinary-shared-load.json",
+        "rejected": true,
+        "reason": "The writer must retain the first-touch charge while the shared reader is live"
+      },
+      {
+        "mode": "ordinary",
+        "case": "writable_cgroup_admission",
+        "changed_actual_file": "ordinary-direct.json",
+        "rejected": true,
+        "reason": "Exact source, runtime, case and qualification scope required"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_retired_peak",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Positive current and peak memory must fit the strict byte budget"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_exec_birth",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "The same forked process must exec and be reaped by the actual launcher"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_adoption",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Detached process/session identity, adoption, mode and normal join required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_live_orphan",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "The detached worker must be observed after its launcher retires"
+      },
+      {
+        "mode": "optimized",
+        "case": "mixed_sibling_charge",
+        "changed_actual_file": "optimized-observer.json",
+        "rejected": true,
+        "reason": "Sibling private allocation must remain outside the observer budget"
+      },
+      {
+        "mode": "optimized",
+        "case": "same_host_cgroup",
+        "changed_actual_file": "optimized-sibling-host.json",
+        "rejected": true,
+        "reason": "Actual host sibling hierarchy required"
+      },
+      {
+        "mode": "optimized",
+        "case": "missing_kernel_events",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Complete typed pressure and OOM event counters are required"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_command",
+        "changed_actual_file": "optimized-direct.inspect.json",
+        "rejected": true,
+        "reason": "Exact distinct image, command, mode and environment required"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_direct_parent",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_fork_parents",
+        "changed_actual_file": "optimized-fork-exec.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "omitted_detached_parents",
+        "changed_actual_file": "optimized-detached.json",
+        "rejected": true,
+        "reason": "Every live supervisor, launcher and worker must appear inside the measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "allocation_outside_window",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Worker entry must bind the same live owner, roster and measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_waited_rss_peak",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "The waited-child maximum must retain the real worker RSS high-water mark"
+      },
+      {
+        "mode": "optimized",
+        "case": "boolean_self_rss",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Typed Linux maximum RSS counters in KiB are required"
+      },
+      {
+        "mode": "optimized",
+        "case": "rss_bytes_used_as_kib",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "optimized",
+        "case": "summed_rss_used_as_largest",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Largest waited-child RSS and simultaneous whole-group charge must remain distinct"
+      },
+      {
+        "mode": "optimized",
+        "case": "overlap_omitted_worker",
+        "changed_actual_file": "optimized-rss-overlap.json",
+        "rejected": true,
+        "reason": "Both consumed private allocations must be live in the same measured window"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_shared_inode",
+        "changed_actual_file": "optimized-shared-observer.json",
+        "rejected": true,
+        "reason": "Independent host and both live consumers must bind the same shared inode and charge window"
+      },
+      {
+        "mode": "optimized",
+        "case": "changed_shared_content",
+        "changed_actual_file": "optimized-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared inode and content signature must match"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_shared_writer_charge",
+        "changed_actual_file": "optimized-shared-load.json",
+        "rejected": true,
+        "reason": "The writer must retain the first-touch charge while the shared reader is live"
+      },
+      {
+        "mode": "optimized",
+        "case": "shared_reader_charged_as_private",
+        "changed_actual_file": "optimized-shared-observer.json",
+        "rejected": true,
+        "reason": "The shared reader RSS must rise while its own cgroup charge remains separate"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_shared_reader_rss",
+        "changed_actual_file": "optimized-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared-page consumer must preserve its owner, consumption, RSS and window"
+      },
+      {
+        "mode": "optimized",
+        "case": "wrong_shared_page_checksum",
+        "changed_actual_file": "optimized-shared-observer.json",
+        "rejected": true,
+        "reason": "The complete shared-page consumer must preserve its owner, consumption, RSS and window"
+      },
+      {
+        "mode": "optimized",
+        "case": "lost_retained_shared_charge",
+        "changed_actual_file": "optimized-shared-load.json",
+        "rejected": true,
+        "reason": "The writer must retain the first-touch charge while the shared reader is live"
+      },
+      {
+        "mode": "optimized",
+        "case": "writable_cgroup_admission",
+        "changed_actual_file": "optimized-direct.json",
+        "rejected": true,
+        "reason": "Exact source, runtime, case and qualification scope required"
+      }
+    ],
+    "restored_actual_accepted": true
+  },
+  "preserved_cohorts": [
+    {
+      "mode": "ordinary",
+      "tests": 58
+    },
+    {
+      "mode": "optimized",
+      "tests": 58
+    }
+  ],
+  "profile_admission_cases": 9,
+  "measurements": [
+    {
+      "case": "optimized-detached",
+      "before_current_bytes": 18300928,
+      "after_current_bytes": 18087936,
+      "retained_charged_peak_bytes": 111157248,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27373568,
+      "after_largest_waited_child_rss_bytes": 88236032,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-direct",
+      "before_current_bytes": 17813504,
+      "after_current_bytes": 18235392,
+      "retained_charged_peak_bytes": 102223872,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27721728,
+      "after_largest_waited_child_rss_bytes": 94388224,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-fork-exec",
+      "before_current_bytes": 17760256,
+      "after_current_bytes": 18247680,
+      "retained_charged_peak_bytes": 119304192,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27279360,
+      "after_largest_waited_child_rss_bytes": 94552064,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-load",
+      "before_current_bytes": 18116608,
+      "after_current_bytes": 18096128,
+      "retained_charged_peak_bytes": 219697152,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 228536320,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 219697152,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-observer",
+      "before_current_bytes": 18210816,
+      "after_current_bytes": 17784832,
+      "retained_charged_peak_bytes": 18493440,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27148288,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 17977344,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-rss-overlap",
+      "before_current_bytes": 17965056,
+      "after_current_bytes": 18362368,
+      "retained_charged_peak_bytes": 186679296,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27267072,
+      "after_largest_waited_child_rss_bytes": 94650368,
+      "shared_hot_current_bytes": 186671104,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-shared-load",
+      "before_current_bytes": 17977344,
+      "after_current_bytes": 121499648,
+      "retained_charged_peak_bytes": 121778176,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 128008192,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 121778176,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "optimized-shared-observer",
+      "before_current_bytes": 17862656,
+      "after_current_bytes": 17895424,
+      "retained_charged_peak_bytes": 18145280,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 128118784,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 17903616,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-detached",
+      "before_current_bytes": 17731584,
+      "after_current_bytes": 17817600,
+      "retained_charged_peak_bytes": 110874624,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27439104,
+      "after_largest_waited_child_rss_bytes": 88354816,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-direct",
+      "before_current_bytes": 17764352,
+      "after_current_bytes": 17809408,
+      "retained_charged_peak_bytes": 101994496,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27189248,
+      "after_largest_waited_child_rss_bytes": 94384128,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-fork-exec",
+      "before_current_bytes": 18006016,
+      "after_current_bytes": 18358272,
+      "retained_charged_peak_bytes": 119132160,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27115520,
+      "after_largest_waited_child_rss_bytes": 93941760,
+      "shared_hot_current_bytes": null,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-load",
+      "before_current_bytes": 18001920,
+      "after_current_bytes": 18137088,
+      "retained_charged_peak_bytes": 219582464,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 228270080,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 219582464,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-observer",
+      "before_current_bytes": 18018304,
+      "after_current_bytes": 17870848,
+      "retained_charged_peak_bytes": 18300928,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27267072,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 17829888,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-rss-overlap",
+      "before_current_bytes": 17903616,
+      "after_current_bytes": 18276352,
+      "retained_charged_peak_bytes": 185192448,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 27291648,
+      "after_largest_waited_child_rss_bytes": 93937664,
+      "shared_hot_current_bytes": 185184256,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-shared-load",
+      "before_current_bytes": 17907712,
+      "after_current_bytes": 121479168,
+      "retained_charged_peak_bytes": 121704448,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 128004096,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 121704448,
+      "cgroup_write_refusal_errno": 13
+    },
+    {
+      "case": "ordinary-shared-observer",
+      "before_current_bytes": 17797120,
+      "after_current_bytes": 17895424,
+      "retained_charged_peak_bytes": 18079744,
+      "before_members": [
+        1
+      ],
+      "after_members": [
+        1
+      ],
+      "after_self_peak_rss_bytes": 127991808,
+      "after_largest_waited_child_rss_bytes": 0,
+      "shared_hot_current_bytes": 17899520,
+      "cgroup_write_refusal_errno": 13
+    }
+  ],
+  "all_owned_containers_removed": [
+    "04800520fcf510708e73a24ce220a1ed6fd98bbba227ee04ac0f7b733953a6a5",
+    "148a6eab43814812f14a2fdf3942dc8dfec1b7a47ffce44a8a523cff858f8098",
+    "184be73b2ee71690e9a729ff62fea50eac40c298927ec8ee1e849c1685304a74",
+    "3e748906f50880af239095dc46cb5a34d9560f9178ce04c530de2a3cd0089090",
+    "3f0381003d90569763c513563ff18bc43cab750420b69e21660d23572f89b3d5",
+    "3f958801e26175e4b73b1c31a173ff46f2aa95b07f94d73e5dda9f158a47dfcc",
+    "3fbbcf718a77c114ef18fd1059de6fe685ef1e2a53bb5e53c5355fded19f6c03",
+    "5574f5bc3c0653ae1f6022a8291d1b7082969f4a1e4580cd08af56b59214e1fb",
+    "6c000cd329143dffc2a1349cddbd500b3d0996bde1157b4d4b8da1b8dfc7a47b",
+    "7a4811e60a43d0795d7360495581148bcef92042d8f0bc950159238e4c6ca821",
+    "82ad06aa423c383b5d8d6ccf3f3414bacfebdf37e44daac1566136b93ac86616",
+    "84112ae14416c2d580c1dd16bf63bfaa040738380b6c135f2f4ef6a9504a2ab6",
+    "9013274985b24d01b82ff6660f30b1c964f72c35b03fe7db6d7c12ca42e769d2",
+    "94fd089072cbb9e3078b95ce21b0a0c5c0ca85f961357e2a3443423a840c57a8",
+    "96c9e91196b2ea5baea948bdae4f35a163fe2d28d132b7eee4e7002323a61c6f",
+    "a0328538c39d0609eca63d7a08e8d10dfd827760aa2ddfc3fef197977a16082d",
+    "b8e8864879cb646aaae664eda0cf5ada968092f4e4f96655742954e0e45285d4",
+    "ba3965fa1f5ad165852564d3f33bb05dc8a306bc8e4c5da442ccb3ecdb8c0582",
+    "e3ccaf659e29576065777ca3a05bec50d885ec87e2c6ed8ec9455030fc0ee9f0",
+    "e8c584bbad14079a6a91a28343255685ff0576663c935c9664d1a92607557c77",
+    "f25d194071fceeccaab60212b52d3eb5347d4784d0a4ddd875c46bf230e56e8f"
+  ],
+  "shared_data_files_returned": [
+    {
+      "path": "ordinary-shared-pages.bin",
+      "initially_absent": true,
+      "removed": true,
+      "identity": {
+        "device": 2049,
+        "inode": 4511547,
+        "bytes": 100663296,
+        "uid": 501,
+        "mode": 420,
+        "sha256": "d92c54f3d4db530e7adf33c09d74feac0520db69b0bba8189b98a4dc3a59438e"
+      },
+      "expected_signature": true
+    },
+    {
+      "path": "optimized-shared-pages.bin",
+      "initially_absent": true,
+      "removed": true,
+      "identity": {
+        "device": 2049,
+        "inode": 4511927,
+        "bytes": 100663296,
+        "uid": 501,
+        "mode": 420,
+        "sha256": "d92c54f3d4db530e7adf33c09d74feac0520db69b0bba8189b98a4dc3a59438e"
+      },
+      "expected_signature": true
+    }
+  ],
+  "original_reader_gap": {
+    "path": "DESCENDANT_MEMBERSHIP_SENSITIVITY_AUDIT.json",
+    "sha256": "2ce22c4bfee61bf30551967e45a74ad168bc7f720591af084d545226031dd611",
+    "cases": 6
+  },
+  "raw_files": [
+    {
+      "path": "descendants-39451872353/_temp/atlas-linux-runner.json",
+      "bytes": 3165,
+      "sha256": "190b5c03861529ff934ee0a24a67c1d1475db17a1b6042bffbb7c52f11b086a3"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/3e748906f50880af239095dc46cb5a34d9560f9178ce04c530de2a3cd0089090.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/3e748906f50880af239095dc46cb5a34d9560f9178ce04c530de2a3cd0089090.cleanup-before.json",
+      "bytes": 10031,
+      "sha256": "a445f41319a7b166db2f547f8a966cc4bc3291c55826d3b69c02ce7620fd1896"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/3e748906f50880af239095dc46cb5a34d9560f9178ce04c530de2a3cd0089090.cleanup.txt",
+      "bytes": 65,
+      "sha256": "586463134ad3ed18e5bdb0e9420202eacfb4124e124821db3216d615c4577065"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/5574f5bc3c0653ae1f6022a8291d1b7082969f4a1e4580cd08af56b59214e1fb.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/5574f5bc3c0653ae1f6022a8291d1b7082969f4a1e4580cd08af56b59214e1fb.cleanup-before.json",
+      "bytes": 10043,
+      "sha256": "2810a7207b92e8eb600b14c024cbced75155eb78612d98556a1e5cf8ccce6808"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/5574f5bc3c0653ae1f6022a8291d1b7082969f4a1e4580cd08af56b59214e1fb.cleanup.txt",
+      "bytes": 65,
+      "sha256": "e6a1c569fda647aa74835bcb3edcafa1d53157be9d9aea5e4534ef645c2da659"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/82ad06aa423c383b5d8d6ccf3f3414bacfebdf37e44daac1566136b93ac86616.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/82ad06aa423c383b5d8d6ccf3f3414bacfebdf37e44daac1566136b93ac86616.cleanup-before.json",
+      "bytes": 10090,
+      "sha256": "1cc80f1cb542ede80d6a790974ac4d8eb10241aeeb89caa233a459a6fa5aa461"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/82ad06aa423c383b5d8d6ccf3f3414bacfebdf37e44daac1566136b93ac86616.cleanup.txt",
+      "bytes": 65,
+      "sha256": "2d2fe022176af9d277fded0109986ef3bf47e1ab7a6dcdf033b7dc5fee8c918a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/TERMINAL_ACCEPTANCE.json",
+      "bytes": 979,
+      "sha256": "9169d0843950c419da0833286f9640b068a93e52d5735ced7cd03b64cf0933bf"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ba3965fa1f5ad165852564d3f33bb05dc8a306bc8e4c5da442ccb3ecdb8c0582.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ba3965fa1f5ad165852564d3f33bb05dc8a306bc8e4c5da442ccb3ecdb8c0582.cleanup-before.json",
+      "bytes": 10047,
+      "sha256": "145bd950017d5ae41563f910ce58f9373fc16123e451e1272762f73cc10e77d3"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ba3965fa1f5ad165852564d3f33bb05dc8a306bc8e4c5da442ccb3ecdb8c0582.cleanup.txt",
+      "bytes": 65,
+      "sha256": "cbc2b73f66a7c94046359fe738f3ca64a214ae0bfb578a789e66fa00a7466d56"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/docker-version.txt",
+      "bytes": 769,
+      "sha256": "8402d8b7679b4087fa4fb62264e49054f974146c5d134195d8b7a341747ab4ed"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/e3ccaf659e29576065777ca3a05bec50d885ec87e2c6ed8ec9455030fc0ee9f0.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/e3ccaf659e29576065777ca3a05bec50d885ec87e2c6ed8ec9455030fc0ee9f0.cleanup-before.json",
+      "bytes": 9695,
+      "sha256": "9c98a8519ebd65e5b2c3cba0ab13ef20c5b3bbdaf9e2d241e9a8e702614afd94"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/e3ccaf659e29576065777ca3a05bec50d885ec87e2c6ed8ec9455030fc0ee9f0.cleanup.txt",
+      "bytes": 65,
+      "sha256": "40000dc6d51de60493732a5a25ce0ded047304172dc4b4419df745d392efd6df"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/image-inspect.json",
+      "bytes": 2761,
+      "sha256": "6ac97ded3aafd19566a89ede3161ff023064e48897ca9b9b54fcd5c3a3c39d70"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/oom.client-exit.txt",
+      "bytes": 4,
+      "sha256": "e3b9c2844b5a5c2677b3a2279db2ec8487491dd9a23d6b22fac153391b3bb63c"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/oom.inspect.json",
+      "bytes": 10031,
+      "sha256": "a445f41319a7b166db2f547f8a966cc4bc3291c55826d3b69c02ce7620fd1896"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/oom.json",
+      "bytes": 1119,
+      "sha256": "e496035bea59d54d3eac89d90b76bae46959e4bbc8f524551f6297b911d7f6ae"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/oom.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/oom.stdout.txt",
+      "bytes": 25,
+      "sha256": "f3543810a54f40b085722baba561f6fc9f617643baeb8def6b5ff20ec3906fbe"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/optimized.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/optimized.inspect.json",
+      "bytes": 10090,
+      "sha256": "1cc80f1cb542ede80d6a790974ac4d8eb10241aeeb89caa233a459a6fa5aa461"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/optimized.json",
+      "bytes": 10596,
+      "sha256": "62bccc79ad24455b06879338c6be2bcb2f2e38a0a32cbfa69ac09d7a4d873e2e"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/optimized.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/optimized.stdout.txt",
+      "bytes": 120,
+      "sha256": "48682fb7a0ad60b153234896eecbdac0ab3e4e8d6219fc9b05800530a8cec2df"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ordinary.client-exit.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ordinary.inspect.json",
+      "bytes": 10047,
+      "sha256": "145bd950017d5ae41563f910ce58f9373fc16123e451e1272762f73cc10e77d3"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ordinary.json",
+      "bytes": 10597,
+      "sha256": "18a5ee39c35e4de757dd6bb9b1a7c74b3dfdfb9ea3be4ac2b746de0e3ee9f14e"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ordinary.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/ordinary.stdout.txt",
+      "bytes": 121,
+      "sha256": "b845d0f25f5cb004e5d049eabbf9d0d8b8bc6601db21cbdd9101007e19b3b19c"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/terminal-reader.inspect.json",
+      "bytes": 9695,
+      "sha256": "9c98a8519ebd65e5b2c3cba0ab13ef20c5b3bbdaf9e2d241e9a8e702614afd94"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/terminal-reader.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/terminal-reader.stdout.txt",
+      "bytes": 821,
+      "sha256": "c77bdea9262ce19dfb0e83dcbe7c95d886d056a969052d48a56c886205e4f33b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/uncapped.client-exit.txt",
+      "bytes": 2,
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/uncapped.inspect.json",
+      "bytes": 10043,
+      "sha256": "2810a7207b92e8eb600b14c024cbced75155eb78612d98556a1e5cf8ccce6808"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/uncapped.json",
+      "bytes": 766,
+      "sha256": "6860affc926118d09c62f89fdb6cd326a520b9f353edb7f4ae5d6184db64e5d2"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/uncapped.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/installation_provenance/ci-evidence-39451872353-1/uncapped.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/HOST_RESULT.json",
+      "bytes": 20810,
+      "sha256": "c5fd1b817a7deccf1685b78bc0f7085e76124a7bb0314f8d2817bacd650e5ec4"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/image-inspect.json",
+      "bytes": 2403,
+      "sha256": "5002c2551efeb7650fa8fe66fce7acc6b3d9ac5d90b299eea41fff2a8fbac725"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.child.json",
+      "bytes": 1036,
+      "sha256": "ae95c2e487e84ee0e0bdb505282b3b3f13f976eafe5b71aeb13b2e107a57fccf"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.cleanup-before.json",
+      "bytes": 8367,
+      "sha256": "e363794f5fa77bfc2886c849ac060cd6860e7d98398c3c5c6b23be80aeab5c19"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "ea1196e9a4d805b62138c79c4d2f3bd90874d69b11e18865b96de85aa359dcb8"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.inspect.json",
+      "bytes": 8367,
+      "sha256": "3522f2866e77b09569c250def41373a70106c73836e7a56c7bec574b2d2f5c50"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.json",
+      "bytes": 4760,
+      "sha256": "887dc8c55ddc77bbd90ca2c8040746791b93b3281d500eb62d2ee4182f2b9ece"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.cleanup-before.json",
+      "bytes": 8354,
+      "sha256": "231b056c80440a975aaba937299fe7148aed76cdf67163b162973214b1d79f3e"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "e78c5159d0eb4420fc2a66854be9cffe03dc3ded863ab75aec80e5e422808f33"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.inspect.json",
+      "bytes": 8354,
+      "sha256": "231b056c80440a975aaba937299fe7148aed76cdf67163b162973214b1d79f3e"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.json",
+      "bytes": 4473,
+      "sha256": "14a7fe7c75ac91c663c366262871e1cda8c49cb0aab3f7d601639dec6043de03"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.cleanup-before.json",
+      "bytes": 8372,
+      "sha256": "ba46fcd8abe129ffd353129f4c43d30684f23fac5265d1c23ef3c52dbd3f6be1"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "5ac1258d1dcfc41d3ed5af42a5a4c91a1d892d6fb48d1dc03c59d7e078fe632d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.inspect.json",
+      "bytes": 8372,
+      "sha256": "ba46fcd8abe129ffd353129f4c43d30684f23fac5265d1c23ef3c52dbd3f6be1"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.json",
+      "bytes": 4889,
+      "sha256": "b15799bca017c99ed7fd7fbbc2e914e5eb8712d3357e80c96b87e484924a79db"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "44563a8f32e63a41779d6839f6d01caae65358ce7d3fef62ec38f987d6d4f026"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "8d8b6292bd78e66f76fd99cd35b352e01fad9f505f70d03ac95b0f09cad926f5"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.inspect.json",
+      "bytes": 8343,
+      "sha256": "44563a8f32e63a41779d6839f6d01caae65358ce7d3fef62ec38f987d6d4f026"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.json",
+      "bytes": 3067,
+      "sha256": "d5c17c94bfa5310acc9cce7e5357aab6f56c211c4e1f6b04be23f3e16918507b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.ready.json",
+      "bytes": 862,
+      "sha256": "c8fbb5bbcda37889df96c970491eea3b90afd7ea7380bae136471da442b8e9be"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.cleanup-before.json",
+      "bytes": 8367,
+      "sha256": "849c01833b07ece528a8ad510937e03404d4aa3673c610bcc0a668058f8e7cf7"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "0fb8569c7a1865c64f532e681f8c8f890a41d80adb934baa49eaeee49fb87619"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.inspect.json",
+      "bytes": 8367,
+      "sha256": "849c01833b07ece528a8ad510937e03404d4aa3673c610bcc0a668058f8e7cf7"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.json",
+      "bytes": 4000,
+      "sha256": "ddb7b7051772446bd8c5a1da63ff348b21db054b0c7ef4d2cc0c6b6bd2278fdc"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.ready.json",
+      "bytes": 829,
+      "sha256": "f0d25edc882cb6f8984d83bcdc7cce60dc32e4719ead69c41576611f9c73432a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.sampled.json",
+      "bytes": 829,
+      "sha256": "b881fb6fe0a45d5204fc3dced8b4e1f23143f0477a4195d53c367b9e31bd1e42"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.cleanup-before.json",
+      "bytes": 8385,
+      "sha256": "709896c824eb07cb3dc4447802532042d27012401ced16efa80975c3d2602c1f"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.cleanup.txt",
+      "bytes": 65,
+      "sha256": "f39259b535255584812f4bbaad4255bd98ca2c2e76029f839831930d5ccc1119"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.inspect.json",
+      "bytes": 8385,
+      "sha256": "709896c824eb07cb3dc4447802532042d27012401ced16efa80975c3d2602c1f"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.json",
+      "bytes": 7895,
+      "sha256": "6085ba22a2f5a121e8c103269497b62c9cc75386967eb9e1d8925bcebdc4ce11"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.overlap.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.rss-7.ready.json",
+      "bytes": 846,
+      "sha256": "b4a546ac2ecd607f038eb1aa49136d3a3f58074d861d70a5b390eeeea3667c68"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.rss-8.ready.json",
+      "bytes": 846,
+      "sha256": "5e86843bdfc4631e7dd63c90f950d9f0d0b6487da37525e203de317e5722cb92"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-rss-overlap.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-file-host.json",
+      "bytes": 172,
+      "sha256": "bb5a2ab05c72ccea3aac6f59a215eed431c04546f7553217d9c419803e9edd45"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.cleanup-before.json",
+      "bytes": 8384,
+      "sha256": "81d2a5567ca183d2a38500aae7965f3e02abeb287ef503fe5f98d3114b6d43c1"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "53703b6c484b92062fee427d454e055ccd37a26f8fce71d7cb7bf0be22d24c0a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.inspect.json",
+      "bytes": 8384,
+      "sha256": "81d2a5567ca183d2a38500aae7965f3e02abeb287ef503fe5f98d3114b6d43c1"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.json",
+      "bytes": 4096,
+      "sha256": "4f64faf677afb4452f981b974deda2a25f707550380a072586f058cbce55e5ea"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.ready.json",
+      "bytes": 1052,
+      "sha256": "302d8dd3c67188c83901a8269577a1b14ef72ee76ec3982c5b4fb4006c7c7006"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.retained.json",
+      "bytes": 1031,
+      "sha256": "874ebcd98cec533b2b28138627e43d31a099282071a0e25800dd0ae5ef7be1e6"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.cleanup-before.json",
+      "bytes": 8409,
+      "sha256": "cf98ddd0798d6b2d6fea434f12c3b5a712a0b3054eef36c471a46a0e0f22e8cf"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "b14676d90654abe766ba0632abdc8a92e0399c2f98dd0ab90e05986e0cb13d72"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.inspect.json",
+      "bytes": 8409,
+      "sha256": "cf98ddd0798d6b2d6fea434f12c3b5a712a0b3054eef36c471a46a0e0f22e8cf"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.json",
+      "bytes": 4437,
+      "sha256": "be67c0bde90df77ed25cb329fb9b1ebb50dfa05ccf36110e19e3df7fdf3348fa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.ready.json",
+      "bytes": 829,
+      "sha256": "c02654610d83f97c62a9930eee755f0d0fdeb40101207cfca2ddead0cf5f6c4d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.sampled.json",
+      "bytes": 1053,
+      "sha256": "7a59546eeb74c1d376dae4b7aa6c9d6ceb4890d1d2b1c04326e70b18282d6def"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-shared-sibling-host.json",
+      "bytes": 1053,
+      "sha256": "cdf7ae6fe3a59462898ba6ad5c53febac23f65d0b77137cccda0b8beb5f19c36"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/optimized-sibling-host.json",
+      "bytes": 1053,
+      "sha256": "0f0ec10e87754c4c2466225cd0618c3b1ad465d06f6534563c1608306303bcd2"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.child.json",
+      "bytes": 1037,
+      "sha256": "d8fe6f4f8e9bf96efaaee1efa4ecf73c0c06b971e1c1eebc3179b2b4cec98ddd"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.cleanup-before.json",
+      "bytes": 8337,
+      "sha256": "61fee5b4a9f740dfedb14c40fde5842c69ca54e82b9b647e150362f167ec4a5d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.cleanup.txt",
+      "bytes": 65,
+      "sha256": "500d4a48240e1385e3b1e3574401055a7c3f5410b20c7cf8e8c2cf825c42f403"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.inspect.json",
+      "bytes": 8337,
+      "sha256": "61fee5b4a9f740dfedb14c40fde5842c69ca54e82b9b647e150362f167ec4a5d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.json",
+      "bytes": 4762,
+      "sha256": "dea1fa5edd15fcd5c2d5e7e26538b918499fa3b54900d58302b660c42bd6008f"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-detached.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.cleanup-before.json",
+      "bytes": 8325,
+      "sha256": "dcfe40902a3b9d1cc86fa338bcd01afc8faa90e21d7b9b64e1e9985ebe07c1be"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.cleanup.txt",
+      "bytes": 65,
+      "sha256": "f8736dded32a2e316a375489a69ae89726eae8c3948c3fb8ccbf69b8fdf0b746"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.inspect.json",
+      "bytes": 8325,
+      "sha256": "dcfe40902a3b9d1cc86fa338bcd01afc8faa90e21d7b9b64e1e9985ebe07c1be"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.json",
+      "bytes": 4475,
+      "sha256": "0d69618d946a583469128944bbbbff605ff58ba8e06d55d0d79944dad7acc946"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-direct.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.cleanup-before.json",
+      "bytes": 8343,
+      "sha256": "52c628e475c4394a7d6bb7672683a35b3caa1597b0041e78b967d0c2b319c9f4"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.cleanup.txt",
+      "bytes": 65,
+      "sha256": "29bf9603d90f6d9082c1f63c9837e812fb7b8479c01fde995e0d057a7b54b4f6"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.inspect.json",
+      "bytes": 8343,
+      "sha256": "52c628e475c4394a7d6bb7672683a35b3caa1597b0041e78b967d0c2b319c9f4"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.json",
+      "bytes": 4891,
+      "sha256": "bd86f92662ff317dc30ef4bb70b3bb51e90a2913179983f20dd25ded142cff19"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-fork-exec.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.cleanup-before.json",
+      "bytes": 8313,
+      "sha256": "d0bf3ee0b6c797261c1ae980c294927f37e00278c8bbbcb2667af547aa20013b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "9d792d3ee7d74ae5f70721f60000a85614c4439286d28ffc82be05cc005ce54b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.inspect.json",
+      "bytes": 8313,
+      "sha256": "f5892d9cce271e78da5ec1ce72910cebd9f945526fbb9030322525b1a3d2cc69"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.json",
+      "bytes": 3068,
+      "sha256": "c4a55145b95f3920f25875c28da18af32593aa05358ee369d61addc1d4f299d1"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.ready.json",
+      "bytes": 862,
+      "sha256": "ffaff33f934b8732501fa2855d6c72bebea2df17b6c69e87cdfb297fd4ce4689"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.cleanup-before.json",
+      "bytes": 8336,
+      "sha256": "79bde228973815b82113fdd2dab38e3c10fb2ae38ae3123d2945c9865c80d001"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "016e60c0fcadccdc771c8835f3a99aa4c9f6c547c0356de89de8dc4d77d20546"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.inspect.json",
+      "bytes": 8336,
+      "sha256": "79bde228973815b82113fdd2dab38e3c10fb2ae38ae3123d2945c9865c80d001"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.json",
+      "bytes": 4001,
+      "sha256": "5d02aa53c19274399314a0d7e10d739b1cd306c07587c4104d858c0f1cce5f5d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.ready.json",
+      "bytes": 829,
+      "sha256": "24aa48a6f71f93e7c86606bb4cf7e4db8a4e9974eed9173825e88f06841da257"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.sampled.json",
+      "bytes": 829,
+      "sha256": "a9106b8c0c959691142e7cbc8355a3abf8bcb4976a11d96930fb1b3e69353f7d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.cleanup-before.json",
+      "bytes": 8355,
+      "sha256": "14ced004703a76b8bddbc13861ba236d1312655de02e19d6d65e3ee69312bba5"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.cleanup.txt",
+      "bytes": 65,
+      "sha256": "e3d6441057083885dfb79dd40f23d094e67673b273bafab6d392e784d57b3322"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.inspect.json",
+      "bytes": 8355,
+      "sha256": "14ced004703a76b8bddbc13861ba236d1312655de02e19d6d65e3ee69312bba5"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.json",
+      "bytes": 7898,
+      "sha256": "d5d31e061465f1660bc13cc5a6e18994bcfbc1bedeb8f4d6fd67322c01029f09"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.overlap.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.rss-7.ready.json",
+      "bytes": 846,
+      "sha256": "071afc6de2b280cce1146616eeb65f8ed9870ce97030323ed51a989c42bee33a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.rss-8.ready.json",
+      "bytes": 846,
+      "sha256": "0b43c5830d806c52393b09b4c9c0250d6baca5516e9f1d8d576d70e952a0a85c"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-rss-overlap.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-file-host.json",
+      "bytes": 172,
+      "sha256": "d0c43b95479964322a4e368b265f311acb8a7bf84e935e40ae30655582e4a986"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.cleanup-before.json",
+      "bytes": 8354,
+      "sha256": "3f957ff826095540f4c24b364dd03a440281f6b06f63c4008704dda070b6477d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.cleanup.txt",
+      "bytes": 65,
+      "sha256": "c4bec9a0f89dc98ca18ca2838990a4c0c84e7ff7c57bd41c9cc5aab869a04f75"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.inspect.json",
+      "bytes": 8354,
+      "sha256": "3f957ff826095540f4c24b364dd03a440281f6b06f63c4008704dda070b6477d"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.json",
+      "bytes": 4097,
+      "sha256": "5b9aef2d2a84900121debc3a06602098f4c7f325bf8efd511eed00cd52786f8a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.ready.json",
+      "bytes": 1052,
+      "sha256": "9b5c396f4116bbd7d77955bcbfc662a780c34597a0be08a871f2d7011936ff9a"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.retained.json",
+      "bytes": 1031,
+      "sha256": "3bc90940691a1d8b3b4dd2f49fd8160d0acb0a5c430eac25d2ebb0b5afc99f5c"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-load.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.cleanup-after.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.cleanup-before.json",
+      "bytes": 8379,
+      "sha256": "cef838b83726606869f0fb112c29ea5fcc61145713ed27c368841a5eaad26eb9"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.cleanup.txt",
+      "bytes": 65,
+      "sha256": "e4fe367361a6e404c40defbc263a6dcd698835361d88e84926b921388cb22800"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.inspect.json",
+      "bytes": 8379,
+      "sha256": "cef838b83726606869f0fb112c29ea5fcc61145713ed27c368841a5eaad26eb9"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.json",
+      "bytes": 4438,
+      "sha256": "02199edbedb61bc869e2bc6f0a7d4e3a125a740d23a7678a9d6458fd6a71b9cf"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.ready.json",
+      "bytes": 829,
+      "sha256": "bdad53d13c9b4bf3855b0de3b83bd43a18f9995dcff4372b9c22f3934f1d1971"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.release",
+      "bytes": 31,
+      "sha256": "c59e49a4a08fe924cd5ef0fb9e4b1948e3e580ae33aaa5a3e6e43b1ea51c082b"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.sampled.json",
+      "bytes": 1053,
+      "sha256": "fa658b3e2374934aa39fd480b14481aad51fac06fcd0022e24bc44493dcfe93c"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-observer.wait.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-shared-sibling-host.json",
+      "bytes": 1053,
+      "sha256": "8625f98590fd5627c034ecfc273f7e48c59e0c7051f0b1e86c065d50b5a2c05e"
+    },
+    {
+      "path": "descendants-39451872353/memory_budget/memory_budget/tools/whole_build_memory/ci-evidence-39451872353-1/ordinary-sibling-host.json",
+      "bytes": 1053,
+      "sha256": "d7b54a00b6335cf0edb4991e6b7ceaef0fce2edc545de78d6f99e2d95eb71689"
+    }
+  ],
+  "actual_Crystal_compilations": 0,
+  "actual_Grant_cells": 0,
+  "rss_protocol_accepted": true,
+  "rss_scope": "self-and-largest-waited-child-high-water-kib-v1",
+  "shared_charge_protocol_accepted": true,
+  "cgroup_write_fence_accepted": true,
+  "actual_process_migration_accepted": false,
+  "compiler_rss_accepted": false,
+  "complete_Grant_build_accepted": false,
+  "installed_SDK_accepted": false,
+  "clean_device_installation_accepted": false,
+  "remaining_build_provider_gates": [
+    "actual process migration charge behavior",
+    "actual compiler RSS under the qualified protocol",
+    "complete real build window and behavior",
+    "operational Docker OOM marker reliability"
+  ]
+}
