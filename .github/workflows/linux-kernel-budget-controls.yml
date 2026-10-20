@@ -39,11 +39,11 @@ jobs:
           printf '%s  %s\n' '2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee' tools/installation_provenance/run_ci.sh | /usr/bin/sha256sum --check --strict
           bash tools/installation_provenance/run_ci.sh
       - name: Exercise transient descendants and sibling isolation
-        if: steps.profile.outputs.admitted == 'true'
+        if: ${{ always() && steps.profile.outputs.admitted == 'true' }}
         shell: bash
         run: |
           /usr/bin/python3 -I -S -B tools/whole_build_memory/run_host.py \
-            --pins-sha256 a2b816772ffc66ed8bebbb405c52f54434baa663a5d6afae63e87252da1b287c \
+            --pins-sha256 233f9658ccd015e2c9e7c268723963ed3713dbb2fc4a552f65d2b52a13288cfd \
             --runner-metadata "$RUNNER_TEMP/atlas-linux-runner.json"
       - name: Retain runner profile and complete control evidence
         if: always()

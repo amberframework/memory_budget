@@ -57,8 +57,10 @@ def main():
     docker = ['/usr/bin/docker', '--host', 'unix:///var/run/docker.sock', '--config', str(config)]
     environment = {'PATH': '/usr/bin:/bin', 'LC_ALL': 'C'}
     owners = []
+    data_files = []
     report = {'format': 'atlas-build-descendant-host-result-v1', 'passed': False,
               'source_pins_sha256': args.pins_sha256, 'token': token, 'owners': owners,
+              'data_files': data_files,
               'actual_Grant_cells': 0}
 
     def call(command, seconds=30, check=True):
@@ -117,6 +119,37 @@ def main():
             need(time.monotonic() < deadline, 'Bounded source-owned rendezvous required: ' + path.name)
             time.sleep(.02)
 
+    def run_pair(mode, shared=False):
+        prefix = 'shared-' if shared else ''
+        if shared:
+            path = evidence / (mode + '-shared-pages.bin')
+            need(not path.exists() and not path.is_symlink(), 'A fresh shared-page inode path is required')
+            data_files.append({'path': path.name, 'initially_absent': True, 'removed': False})
+        observer, load = create(mode, prefix + 'observer'), create(mode, prefix + 'load')
+        call(docker + ['start', observer['id']])
+        ready(evidence / (observer['selected'] + '.ready.json'))
+        call(docker + ['start', load['id']])
+        ready(evidence / (observer['selected'] + '.sampled.json'))
+        if shared:
+            ready(evidence / (load['selected'] + '.retained.json'))
+            info = probe.shared_file_identity(path)
+            need(info['sha256'] == probe.shared_signature(), 'The complete live shared file must retain its expected signature')
+            probe.save(evidence / (mode + '-shared-file-host.json'), info)
+        host_rows = []
+        for owner in (observer, load):
+            current = inspect(owner)[0]
+            need(current['State']['Running'] is True and current['State']['Pid'] > 0,
+                 'Both sibling probes must be alive at the host identity checkpoint')
+            command = ['/usr/bin/sudo', '--non-interactive', '/usr/bin/python3', '-I', '-S', '-B',
+                str(HERE / 'probe.py'), '--pins-sha256', args.pins_sha256, '--host-pid',
+                str(current['State']['Pid']), '--container-id', owner['id']]
+            host_rows.append(json.loads(call(command).stdout))
+        probe.save(evidence / (mode + '-' + prefix + 'sibling-host.json'), host_rows)
+        for owner in (observer, load):
+            probe.save(evidence / (owner['selected'] + '.release'), {'token': token})
+        finish(observer)
+        finish(load)
+
     try:
         need(call(docker + ['version', '--format', '{{.Server.Version}}']).stdout.decode().strip()
              == profile['docker_server_version'], 'Actual Docker daemon version must retain its identity')
@@ -127,25 +160,8 @@ def main():
                 owner = create(mode, case)
                 call(docker + ['start', owner['id']])
                 finish(owner)
-            observer, load = create(mode, 'observer'), create(mode, 'load')
-            call(docker + ['start', observer['id']])
-            ready(evidence / (mode + '-observer.ready.json'))
-            call(docker + ['start', load['id']])
-            ready(evidence / (mode + '-observer.sampled.json'))
-            host_rows = []
-            for owner in (observer, load):
-                current = inspect(owner)[0]
-                need(current['State']['Running'] is True and current['State']['Pid'] > 0,
-                     'Both sibling probes must be alive at the host identity checkpoint')
-                command = ['/usr/bin/sudo', '--non-interactive', '/usr/bin/python3', '-I', '-S', '-B',
-                    str(HERE / 'probe.py'), '--pins-sha256', args.pins_sha256, '--host-pid',
-                    str(current['State']['Pid']), '--container-id', owner['id']]
-                host_rows.append(json.loads(call(command).stdout))
-            (evidence / (mode + '-sibling-host.json')).write_text(json.dumps(host_rows, indent=2) + '\n')
-            for owner in (observer, load):
-                probe.save(evidence / (owner['selected'] + '.release'), {'token': token})
-            finish(observer)
-            finish(load)
+            run_pair(mode)
+            run_pair(mode, shared=True)
         probe.verify_sources(args.pins_sha256)
         import verify_results
         report['verification'] = verify_results.validate(evidence, args.pins_sha256, token)
@@ -169,8 +185,23 @@ def main():
                 owner['removed'] = True
             except BaseException as error:
                 errors.append({'name': owner['name'], 'message': str(error)})
+        for entry in data_files:
+            try:
+                path = evidence / entry['path']
+                if path.exists():
+                    entry['identity'] = probe.shared_file_identity(path)
+                    entry['expected_signature'] = entry['identity']['sha256'] == probe.shared_signature()
+                    path.unlink()
+                    entry['removed'] = not path.exists() and not path.is_symlink()
+                    need(entry['removed'] and entry['expected_signature'], 'The exact shared-page file must verify and return absent')
+                else:
+                    need(report['passed'] is False, 'A successful shared probe must preserve its complete file until cleanup')
+                    entry['removed'] = not path.is_symlink()
+            except BaseException as error:
+                errors.append({'name': entry['path'], 'message': str(error)})
         report['cleanup_errors'] = errors
-        report['passed'] = report['passed'] and not errors and len(owners) == 12 and all(item['removed'] for item in owners)
+        report['passed'] = report['passed'] and not errors and len(owners) == 16 and all(item['removed'] for item in owners)
+        report['passed'] = report['passed'] and len(data_files) == 2 and all(item['removed'] for item in data_files)
         (evidence / 'HOST_RESULT.json').write_text(json.dumps(report, indent=2) + '\n')
         need(report['passed'], 'Complete probe verification and exact container return required')
     print(json.dumps({'passed': True, 'owned_containers_removed': len(owners), 'actual_Grant_cells': 0}))

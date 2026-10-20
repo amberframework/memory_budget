@@ -1,12 +1,13 @@
 """Independently verify actual descendant, sibling, command and terminal evidence."""
 from pathlib import Path
 import copy
+import errno
 import json
 import re
 
 import probe
 
-CASES = ('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load')
+CASES = ('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load', 'shared-observer', 'shared-load')
 IMAGE = 'python:3.12.10-slim@sha256:fd95fa221297a88e1cf49c55ec1828edd7c5a428187e67b5d1805692d11588db'
 RUNTIME = '4dbf3143240288fb2170257ffaa7bd030cdda5d2703d1f5f30b627042267e2e3'
 
@@ -56,6 +57,8 @@ def validate_single(value, case, mode, pins, token, budget):
          and value['optimized_python'] is (mode == 'optimized')
          and value['source_pins_sha256'] == pins and value['provider_pins_sha256'] == probe.PROVIDER_PINS
          and value['runtime_sha256'] == RUNTIME and value['actual_Grant_cells'] == 0
+         and type(value['cgroup_write_refusal_errno']) is int
+         and value['cgroup_write_refusal_errno'] in (errno.EROFS, errno.EACCES, errno.EPERM)
          and value['compiler_rss_accepted'] is False and value['complete_Grant_build_accepted'] is False,
          'Exact source, runtime, case and qualification scope required')
     before, after = context(value['before'], budget), context(value['after'], budget)
@@ -71,6 +74,9 @@ def validate_single(value, case, mode, pins, token, budget):
          'Both lifetime maximum RSS counters must retain their high-water marks')
     if case == 'rss-overlap':
         validate_overlapping_rss(value, before, after, mode, budget)
+        return
+    if case in ('shared-observer', 'shared-load'):
+        validate_shared_pages(value, before, after, case, budget)
         return
     if case in ('observer', 'load'):
         selected = 'during' if case == 'observer' else 'hot'
@@ -190,6 +196,57 @@ def validate_overlapping_rss(value, before, after, mode, budget):
          'Largest waited-child RSS and simultaneous whole-group charge must remain distinct')
 
 
+def shared_file(value):
+    need(type(value) is dict and set(value) == {'device', 'inode', 'bytes', 'uid', 'mode', 'sha256'}
+         and all(type(value[key]) is int and value[key] > 0 for key in ('device', 'inode', 'bytes', 'uid', 'mode'))
+         and value['bytes'] == probe.SHARED_BYTES and value['uid'] == 501 and value['mode'] == 0o644
+         and value['sha256'] == probe.shared_signature(), 'The complete shared inode and content signature must match')
+
+
+def validate_shared_pages(value, before, after, case, budget):
+    hot = context(value['during' if case == 'shared-observer' else 'hot'], budget)
+    shared_file(value['file'])
+    need(value['page_checksum'] == probe.SHARED_BYTES // 4096
+         and hot['identity'] == before['identity'] and hot['cgroup_key'] == before['cgroup_key']
+         and hot['members'] == [1] and hot['snapshot']['pids_current'] == 1
+         and before['monotonic_ns'] <= hot['monotonic_ns'] <= after['monotonic_ns']
+         and hot['self_peak_rss_kib'] * 1024 >= probe.SHARED_BYTES
+         and after['self_peak_rss_kib'] >= hot['self_peak_rss_kib']
+         and after['snapshot']['memory_peak'] >= hot['snapshot']['memory_peak'],
+         'The complete shared-page consumer must preserve its owner, consumption, RSS and window')
+    if case == 'shared-load':
+        retained = context(value['retained'], budget)
+        need(retained['identity'] == before['identity'] and retained['cgroup_key'] == before['cgroup_key']
+             and retained['members'] == [1] and retained['snapshot']['pids_current'] == 1
+             and hot['monotonic_ns'] <= retained['monotonic_ns'] <= after['monotonic_ns']
+             and hot['snapshot']['memory_current'] >= probe.SHARED_BYTES
+             and retained['snapshot']['memory_current'] >= probe.SHARED_BYTES
+             and after['snapshot']['memory_peak'] >= retained['snapshot']['memory_peak'],
+             'The writer must retain the first-touch charge while the shared reader is live')
+    else:
+        need(hot['snapshot']['memory_current'] < probe.SHARED_BYTES // 2
+             and after['snapshot']['memory_peak'] < probe.SHARED_BYTES // 2
+             and (hot['self_peak_rss_kib'] - before['self_peak_rss_kib']) * 1024 >= probe.SHARED_BYTES // 2,
+             'The shared reader RSS must rise while its own cgroup charge remains separate')
+
+
+def validate_host_pair(evidence, results, mode, prefix, read_result):
+    host_rows = read_result(evidence / (mode + '-' + prefix + 'sibling-host.json'))
+    need(len(host_rows) == 2 and Path(host_rows[0]['cgroup_path']).parent == Path(host_rows[1]['cgroup_path']).parent
+         and host_rows[0]['cgroup_path'] != host_rows[1]['cgroup_path'], 'Actual host sibling hierarchy required')
+    for row, role in zip(host_rows, ('observer', 'load')):
+        case = mode + '-' + prefix + role
+        result = results[case]
+        container = read_result(evidence / (case + '.inspect.json'))[0]
+        identity(row['identity'])
+        need(row['container_id'] == container['Id']
+             and Path(row['cgroup_path']).name == 'docker-' + container['Id'] + '.scope'
+             and row['membership'] == '0::' + row['cgroup_path'] + '\n'
+             and row['identity']['start_ticks'] == result['before']['identity']['start_ticks']
+             and row['cgroup_key']['inode'] == result['before']['cgroup_key']['inode'],
+             'Outer Docker/PID/cgroup identity must bind the inner owner')
+
+
 def validate(evidence, pins, token, read_result=read):
     budget = probe.verify_sources(pins)
     image = read_result(evidence / 'image-inspect.json')[0]
@@ -227,19 +284,21 @@ def validate(evidence, pins, token, read_result=read):
         observer, load = results[mode + '-observer'], results[mode + '-load']
         need(observer['sibling_hot'] == {'hot': load['hot'], 'allocation_bytes': probe.SIBLING_BYTES},
              'The observer must sample the actual concurrent private load')
-        host_rows = read_result(evidence / (mode + '-sibling-host.json'))
-        need(len(host_rows) == 2 and Path(host_rows[0]['cgroup_path']).parent == Path(host_rows[1]['cgroup_path']).parent
-             and host_rows[0]['cgroup_path'] != host_rows[1]['cgroup_path'], 'Actual host sibling hierarchy required')
-        for row, case, result in zip(host_rows, ('observer', 'load'), (observer, load)):
-            container = read_result(evidence / (mode + '-' + case + '.inspect.json'))[0]
-            need(row['container_id'] == container['Id']
-                 and Path(row['cgroup_path']).name == 'docker-' + container['Id'] + '.scope'
-                 and row['identity']['start_ticks'] == result['before']['identity']['start_ticks']
-                 and row['cgroup_key']['inode'] == result['before']['cgroup_key']['inode'],
-                 'Outer Docker/PID/cgroup identity must bind the inner owner')
+        validate_host_pair(evidence, results, mode, '', read_result)
+        reader, writer = results[mode + '-shared-observer'], results[mode + '-shared-load']
+        host_file = read_result(evidence / (mode + '-shared-file-host.json'))
+        shared_file(host_file)
+        need(reader['file'] == writer['file'] == host_file
+             and reader['writer_hot'] == {'hot': writer['hot'], 'file': writer['file'], 'page_checksum': writer['page_checksum']}
+             and reader['during']['monotonic_ns'] <= writer['retained']['monotonic_ns']
+             and reader['during']['cgroup_key'] != writer['retained']['cgroup_key'],
+             'Independent host and both live consumers must bind the same shared inode and charge window')
+        validate_host_pair(evidence, results, mode, 'shared-', read_result)
     return {'passed': True, 'format': 'atlas-build-descendant-verdict-v1',
             'cases': sorted(results), 'distinct_container_ids': sorted(identities),
             'rss_protocol_accepted': True, 'rss_scope': 'self-and-largest-waited-child-high-water-kib-v1',
+            'shared_charge_protocol_accepted': True, 'cgroup_write_fence_accepted': True,
+            'actual_process_migration_accepted': False,
             'compiler_rss_accepted': False, 'complete_Grant_build_accepted': False, 'actual_Grant_cells': 0}
 
 
@@ -255,6 +314,8 @@ def sensitivity_controls(evidence, pins, token):
         host = mode + '-sibling-host.json'
         command = mode + '-direct.inspect.json'
         overlap = mode + '-rss-overlap.json'
+        reader = mode + '-shared-observer.json'
+        writer = mode + '-shared-load.json'
         changes = (
             ('lost_retired_peak', direct, lambda value: value['after']['snapshot'].update(
                 memory_peak=value['before']['snapshot']['memory_peak'])),
@@ -285,6 +346,16 @@ def sensitivity_controls(evidence, pins, token):
             ('summed_rss_used_as_largest', overlap, lambda value: value['after'].update(
                 waited_children_peak_rss_kib=sum(row['allocation']['hot']['self_peak_rss_kib'] for row in value['workers']))),
             ('overlap_omitted_worker', overlap, lambda value: value['during'].update(members=[1, value['workers'][0]['pid']])),
+            ('changed_shared_inode', reader, lambda value: value['file'].update(inode=value['file']['inode'] + 1)),
+            ('changed_shared_content', reader, lambda value: value['file'].update(sha256='0' * 64)),
+            ('lost_shared_writer_charge', writer, lambda value: value['hot']['snapshot'].update(memory_current=1)),
+            ('shared_reader_charged_as_private', reader, lambda value: (
+                value['during']['snapshot'].update(memory_current=probe.SHARED_BYTES, memory_peak=probe.SHARED_BYTES),
+                value['after']['snapshot'].update(memory_peak=probe.SHARED_BYTES))),
+            ('lost_shared_reader_rss', reader, lambda value: value['during'].update(self_peak_rss_kib=1)),
+            ('wrong_shared_page_checksum', reader, lambda value: value.update(page_checksum=value['page_checksum'] - 1)),
+            ('lost_retained_shared_charge', writer, lambda value: value['retained']['snapshot'].update(memory_current=1)),
+            ('writable_cgroup_admission', direct, lambda value: value.update(cgroup_write_refusal_errno=0)),
         )
         for label, filename, change in changes:
             changed = copy.deepcopy(read(evidence / filename))

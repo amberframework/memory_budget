@@ -1,8 +1,11 @@
 """Exercise descendant peak retention and separate sibling memory charges."""
 from pathlib import Path
+from functools import lru_cache
 import argparse
+import errno
 import hashlib
 import json
+import mmap
 import os
 import re
 import resource
@@ -19,6 +22,7 @@ PROVIDER_PINS = '15e27eea749e5d08f7d41256515b078f256c89fed5c49647c09dc99b99406ea
 STRICT_BYTES = 512 * 2**20
 CHILD_BYTES = 64 * 2**20
 SIBLING_BYTES = 192 * 2**20
+SHARED_BYTES = 96 * 2**20
 
 
 def need(value, message):
@@ -278,6 +282,90 @@ def sibling(args, budget, provider):
     return {'before': before, 'during': during, 'after': alone(budget, provider), 'sibling_hot': load}
 
 
+@lru_cache(maxsize=1)
+def shared_signature():
+    value = hashlib.sha256()
+    page = b'\x01' + b'\x00' * 4095
+    for unused in range(SHARED_BYTES // 4096):
+        value.update(page)
+    return value.hexdigest()
+
+
+def shared_file_identity(path):
+    before = path.lstat()
+    need(path.resolve() == path and stat.S_ISREG(before.st_mode) and before.st_size == SHARED_BYTES
+         and before.st_uid == 501 and stat.S_IMODE(before.st_mode) == 0o644 and before.st_nlink == 1,
+         'One exact physical shared file with its expected owner, size and mode is required')
+    signature = hashlib.sha256()
+    descriptor = os.open(str(path), os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(descriptor, 'rb') as stream:
+        opened = os.fstat(stream.fileno())
+        need((opened.st_dev, opened.st_ino) == (before.st_dev, before.st_ino), 'The opened shared inode must remain exact')
+        while True:
+            block = stream.read(65536)
+            if not block:
+                break
+            signature.update(block)
+    after = path.lstat()
+    need((after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns) ==
+         (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns), 'The complete shared file must remain stable')
+    return {'device': before.st_dev, 'inode': before.st_ino, 'bytes': before.st_size,
+            'uid': before.st_uid, 'mode': stat.S_IMODE(before.st_mode), 'sha256': signature.hexdigest()}
+
+
+def shared_pages(args, budget, provider):
+    output = Path(args.output)
+    prefix = output.stem.rsplit('-shared-', 1)[0]
+    path = output.with_name(prefix + '-shared-pages.bin')
+    before = alone(budget, provider)
+    if args.case == 'shared-load':
+        descriptor = os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_RDWR | os.O_NOFOLLOW, 0o644)
+        with os.fdopen(descriptor, 'r+b') as stream:
+            stream.truncate(SHARED_BYTES)
+            with mmap.mmap(stream.fileno(), SHARED_BYTES, access=mmap.ACCESS_WRITE) as pages:
+                for offset in range(0, SHARED_BYTES, 4096):
+                    pages[offset] = 1
+                pages.flush()
+                checksum = sum(pages[offset] for offset in range(0, SHARED_BYTES, 4096))
+                need(checksum == SHARED_BYTES // 4096, 'Every shared writer page must be consumed')
+                file = shared_file_identity(path)
+                need(file['sha256'] == shared_signature(), 'The complete writer content signature must match')
+                hot = context(budget, provider)
+                save(marker(output, '.ready.json'), {'hot': hot, 'file': file, 'page_checksum': checksum})
+                wait_file(output.with_name(prefix + '-shared-observer.sampled.json'))
+                retained = context(budget, provider)
+                save(marker(output, '.retained.json'), {'retained': retained, 'file': shared_file_identity(path)})
+                need(json.loads(wait_file(marker(output, '.release')).read_bytes()) == {'token': args.token},
+                     'Exact shared writer release token required')
+        return {'before': before, 'hot': hot, 'retained': retained, 'after': alone(budget, provider),
+                'file': file, 'page_checksum': checksum}
+    need(args.case == 'shared-observer', 'A supported shared-page role is required')
+    save(marker(output, '.ready.json'), {'before': before})
+    writer = json.loads(wait_file(output.with_name(prefix + '-shared-load.ready.json')).read_bytes())
+    file = shared_file_identity(path)
+    need(file == writer['file'] and file['sha256'] == shared_signature(), 'Both processes must open the same complete shared file')
+    with path.open('rb') as stream:
+        with mmap.mmap(stream.fileno(), SHARED_BYTES, access=mmap.ACCESS_READ) as pages:
+            checksum = sum(pages[offset] for offset in range(0, SHARED_BYTES, 4096))
+            need(checksum == SHARED_BYTES // 4096, 'Every shared reader page must be consumed')
+            during = context(budget, provider)
+            save(marker(output, '.sampled.json'), {'during': during, 'file': file, 'page_checksum': checksum})
+            need(json.loads(wait_file(marker(output, '.release')).read_bytes()) == {'token': args.token},
+                 'Exact shared reader release token required')
+    return {'before': before, 'during': during, 'after': alone(budget, provider),
+            'file': file, 'page_checksum': checksum, 'writer_hot': writer}
+
+
+def cgroup_write_refusal():
+    try:
+        descriptor = os.open('/sys/fs/cgroup/cgroup.procs', os.O_WRONLY | os.O_NOFOLLOW)
+    except OSError as error:
+        need(error.errno in (errno.EROFS, errno.EACCES, errno.EPERM), 'The cgroup write must refuse at its permission boundary')
+        return error.errno
+    os.close(descriptor)
+    raise RuntimeError('The read-only cgroup must refuse a mutation handle')
+
+
 def host_identity(args, budget):
     pid = args.host_pid
     identity = process_identity(budget, pid)
@@ -294,7 +382,8 @@ def host_identity(args, budget):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--case', choices=('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load'))
+    parser.add_argument('--case', choices=('direct', 'fork-exec', 'detached', 'rss-overlap', 'observer', 'load',
+                                         'shared-observer', 'shared-load'))
     parser.add_argument('--worker', choices=('allocate', 'hold', 'fork-exec', 'detach'))
     parser.add_argument('--output')
     parser.add_argument('--token')
@@ -320,10 +409,13 @@ def main():
     report = {'format': 'atlas-build-descendant-probe-v1', 'case': args.case, 'passed': False,
               'token': args.token, 'optimized_python': not __debug__, 'source_pins_sha256': args.pins_sha256,
               'provider_pins_sha256': PROVIDER_PINS, 'runtime_sha256': digest(Path(sys.executable).resolve()),
+              'cgroup_write_refusal_errno': cgroup_write_refusal(),
               'compiler_rss_accepted': False, 'complete_Grant_build_accepted': False, 'actual_Grant_cells': 0}
     try:
         if args.case == 'rss-overlap':
             result = overlapping_rss(args, budget, provider)
+        elif args.case in ('shared-observer', 'shared-load'):
+            result = shared_pages(args, budget, provider)
         elif args.case in ('direct', 'fork-exec', 'detached'):
             result = run_child(args, budget, provider)
         else:
