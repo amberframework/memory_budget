@@ -29,6 +29,7 @@ jobs:
           import pathlib
           import platform
           import subprocess
+          import stat
           import sys
 
           root = pathlib.Path("tools/grant_compile_acceptance").resolve()
@@ -41,13 +42,13 @@ jobs:
               "source_commit": os.environ.get("GITHUB_SHA"), "full_native_provider_accepted": False}
           digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
           try:
-              pins = root / "PUBLICATION_PINS.json"
-              if digest(pins) != "39d323740f131262a267144ad66989b6eac777c1f7048e0c3c0590edee95cb50":
+              pins = root / "PUBLICATION_PINS.v101.json"
+              if digest(pins) != "b4510c07cfc5078e12ed24a0f1aaa50a80b861b420c9716d94dfae2beeb71164":
                   raise RuntimeError("Exact publication source manifest required")
               manifest = json.loads(pins.read_text())
               for row in manifest["files"]:
                   path = root / row["path"]
-                  if path.parent != root or path.is_symlink() or path.stat().st_size != row["bytes"] or digest(path) != row["sha256"]:
+                  if path.parent != root or path.is_symlink() or not path.is_file() or stat.S_IMODE(path.stat().st_mode) != row["mode"] or path.stat().st_size != row["bytes"] or digest(path) != row["sha256"]:
                       raise RuntimeError("Publication input differs: " + row["path"])
               python = pathlib.Path(sys.executable).resolve()
               matches = [row for row in manifest["source_python_profiles"][sys.platform]
@@ -56,11 +57,13 @@ jobs:
                   raise RuntimeError("Observed source-test Python needs exact profile review")
               profile = matches[0]
               result["python_sha256"] = digest(python)
-              source = root / "verify_publication.py"
+              source = root / "verify_publication_v101.py"
+              if digest(source) != "728f7df0eb6b36c127bc9ea81e8356834cb2272acfd6ae357f8ec27cfe219695":
+                  raise RuntimeError("Exact v101 verifier source required before import")
               spec = importlib.util.spec_from_file_location("reviewed_grant_publication", source)
               verifier = importlib.util.module_from_spec(spec)
               spec.loader.exec_module(verifier)
-              archive = root / "grant-linux-first-build-publication-v100.tar.gz"
+              archive = root / "grant-linux-first-build-publication-v101.tar.gz"
               verification = verifier.verify(archive, manifest["outer_archive_sha256"], manifest["contents_sha256"], output / "verified package with spaces")
               (output / "VERIFICATION_RECEIPT.json").write_text(json.dumps(verification, indent=2) + "\n")
               damaged = output / "changed-archive.tar.gz"
@@ -74,18 +77,25 @@ jobs:
               else:
                   raise RuntimeError("Changed publication archive was accepted")
               payload = output / "verified package with spaces" / verifier.PREFIX
-              args = [str(python), "-I", "-S", "-B", str(payload / "tools/run_source_tests.py"),
+              args = [str(python), "-I", "-S", "-B", str(payload / "tools/run_source_tests_v101.py"),
                   "--sdk-checkout", str(pathlib.Path.cwd()), "--contents-sha256", manifest["contents_sha256"],
                   "--python-sha256", profile["sha256"], "--python-version", profile["version"],
                   "--output", str(output / "source cohorts with spaces")]
               with (output / "cohorts.stdout.txt").open("xb") as stdout, (output / "cohorts.stderr.txt").open("xb") as stderr:
                   completed = subprocess.run(args, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, timeout=540, check=False)
               result["source_wrapper_exit_code"] = completed.returncode
+              if sum((output / name).stat().st_size for name in ("cohorts.stdout.txt", "cohorts.stderr.txt")) > 8 * 2**20:
+                  raise RuntimeError("Bounded complete source-wrapper output required")
               if completed.returncode:
                   raise RuntimeError("Portable source cohort wrapper failed")
               receipt = json.loads((output / "source cohorts with spaces/SOURCE_TEST_RECEIPT.json").read_text())
               if receipt["source_tests_passed"] is not True or len(receipt["cohorts"]) != 4 or not all(row["passed"] for row in receipt["cohorts"]):
-                  raise RuntimeError("Every complete source cohort must pass")
+                  raise RuntimeError("Every complete original source cohort must pass")
+              regressions = receipt.get("successor_regressions", [])
+              if len(regressions) != 2 or not all(row["passed"] and row["expected_tests"] == 12 for row in regressions):
+                  raise RuntimeError("Both complete successor regression cohorts must pass")
+              result["original_source_test_executions"] = sum(row["expected_tests"] for row in receipt["cohorts"])
+              result["successor_regression_test_executions"] = sum(row["expected_tests"] for row in regressions)
               if digest(python) != profile["sha256"]:
                   raise RuntimeError("Source-test Python changed")
               result["actual_linux_source_cohorts_executed"] = sys.platform == "linux"
@@ -106,3 +116,4 @@ jobs:
           path: ${{ runner.temp }}/grant-source-package-controls
           if-no-files-found: error
           retention-days: 30
+          include-hidden-files: true
