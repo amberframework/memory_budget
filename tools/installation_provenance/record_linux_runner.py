@@ -118,6 +118,24 @@ def candidate():
             "daemon_start_time_ticks": started, "python_version": sys.version}
 
 
+def reviewed_profile(expected, observed):
+    require(expected.get("format") == "atlas-linux-runner-profile-set-v1",
+            "The reviewed profile-set format is required")
+    entries = expected.get("profiles")
+    require(isinstance(entries, list) and 1 <= len(entries) <= 4,
+            "A nonempty finite reviewed profile roster is required")
+    encoded = []
+    for entry in entries:
+        require(isinstance(entry, dict) and entry.get("format") == "atlas-linux-runner-profile-v1"
+                and isinstance(entry.get("profile"), dict), "Every reviewed profile needs its exact format")
+        encoded.append(json.dumps(entry["profile"], sort_keys=True, separators=(",", ":")))
+    require(len(set(encoded)) == len(encoded), "Unique reviewed profiles are required")
+    actual = json.dumps(observed, sort_keys=True, separators=(",", ":"))
+    matches = [entry for entry, identity in zip(entries, encoded) if identity == actual]
+    require(len(matches) == 1, "Observed runner must match one complete reviewed profile")
+    return matches[0]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True)
@@ -133,11 +151,7 @@ def main():
         result.update(candidate())
         expected_path = Path(args.expected_profile)
         if expected_path.is_file():
-            expected = json.loads(expected_path.read_text())
-            require(expected["format"] == "atlas-linux-runner-profile-v1",
-                    "The reviewed profile format is required")
-            require(expected["profile"] == result["profile"],
-                    "Observed runner differs from the committed reviewed profile")
+            expected = reviewed_profile(json.loads(expected_path.read_text()), result["profile"])
             result.update(admitted=True, state="reviewed-profile-matched")
             exports = {
                 "ATLAS_DOCKER_CLI_SHA256": expected["profile"]["docker_cli_sha256"],

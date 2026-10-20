@@ -33,6 +33,7 @@ jobs:
           ATLAS_SOURCE_PINS_SHA256: 449a03f954938c77d505c0759929c40568bdd01fd23dce3e16e65c23c0eba144
           ATLAS_TERMINAL_READER_SHA256: e5dbe6f170cccd693171a821a666799a524c32dc67de6c058b8cde2ed1681512
         run: |
+          /usr/bin/python3 -I -S -B tools/installation_provenance/test_runner_profiles.py
           printf '%s  %s\n' "$ATLAS_SHA256SUM_SHA256" /usr/bin/sha256sum | /usr/bin/sha256sum --check --strict
           printf '%s  %s\n' '2177c969114ad070329c3689e98501ea18f99e610189e97c19b98417a79106ee' tools/installation_provenance/run_ci.sh | /usr/bin/sha256sum --check --strict
           bash tools/installation_provenance/run_ci.sh

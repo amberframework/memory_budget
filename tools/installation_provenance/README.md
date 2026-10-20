@@ -13,9 +13,12 @@ access. This phase starts zero containers and earns zero workload acceptance.
 The missing reviewed profile produces exit 2 while retaining the candidate
 artifact, so pending qualification remains a failed gate.
 
-Review the candidate and commit its exact `profile` object in
-`runner_profile.json` with format `atlas-linux-runner-profile-v1`. The next
-job compares every observed field before admitting the Docker workloads.
+Review the candidate and commit its exact `profile` object as one entry in
+`runner_profile.json`, using the `atlas-linux-runner-profile-set-v1` format.
+The finite roster holds separately reviewed complete profiles. The next
+job compares every observed field against one complete entry before admitting
+the Docker workloads. Nine admission controls exercise exact matches and
+refusals for changed, mixed, incomplete, duplicate, or wrongly typed profiles.
 Profile drift refuses before workload entry. The runner image and kernel
 remain an explicit observed platform boundary.
 
