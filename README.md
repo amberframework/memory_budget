@@ -150,7 +150,7 @@ Runtime counters are compiled with `-Dfiber_allocation_tally`. Ordinary release 
 
 The shard has no runtime dependencies. Its embedded distribution carries one identical source bundle, a per-file SHA-256 manifest, the four maintained-runtime overlay files, and a versioned counter protocol. This lets an Amber application or library use the same code before a public shard release exists. Generated wrappers verify that manifest before invoking it. A standalone shard release can use the same public entry points.
 
-The runtime overlay is derived from Crystal Alpha commit `9c1e8ec64f6be6343e90d3979bc9536c4b050292`; its Crystal source license is preserved in `LICENSE-RUNTIME`. Application thresholds remain product decisions based on measured workloads and admitted platform profiles.
+The runtime overlay is derived from Crystal Alpha 1.22.3 (`crimson-knight/crystal` tag `v1.22.3-incremental-1`, commit `8ccce497524ef3e35fdc48c487854ab0743b0541`) and requires a Crystal 1.22.3 compiler; commit `58c20acfed71e27cbcf207014f29d7c7b53dab18` carries the Crystal 1.21 overlay. Its Crystal source license is preserved in `LICENSE-RUNTIME`. Application thresholds remain product decisions based on measured workloads and admitted platform profiles.
 
 The included CI template uses `memory-budgets / darwin-arm64-v1` on a controlled
 runner labeled `atlas-memory-budget-v1`. Its preflight verifies the approved
