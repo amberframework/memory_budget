@@ -33,6 +33,19 @@ module Crystal::System::Thread
   # private def system_wait_suspended : Nil
 
   # private def system_resume : Nil
+
+  # Called to initialize the object (usually a semaphore) for #wait and #wake.
+  # protected def init_semaphore : Nil
+
+  # Suspend a thread until #wake is called. Synchronizes with #wake so it won't
+  # block if #wake was called before (race).
+  #
+  # WARNING: must only be called on the current thread.
+  # def wait : Nil
+
+  # Wake a waiting thread. Synchronizes with #wait so it won't block if #wake
+  # has been called before (race).
+  # def wake : Nil
 end
 
 {% if flag?(:wasi) %}
@@ -139,6 +152,28 @@ class Thread
     end
   {% end %}
 
+  # :nodoc:
+  #
+  # In a child process that `fork` made from a multithreaded program only the
+  # calling thread exists: drops the others from the thread list, so that the
+  # garbage collector's hooks never reach them. The compiler's build server
+  # (`Crystal::InferReuse.fork_process`) uses it.
+  def self.keep_only_current_after_fork : Nil
+    current = Thread.current
+    # Without allocating: a collection now would still see the other threads.
+    loop do
+      other = nil
+      unsafe_each do |thread|
+        unless thread.same?(current)
+          other = thread
+          break
+        end
+      end
+      break unless other
+      threads.delete(other)
+    end
+  end
+
   def self.unsafe_each(&)
     # nothing to iterate when @@threads is nil + don't lazily allocate in a
     # method called from a GC collection callback!
@@ -160,6 +195,7 @@ class Thread
   # Creates and starts a new system thread.
   def initialize(@name : String? = nil, &@func : Thread ->)
     @system_handle = uninitialized Crystal::System::Thread::Handle
+    init_semaphore
     init_handle
   end
 
@@ -169,6 +205,7 @@ class Thread
     @func = ->(t : Thread) { }
     @system_handle = Crystal::System::Thread.current_handle
     @current_fiber = @main_fiber = Fiber.new(stack_address, self)
+    init_semaphore
 
     Thread.threads.push(self)
   end
@@ -213,10 +250,12 @@ class Thread
     Crystal::System::Thread.sleep(time)
   end
 
+  MAX_DELAY_ATTEMPTS_BEFORE_YIELD = 7
+
   # Delays execution for a brief moment.
   @[NoInline]
   def self.delay(backoff : Int32) : Int32
-    if backoff < 7
+    if backoff < MAX_DELAY_ATTEMPTS_BEFORE_YIELD
       backoff.times { Intrinsics.pause }
       backoff &+ 1
     else
